@@ -35,6 +35,10 @@ class NotificationList extends React.Component {
 export class Transactions extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      income: 0,
+      expense: 0,
+    }
   }
 
   render() {
@@ -42,6 +46,12 @@ export class Transactions extends React.Component {
       <View>
         <AppBar />
         <NotificationList />
+        { this.state.expense > this.state.income
+          &&
+          (<Text>
+            Overlimit
+          </Text>)
+        }
       </View>
     )
   }
