@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`form struk testing it shoul render successfull 1`] = `
+<View>
+  <TextInput
+    value="Nominal"
+  />
+  <TextInput
+    value="Item"
+  />
+  <TextInput
+    value="Kategori"
+  />
+  <TextInput
+    value="Lokasi"
+  />
+  <TextInput
+    value="Tanggal"
+  />
+</View>
+`;
