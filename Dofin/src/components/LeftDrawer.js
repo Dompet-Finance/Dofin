@@ -20,8 +20,8 @@ export class LeftDrawer extends React.Component {
 
   render() {
     var navigationView = (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <Text style={{margin: 10, fontSize: 15, textAlign: 'left'}}>
+      <View>
+        <Text>
           Im Drawer
         </Text>
       </View>
@@ -31,25 +31,26 @@ export class LeftDrawer extends React.Component {
       <DrawerLayoutAndroid
         drawerWidth={300}
         renderNavigationView={() => navigationView}>
-        <View style={{flex: 1, alignItems: 'center'}}>
+        <View>
           <Text>
             Profile
           </Text>
           <Button
             onPress={() => this.fakeNavigate()}
-            title="Learn More"
-            color="#841584"
-          />
+            title="Dashboard"
+            />
           <Button
             onPress={() => this.fakeNavigate()}
-            title="Learn More"
-            color="#841584"
-          />
+            title="Transactions"
+            />
           <Button
             onPress={() => this.fakeNavigate()}
-            title="Learn More"
-            color="#841584"
-          />
+            title="Dreams"
+            />
+          <Button
+            onPress={() => this.fakeNavigate()}
+            title="Setting"
+            />
         </View>
       </DrawerLayoutAndroid>
     )

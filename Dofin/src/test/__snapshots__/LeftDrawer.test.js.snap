@@ -13,14 +13,7 @@ exports[`Test LeftDrawer component renders correctly 1`] = `
     ]
   }
 >
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "flex": 1,
-      }
-    }
-  >
+  <View>
     <Text
       accessible={true}
       allowFontScaling={true}
@@ -73,13 +66,10 @@ exports[`Test LeftDrawer component renders correctly 1`] = `
                 "padding": 8,
                 "textAlign": "center",
               },
-              Object {
-                "color": "#841584",
-              },
             ]
           }
         >
-          Learn More
+          Dashboard
         </Text>
       </View>
     </View>
@@ -128,13 +118,10 @@ exports[`Test LeftDrawer component renders correctly 1`] = `
                 "padding": 8,
                 "textAlign": "center",
               },
-              Object {
-                "color": "#841584",
-              },
             ]
           }
         >
-          Learn More
+          Transactions
         </Text>
       </View>
     </View>
@@ -183,13 +170,62 @@ exports[`Test LeftDrawer component renders correctly 1`] = `
                 "padding": 8,
                 "textAlign": "center",
               },
+            ]
+          }
+        >
+          Dreams
+        </Text>
+      </View>
+    </View>
+    <View
+      accessibilityComponentType="button"
+      accessibilityLabel={undefined}
+      accessibilityTraits={
+        Array [
+          "button",
+        ]
+      }
+      accessible={true}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+      testID={undefined}
+      tvParallaxProperties={undefined}
+    >
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Array [
               Object {
-                "color": "#841584",
+                "color": "#0C42FD",
+                "fontSize": 18,
+                "padding": 8,
+                "textAlign": "center",
               },
             ]
           }
         >
-          Learn More
+          Setting
         </Text>
       </View>
     </View>
