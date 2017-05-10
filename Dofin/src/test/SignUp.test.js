@@ -6,10 +6,15 @@ import {
   Button
 } from 'react-native';
 
-import NonReceiptForm from '../components/NonReceiptForm';
+import SignUpForm from '../components/SignUpForm';
 
-describe('<NonReceiptForm />', () => {
-  const wrapper = shallow(<NonReceiptForm />);
+describe('<SignUp />', () => {
+  const wrapper = shallow(<SignUpForm />);
+
+  it('should be a view component', () => {
+
+    expect(wrapper.type()).toEqual(View);
+  });
 
   it('should pass a selected value to the onChange handler', () => {
     const value = 'This is TDD bruh';
@@ -27,12 +32,12 @@ describe('<NonReceiptForm />', () => {
     expect(onChange).toBeCalledWith({target: {value: 'This is TDD bruh'}});
   });
 
-  it('should render two TextInput', () => {
+  it('should render TextInput', () => {
 
     expect(wrapper.find(TextInput)).toHaveLength(2)
   });
 
-  it('should render one Button', () => {
+  it('should render Button', () => {
 
     expect(wrapper.find(Button)).toHaveLength(1)
   });
