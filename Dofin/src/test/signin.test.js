@@ -1,7 +1,7 @@
 import React from'react'
 import {
   View,
-  Button
+  Button,
  } from 'react-native';
 import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme'
