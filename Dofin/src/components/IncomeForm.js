@@ -3,7 +3,7 @@ import {
   View,
   TextInput,
   Button,
-  Text
+  Text,
 } from 'react-native';
 
 class IncomeForm extends React.Component {
