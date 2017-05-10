@@ -27,7 +27,7 @@ describe('Test LeftDrawer component', () => {
     expect(wrapper).toHaveLength(1)
 
     const button = wrapper.find('Button')
-    expect(button).toHaveLength(3)
+    expect(button).toHaveLength(4)
   })
 
   test('should handle navigation on button clicked', () => {
