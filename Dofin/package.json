@@ -13,8 +13,11 @@
 	"devDependencies": {
 		"babel-jest": "20.0.0",
 		"babel-preset-react-native": "1.9.1",
+		"enzyme": "^2.8.2",
 		"jest": "20.0.0",
-		"react-test-renderer": "16.0.0-alpha.6"
+		"react-addons-test-utils": "^15.5.1",
+		"react-dom": "^15.5.4",
+		"react-test-renderer": "^15.5.4"
 	},
 	"jest": {
 		"preset": "react-native"
