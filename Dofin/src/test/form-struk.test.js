@@ -27,13 +27,20 @@ describe('form struk testing', () => {
     expect(wrapper).toHaveLength(1)
 
     const button = wrapper.find('Button')
-    expect(button).toHaveLength(1)
+    expect(button).toHaveLength(2)
   })
-
   test('it should simulate click save on button', () => {
-    const button = wrapper.find('Button');
+    const button = wrapper.find('Button').first();
     const prop = button.prop('onPress');
     expect(prop).toBeInstanceOf(Function);
     expect(prop()).toEqual(true)
   })
+
+  test('it should simulate take picture on button', () => {
+    const camera = wrapper.find('Button').last();
+    const prop = camera.prop('onPress');
+    expect(prop).toBeInstanceOf(Function);
+    expect(prop()).toEqual(true);
+  })
+
 })
