@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
   View,
   TextInput,
-  Button
+  Button,
  } from 'react-native';
 
 class FormDreams extends React.Component {
