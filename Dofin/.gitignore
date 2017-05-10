@@ -52,6 +52,6 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 
-
+# biar aman
 package.json
 yarn.lock
