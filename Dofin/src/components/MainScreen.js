@@ -46,6 +46,16 @@ class MainScreen extends Component {
               </Right>
           </Header>
           <Content>
+            <Button
+              onPress={()=>navigate('Income')}
+            >
+            <Text>Simulate Income</Text>
+            </Button>
+            <Button
+              onPress={()=>navigate('Struk')}
+            >
+            <Text>Simulate Struk</Text>
+            </Button>
             <Fab
               active={this.state.active}
               direction="up"
