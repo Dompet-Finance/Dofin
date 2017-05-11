@@ -12,7 +12,7 @@ import {
   Body,
   Title,
   Right,
-  Fab
+  Fab,
 } from 'native-base';
 
 class MainScreen extends Component {
