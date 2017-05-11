@@ -1,58 +1,60 @@
 'use strict'
 
 import React from 'react'
-
-import {
-  DrawerLayoutAndroid,
-  View,
-  Text,
-  Button,
-} from 'react-native'
+import { AsyncStorage, Alert, View } from 'react-native'
+import { Container, Content, Text, Button } from 'native-base'
 
 export class LeftDrawer extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
+    this.state = {
+      dataUser: {}
+    }
   }
 
-  fakeNavigate() {
-    return true
+  componentDidMount () {
+    // AsyncStorage.getItem('data').then((keyValue) => {
+    //   let tempData = JSON.parse(keyValue)
+    //   this.setState({dataUser: tempData})
+    // })
+  }
+
+  _logout () {
+    // AsyncStorage.removeItem('data', error => {
+    //   if (error) {
+    //     console.log(error)
+    //   } else {
+    //     Alert.alert('Anda sudah logout')
+    //     Actions.refresh({key: 'MenuDrawer', open: value => false})
+    //     Actions.Login()
+    //   }
+    // })
   }
 
   render() {
-    var navigationView = (
-      <View>
-        <Text>
-          Im Drawer
-        </Text>
-      </View>
-    )
 
     return (
-      <DrawerLayoutAndroid
-        drawerWidth={300}
-        renderNavigationView={() => navigationView}>
-        <View>
-          <Text>
-            Profile
-          </Text>
-          <Button
-            onPress={() => this.fakeNavigate()}
-            title="Dashboard"
-            />
-          <Button
-            onPress={() => this.fakeNavigate()}
-            title="Transactions"
-            />
-          <Button
-            onPress={() => this.fakeNavigate()}
-            title="Dreams"
-            />
-          <Button
-            onPress={() => this.fakeNavigate()}
-            title="Setting"
-            />
+      <Container>
+        <View style={{width: '100%', height: 250, backgroundColor: '#589CEF'}} >
         </View>
-      </DrawerLayoutAndroid>
+        <Content>
+          <Button transparent>
+            <Text>Bikin Lelang</Text>
+          </Button>
+          <Button transparent>
+            <Text>Lapak Saya</Text>
+          </Button>
+          <Button transparent>
+            <Text>Ikut Lelang</Text>
+          </Button>
+          <Button transparent>
+            <Text>Menang Lelang</Text>
+          </Button>
+          <Button blockonPress={() => { this._logout() }}>
+            <Text>Logout</Text>
+          </Button>
+        </Content>
+      </Container>
     )
   }
 }
