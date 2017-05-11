@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   Button
 } from 'react-native';
+import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
+
+import { imgPostRequest } from '../actions';
 
 class CameraScan extends React.Component {
   constructor() {
@@ -42,6 +45,7 @@ class CameraScan extends React.Component {
       this.setState({
         avatarSource: source
       });
+      this.props.imgPostRequest(this.state.avatarSource)
     }
   });
 }
@@ -81,4 +85,8 @@ const styles = {
   }
 };
 
-export default CameraScan;
+const mapDispatchToProps = dispatch => ({
+  imgPostRequest: newImage => dispatch(imgPostRequest(newImage))
+});
+
+export default connect(null, mapDispatchToProps)(CameraScan);
