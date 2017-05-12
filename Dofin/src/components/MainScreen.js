@@ -74,6 +74,7 @@ class MainScreen extends Component {
     const sliceColor = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800']
     const { navigate } = this.props.navigation;
     const {income} = this.props.getIncome;
+    const totalIncome = income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
     return (
       <Container>
           <Header>
@@ -108,7 +109,7 @@ class MainScreen extends Component {
                 <CardItem>
                  <Text>Income</Text>
                  <Right>
-                    <Text>Rp. {income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
+                    <Text>Rp. {totalIncome}</Text>
                  </Right>
                </CardItem>
 
