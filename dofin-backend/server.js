@@ -1,11 +1,16 @@
-const express = require('express'),
-      app     = express();
+const express     = require('express'),
+      app         = express(),
+      bodyParser  = require('body-parser'),
+      cors        = require('cors');
 
-app.use("/", (req, res) => {
-  res.send("Personal application app")
-})
+const income = require('./routes/income');
 
+app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
 
-app.listen(8081 || process.env.PORT, () => {
+app.use("/income", income);
+
+app.listen(3000 || process.env.PORT, () => {
   console.log(`Server running!`);
 })
