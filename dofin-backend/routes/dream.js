@@ -1,6 +1,6 @@
 const express     = require('express'),
       router      = express.Router(),
-      controller  = require('../controllers/dream');
+      controller  = require('../controllers/Dream');
 
 router.get("/", controller.getDream)
 router.post("/", controller.newDream)
