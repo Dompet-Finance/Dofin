@@ -1,28 +1,32 @@
-const db = require('../models/dream');
+const Dream = require('../models/dream');
 
-const getDream = (req, res) => {
-  db.find({}, (err, result) => {
-    if (!err) {
-      res.send(result)
-    }else{
-      res.send(err)
-    }
+const getDreamsByUserId = (req, res) => {
+  Dream.find({ record_by: req.params.user_id }, (err, rec) => {
+    if (err) res.send(err)
+    else res.json(rec)
   })
-}
+} // getDreamsByUserId
 
 const newDream = (req, res) => {
-  db.create({
+  Dream.create({
     record_by: req.body.record_by,
     dream: req.body.dream,
-  }, (err, result) => {
-    if (err) {
-      res.send(err)
-    }else{
-      res.send(result)
-    }
+  }, (err, rec) => {
+    if (err) res.send(err)
+    else res.json(rec)
   })
-}
+} // newDream
+
+const removeDreamById = (req, res) => {
+  Dream.findByIdAndRemove(req.params.id)
+    .exec((err, rec) => {
+      if (err) res.send(err)
+      else res.json(rec)
+    })
+} // removeDreamById
 
 module.exports = {
-  getDream, newDream
+  getDreamsByUserId,
+  newDream,
+  removeDreamById,
 }

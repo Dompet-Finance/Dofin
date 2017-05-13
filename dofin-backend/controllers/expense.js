@@ -1,15 +1,22 @@
 const Expense = require('../models/expense')
 const mongoose = require('mongoose')
-const Ctl = {}
 
-Ctl.insert = (req, res) => {
-  Expense.create(req.body, (err, rec) => {
+const newExpense = (req, res) => {
+  Expense.create({
+    record_by: req.body.record_by,
+    amount: req.body.amount,
+    description: req.body.description,
+    items: req.body.items,
+    category: req.body.category,
+    date: req.body.date,
+    location: req.body.location,
+  }, (err, rec) => {
     if (err) res.send(err)
     else res.json(rec)
   })
-} // insert
+} // newExpense
 
-Ctl.totalAmountById = (req, res) => {
+const getTotalAmountById = (req, res) => {
   Expense.aggregate(
     [
       {$match: {
@@ -24,36 +31,34 @@ Ctl.totalAmountById = (req, res) => {
         if (err) res.send(err)
         else res.json(rec)
       })
-}, // totalAmountById
+} // getTotalAmountById
 
-Ctl.getAll = (req, res) => {
-  Expense.find({}, (err, recs) => {
-    if (err) res.send(err)
-    else res.json(recs)
-  })
-}, // getAll
-
-Ctl.getAllByUserId = (req, res) => {
+const getExpensesById = (req, res) => {
   Expense.find({record_by: req.params.user_id}, (err, rec) => {
     if (err) res.send(err)
     else res.json(rec)
   })
-}, // getById
+} // getExpensesById
 
-Ctl.updateById = (req, res) => {
+const updateById = (req, res) => {
   Expense.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
     .exec((err, rec) => {
       if (err) res.send(err)
       else res.json(rec)
     })
-}, // updateById
+} // updateById
 
-Ctl.deleteById = (req, res) => {
+const removeExpenseById = (req, res) => {
   Expense.findByIdAndRemove(req.params.id)
     .exec((err, rec) => {
       if (err) res.send(err)
       else res.json(rec)
     })
-} // deleteById
+} // removeExpenseById
 
-module.exports = Ctl
+module.exports = {
+  newExpense,
+  getTotalAmountById,
+  getExpensesById,
+  removeExpenseById,
+}

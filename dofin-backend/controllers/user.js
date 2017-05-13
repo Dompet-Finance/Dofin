@@ -29,11 +29,24 @@ const getUserById = (req, res) => {
 } // getUserById
 
 const insertCategoryById = (req, res) => {
+  // belum divalidasi
   User.findByIdAndUpdate(req.params.user_id,
     { $push: { categories: {
       category: req.body.category,
       icon: req.body.icon,
       color: req.body.color,
+    }}}, { new: true })
+      .exec((err, rec) => {
+        if (err) res.send(err)
+        else res.json(rec)
+      })
+}
+
+const removeCategoryById = (req, res) => {
+  // belum divalidasi
+  User.findByIdAndUpdate(req.params.user_id,
+    { $pull: { categories: {
+      category: req.body.category,
     }}}, { new: true })
       .exec((err, rec) => {
         if (err) res.send(err)
@@ -60,5 +73,6 @@ const deleteUserById = (req, res) => {
 module.exports = {
   getUsers,
   getUserById,
-  insertCategoryById
+  insertCategoryById,
+  removeCategoryById,
 }
