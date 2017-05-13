@@ -8,15 +8,33 @@ import {
   TouchableOpacity,
   StatusBar,
  } from 'react-native';
+import FBSDK, { LoginManager } from 'react-native-fbsdk';
 
 class SignIn extends React.Component {
   constructor(props){
     super(props)
-    this.state = {}
+    this.state = {
+      username : '',
+      password : '',
+    }
   }
   pressButton() {
     return true
   }
+
+  _fbAuth() {
+    console.log(LoginManager);
+    LoginManager.logInWithReadPermissions(['public_profile']).then(function (result) {
+      if (result.isCancelled) {
+        console.log('Login was cancelled');
+      } else {
+        console.log('Login success' + result.grantedPermissions.toString());
+      }
+    }, function (error) {
+      console.log('An error has occured: ' + error);
+    })
+  }
+
   render() {
     return(
       <View style={styles.loginWrapper}>
@@ -26,6 +44,11 @@ class SignIn extends React.Component {
             source={{uri: 'https://maxcdn.icons8.com/Share/icon/Animals//dolphin1600.png'}}
           />
           <Text style={styles.title}>DoFin</Text>
+        </View>
+        <View>
+          <TouchableOpacity onPress={() => this._fbAuth()}>
+            <Text>Facebook</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.container}>
           <StatusBar
@@ -40,6 +63,7 @@ class SignIn extends React.Component {
               underlineColorAndroid='transparent'
               returnKeyType='next'
               onSubmitEditing={() => this.password.focus()}
+              onChangeText={text => this.setState({username : text})}
             />
             <TextInput
               placeholder= 'password'
@@ -48,6 +72,7 @@ class SignIn extends React.Component {
               style={styles.input}
               underlineColorAndroid='transparent'
               ref={(input) => this.password = input}
+              onChangeText={text => this.setState({password : text})}
             />
             <TouchableOpacity style={styles.buttonContainer}>
               <Text style={styles.buttonText}>LOGIN</Text>
