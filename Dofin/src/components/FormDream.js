@@ -29,6 +29,7 @@ class FormDream extends Component {
     super(props);
     this.state = {
       dream: '',
+      description: '',
       loading: false,
     }
   }
@@ -44,6 +45,9 @@ class FormDream extends Component {
   }
   _onChangeInputDream(event){
     this.setState({dream: event.nativeEvent.text})
+  }
+  _onChangeInputDescription(event){
+    this.setState({description: event.nativeEvent.text})
   }
 
   componentDidMount(){
@@ -86,6 +90,16 @@ class FormDream extends Component {
                     name="dream"
                     placeholder="dream"
                     onChange={(event) => { this._onChangeInputDream(event) }}
+                  />
+
+                </Item>
+                <Item >
+                  <Icon active name='md-create' style={{marginRight: 13}}/>
+                  <Input
+                    ref="description"
+                    name="description"
+                    placeholder="description"
+                    onChange={(event) => { this._onChangeInputDescription(event) }}
                   />
                 </Item>
               </Card>

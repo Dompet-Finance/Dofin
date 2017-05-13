@@ -11,6 +11,7 @@ import {
   Right,
   Content,
   Icon,
+  ActionSheet,
   ListItem,
   Card,
   Spinner
@@ -19,12 +20,29 @@ import {connect} from 'react-redux';
 import {getDreamRequest} from '../actions';
 
 class DetailDreams extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      actions:""
+    }
+
+  }
   static navigationOptions = {
     header: null
+  }
+  actions(actions, data){
+    // console.log(data);
+    if (actions === "Detail") {
+      this.props.navigation.navigate("SingleDream", {data: data})
+    }
+    this.setState({ actions: actions });
   }
   render(){
     const {dream} = this.props.getDream
     const { goBack } = this.props.navigation;
+    const BUTTONS = ["Detail", "Edit", "Delete"];
+    const DESTRUCTIVE_INDEX = 3;
+    const CANCEL_INDEX = 2;
     return (
       <Container>
           <Header>
@@ -55,7 +73,17 @@ class DetailDreams extends Component {
                        <Text>{myDream.dream}</Text>
                     </Body>
                     <Right>
-                      <Icon name="ios-walk-outline" />
+                      <Icon name="ios-apps" onPress={()=> ActionSheet.show(
+                          {
+                            options: BUTTONS,
+                            cancelButtonIndex: CANCEL_INDEX,
+                            destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                            title: 'Actions'
+                          },
+                          (buttonIndex) => {
+                            this.actions(actions=BUTTONS[buttonIndex], data=myDream)
+                          }
+                        )}/>
                     </Right>
                   </ListItem>
                 </Card>
