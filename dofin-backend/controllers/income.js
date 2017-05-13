@@ -6,9 +6,9 @@ const getIncomeById = (req, res) => {
     if (err) res.send(err)
     else res.json(recs)
   })
-}
+} // getIncomeById
 
-const getTotalAmountById = (req, res) => {
+const getTotalAmountByUserId = (req, res) => {
   Income.aggregate(
     [
       {$match: {
@@ -23,7 +23,7 @@ const getTotalAmountById = (req, res) => {
         if (err) res.send(err)
         else res.json(rec)
       })
-}
+} // getTotalAmountByUserId
 
 const newIncome = (req, res) => {
   Income.create({
@@ -39,10 +39,19 @@ const newIncome = (req, res) => {
       res.json(rec)
     }
   })
-}
+} // newIncome
+
+const removeIncomeById = (req, res) => {
+  Income.findByIdAndRemove(req.params.id)
+    .exec((err, rec) => {
+      if (err) res.send(err)
+      else res.json(rec)
+    })
+} // removeIncomeById
 
 module.exports = {
   getIncomeById,
-  getTotalAmountById,
-  newIncome
+  getTotalAmountByUserId,
+  newIncome,
+  removeIncomeById,
 }
