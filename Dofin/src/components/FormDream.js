@@ -19,7 +19,7 @@ import {
   Spinner
 } from 'native-base';
 
-import {incomeRequest} from '../actions';
+import {dreamRequest} from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
@@ -30,12 +30,11 @@ const resetAction = NavigationActions.reset({
   ]
 })
 
-class FormIncome extends Component {
+class FormDream extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nominal: '',
-      category: '',
+      dream: '',
       loading: false,
     }
   }
@@ -49,14 +48,12 @@ class FormIncome extends Component {
     setInterval(() => {
       this.props.navigation.dispatch(resetAction)
     }, 3000);
-    this.props.incomeRequest(this.state)
+    this.props.dreamRequest(this.state)
   }
-  _onChangeInputNominal(event){
-    this.setState({nominal: event.nativeEvent.text})
+  _onChangeInputDream(event){
+    this.setState({dream: event.nativeEvent.text})
   }
-  _onChangeInputCategory(event){
-    this.setState({category: event.nativeEvent.text})
-  }
+
   componentDidMount(){
     console.log(this.props.postIncome);
     if (this.props.postIncome !== null) {
@@ -69,12 +66,6 @@ class FormIncome extends Component {
   render(){
 
     const { goBack } = this.props.navigation;
-    const BUTTONS = [
-      'Invesment',
-      'Salary',
-    ];
-    const DESTRUCTIVE_INDEX = 3;
-    const CANCEL_INDEX = 2;
     return (
       <Container>
           <Header>
@@ -86,7 +77,7 @@ class FormIncome extends Component {
               </Button>
             </Left>
             <Body>
-              <Title>Income</Title>
+              <Title>My Dream</Title>
             </Body>
             <Right>
               <Button transparent>
@@ -96,31 +87,11 @@ class FormIncome extends Component {
           <Content style={{display: 'flex'}}>
             <Form onSubmit={()=>this.handleSubmit()}>
               <Item floatingLabel>
-                <Label>Nominal</Label>
+                <Label>Dreams</Label>
                 <Input
-                  ref="nominal"
-                  name="nominal"
-                  onChange={(event) => { this._onChangeInputNominal(event) }}
-                />
-              </Item>
-              <Item style={{marginTop: 10}}>
-                <Label onPress={()=> ActionSheet.show(
-                  {
-                    options: BUTTONS,
-                    cancelButtonIndex: CANCEL_INDEX,
-                    destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                    title: 'Category'
-                  },
-                  (buttonIndex) => {
-                    this.setState({ category_income: BUTTONS[buttonIndex] });
-                  }
-                )}>Category</Label>
-                <Input
-                  placeholder=''
-                  value={this.state.category_income}
-                  onChange={(event) => { this._onChangeInputCategory(event) }}
-                  ref="category"
-                  name="category"
+                  ref="dream"
+                  name="dream"
+                  onChange={(event) => { this._onChangeInputDream(event) }}
                 />
               </Item>
               <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
@@ -135,14 +106,14 @@ class FormIncome extends Component {
 
 const mapsDispatchToProps = dispatch => {
   return {
-    incomeRequest : data => dispatch(incomeRequest(data))
+    dreamRequest : data => dispatch(dreamRequest(data))
   }
 }
 
 const mapsStateToProps = state => {
   return {
-    postIncome: state
+    postDream: state
   }
 }
 
-export default connect(mapsStateToProps, mapsDispatchToProps)(FormIncome)
+export default connect(mapsStateToProps, mapsDispatchToProps)(FormDream)
