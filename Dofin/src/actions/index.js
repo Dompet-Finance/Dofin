@@ -1,7 +1,7 @@
 import { incomeRequest, getIncomeRequest } from './incomeAction';
 import { dreamRequest, getDreamRequest, updateDreamRequest, deleteDreamRequest } from './dreamAction';
 import { postRequestCategory, getRequestCategory, updateRequestCategory, deleteRequestCategory } from './categoryAction';
-import { getExpenseRequestById, getExpenseRequest, getExpenseTotalByMonthRequest } from './expenseAction';
+import { expenseRequest, getExpenseRequestById, getExpenseRequest, getExpenseTotalByMonthRequest } from './expenseAction';
 
 export{
   incomeRequest,
@@ -17,4 +17,5 @@ export{
   deleteDreamRequest,
   deleteRequestCategory,
   getExpenseTotalByMonthRequest
+  expenseRequest
 }

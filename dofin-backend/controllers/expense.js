@@ -2,18 +2,19 @@ const Expense = require('../models/expense')
 const mongoose = require('mongoose')
 
 const newExpense = (req, res) => {
-  Expense.create({
-    record_by: req.body.record_by,
-    amount: req.body.amount,
-    description: req.body.description,
-    items: req.body.items,
-    category: req.body.category,
-    date: req.body.date,
-    location: req.body.location,
-  }, (err, rec) => {
-    if (err) res.send(err)
-    else res.json(rec)
-  })
+  console.log(req.body);
+  // Expense.create({
+  //   record_by: req.body.record_by,
+  //   amount: req.body.amount,
+  //   description: req.body.description,
+  //   items: req.body.items,
+  //   category: req.body.category,
+  //   date: req.body.date,
+  //   location: req.body.location,
+  // }, (err, rec) => {
+  //   if (err) res.send(err)
+  //   else res.json(rec)
+  // })
 } // newExpense
 
 const getTotalAmountById = (req, res) => {

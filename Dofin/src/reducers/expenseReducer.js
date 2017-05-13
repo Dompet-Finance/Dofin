@@ -1,7 +1,8 @@
 import * as ActionTypes from '../actions/constants';
 
-const addExpense = (state, newExpense) => {
-  const { nominal, item, category, location, date, photo } = newExpense
+const addExpense = (state = [], newExpense) => {
+  console.log(newExpense);
+  const { amount, description, category } = newExpense
   const ids = state.map((image) => {
     if (image.id !== undefined) {
       return image.id;
@@ -12,12 +13,9 @@ const addExpense = (state, newExpense) => {
   const uniqueId = Math.max(...ids) + 1;
   const addedExpense = {
     id: uniqueId,
-    nominal,
-    item,
+    amount,
+    description,
     category,
-    location,
-    date,
-    photo,
   }
   const newState = [...state, addedExpense];
   return newState;

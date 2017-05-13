@@ -142,7 +142,6 @@ class MainScreen extends Component {
                     <Text>Rp. </Text>
                  </Right>
                 </CardItem>
-
                 <CardItem>
                  <Text>Income</Text>
                  <Right>
