@@ -1,7 +1,7 @@
 const router  = require('express').Router()
-const UserCtl = require('../controllers/UserCtl')
-const AuthCtl = require('../controllers/AuthCtl')
-const ExpenseCtl = require('../controllers/ExpenseCtl')
+const UserCtl = require('../controllers/user')
+const AuthCtl = require('../controllers/auth')
+const ExpenseCtl = require('../controllers/expense')
 
 // router.use('/api', require('./api'))
 

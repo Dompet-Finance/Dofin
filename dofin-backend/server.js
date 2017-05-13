@@ -1,7 +1,7 @@
 const express     = require('express'),
       app         = express(),
       bodyParser  = require('body-parser'),
-      cors        = require('cors'),
+      cors        = require('cors')
 
 const income = require('./routes/income');
 const dream = require('./routes/dream');

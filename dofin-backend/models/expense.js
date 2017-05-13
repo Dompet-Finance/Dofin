@@ -3,7 +3,7 @@ const mongoose = require('mongoose'),
 
 const expenseSchema = mongoose.Schema({
   record_by: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
   amount: {
