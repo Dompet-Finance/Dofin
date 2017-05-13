@@ -89,7 +89,6 @@ class FormDream extends Component {
                   />
                 </Item>
               </Card>
-
               <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
                 { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
               </Button>

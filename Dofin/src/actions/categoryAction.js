@@ -22,6 +22,7 @@ export const postRequestCategory = data => {
     .catch(err => console.log(err.message))
 };
 
+
 export const getRequestCategory = data => {
   return dispatch =>
     axios.get('http://192.168.0.18:8080/users/59169dd60de1b3789527f322')
