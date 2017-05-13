@@ -6,7 +6,7 @@ import {
 import MainScreen from './components/MainScreen'
 import FormIncome from './components/FormIncome'
 import Struk from './components/Struk'
-import Drawer from './components/MenuDrawer'
+import SignIn from './components/SignIn'
 import FormDream from './components/FormDream'
 import DetailDreams from './components/DetailDreams'
 import DetailCharts from './components/DetailCharts'
@@ -18,6 +18,7 @@ import EditDream from './components/EditDream'
 import DetailCategory from './components/DetailCategory'
 import SingleCategory from './components/SingleCategory'
 import EditCategory from './components/EditCategory'
+import Transactions from './components/Transactions'
 
 const App = StackNavigator({
   Main          : {screen: MainScreen},
