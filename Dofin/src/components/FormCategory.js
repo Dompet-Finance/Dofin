@@ -26,13 +26,7 @@ import {Modal, TouchableHighlight} from 'react-native';
 import {postRequestCategory} from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-
-const resetAction = NavigationActions.reset({
-  index: 0,
-  actions: [
-    NavigationActions.navigate({ routeName: 'Main'})
-  ]
-})
+import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class Category extends Component {
   constructor(props) {
@@ -45,7 +39,21 @@ class Category extends Component {
       loading: false,
       selectedColor: '',
       modalColorVisible: false,
-      modalIconVisible: false
+      modalIconVisible: false,
+      icons: [
+        'account', 'account-multiple', 'airballoon', 'album',
+        'baby-buggy', 'bank', 'beach', 'book', 'bus', 'cake-variant',
+        'camera', 'car', 'cart', 'cash', 'cash-multiple', 'cat',
+        'cellphone-android', 'city', 'coffee', 'content-cut', 'creation',
+        'crown', 'delete', 'desktop-mac', 'diamond', 'dice-5', 'email',
+        'emoticon', 'emoticon-cool', 'emoticon-sad', 'ferry', 'filmstrip',
+        'fish', 'flag', 'flash', 'flask-empty', 'flower', 'food', 'food-apple',
+        'food-fork-drink', 'gamepad-variant', 'gas-station', 'gift',
+        'guitar-acoustic', 'heart', 'headphones', 'help', 'home-variant',
+        'hotel', 'information', 'itunes', 'laptop-windows', 'lightbulb-on',
+        'phone', 'printer', 'rocket', 'school', 'silverware-variant', 'soccer',
+        'sofa', 'star', 'trophy', 'tshirt-crew'
+      ]
     }
   }
   static navigationOptions = {
@@ -87,6 +95,7 @@ class Category extends Component {
     }
   }
   render(){
+    const { container, box } = styles
     const { params } = this.props.navigation.state;
     const { goBack } = this.props.navigation;
     const { navigate } = this.props.navigation;
@@ -121,20 +130,21 @@ class Category extends Component {
             <Form onSubmit={()=>this.handleSubmit()}>
               <Card>
                 <Item>
-                  <Icon active name='ios-list' placeholder="category" style={{marginRight: 13}}/>
+                  <Icon active name='ios-list' style={{fontSize: 32}}/>
                   <Input
                     ref="category"
                     name="category"
+                    placeholder="category"
                     onChange={(event) => { this._onChangeInputCategory(event) }}
                   />
                 </Item>
                 <Item>
                   <Icon active name='ios-color-palette' onPress={()=> this.openModalColor()}/>
-                  <Input placeholder={this.state.color} disabled/>
+                  <Input value={this.state.color} placeholder="color" disabled/>
                 </Item>
                 <Item>
                   <Icon active name='ios-color-filter-outline' onPress={()=> this.openModalIcon()}/>
-                  <Input placeholder={this.state.icon_name} disabled/>
+                  <Input value={this.state.icon_name} placeholder="icon" disabled/>
                 </Item>
               </Card>
               <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
@@ -191,48 +201,45 @@ class Category extends Component {
             animationType={"slide"}
             transparent={false}
             visible={this.state.modalIconVisible}
-            onRequestClose={() => {alert("Modal has been closed.")}}
+            onRequestClose={() => goBack()}
             >
             <Container>
                 <Content>
-                    <Card>
-                      <CardItem>
-                       <Icon active name="logo-linkedin" style={{fontSize: 30,color:"red"}}/>
-                       <Text>Linkedin</Text>
-                       <Right>
-                        <Button bordered success onPress={()=>this.chooseIconPicker({icon: "logo-linkedin", name: "Linkedin"})}>
-                            <Text>Choose</Text>
-                        </Button>
-                       </Right>
-                     </CardItem>
-                   </Card>
-                   <Card>
-                     <CardItem>
-                      <Icon active name="md-mail-open" style={{fontSize: 30,color:"green"}}/>
-                      <Text>Mail</Text>
-                      <Right>
-                       <Button bordered success onPress={()=>this.chooseIconPicker({icon: "md-mail-open", name: "Mail"})}>
-                           <Text>Choose</Text>
-                       </Button>
-                      </Right>
-                    </CardItem>
-                  </Card>
-                  <Card>
-                    <CardItem>
-                     <Icon active name="ios-man" style={{fontSize: 30,color:"blue"}}/>
-                     <Text>Man</Text>
-                     <Right>
-                      <Button bordered success onPress={()=>this.chooseIconPicker({icon: "ios-man", name: "Man"})}>
-                          <Text>Choose</Text>
+                  <View style={container}>
+                    {this.state.icons.map((name, index) => (
+                      <Button
+                        transparent
+                        key={index}
+                        onPress={()=>this.chooseIconPicker({icon: name, name: name})}
+                        style={box}
+                        >
+                          <IconCustom name={name} size={25} color={'#777'} />
                       </Button>
-                     </Right>
-                   </CardItem>
-                 </Card>
+                    ))}
+                  </View>
                 </Content>
             </Container>
           </Modal>
       </Container>
     )
+  }
+}
+
+const styles = {
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    padding: 5,
+  },
+  box: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#eee',
+    height: 60,
+    padding: 0,
+    margin: 5,
   }
 }
 

@@ -13,6 +13,7 @@ import DetailCharts from './components/DetailCharts'
 import FormCategory from './components/FormCategory'
 import Icons from './components/Icons'
 import Colors from './components/Colors'
+import SingleDream from './components/SingleDream'
 
 const App = StackNavigator({
   Main  : {screen: MainScreen},
@@ -24,6 +25,7 @@ const App = StackNavigator({
   DetailCharts: {screen: DetailCharts},
   Category: {screen: FormCategory},
   Icons: {screen: Icons},
-  Colors: {screen: Colors}
+  Colors: {screen: Colors},
+  SingleDream: {screen: SingleDream}
 },{ headerMode: 'screen' })
 export default App

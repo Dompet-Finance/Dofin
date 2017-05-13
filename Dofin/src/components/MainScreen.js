@@ -91,7 +91,7 @@ class MainScreen extends Component {
                 </Button>
               </Left>
               <Body>
-                  <Title>Dofin</Title>
+                  <Title>Dashboard</Title>
               </Body>
               <Right>
                   <Button transparent>
