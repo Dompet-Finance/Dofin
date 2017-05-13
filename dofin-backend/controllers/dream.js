@@ -1,4 +1,4 @@
-const db = require('../models/Dream');
+const db = require('../models/dream');
 
 const getDream = (req, res) => {
   db.find({}, (err, result) => {
