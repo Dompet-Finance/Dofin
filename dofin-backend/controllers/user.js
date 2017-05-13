@@ -38,7 +38,43 @@ const insertCategoryById = (req, res) => {
     }}}, { new: true })
       .exec((err, rec) => {
         if (err) res.send(err)
-        else res.json(rec)
+        else {
+          let obj = {}
+          obj._id = rec._id
+          obj.email = rec.email
+          obj.categories = rec.categories
+          res.json(rec)
+        }
+      })
+}
+
+const updateCategoryById = (req, res) => {
+  User.findByIdAndUpdate(req.params.user_id,
+    { $pull: { categories: {
+      category: req.body.old_category,
+    }}})
+      .exec((err, rec) => {
+        if (err) res.send(err)
+        else {
+
+          User.findByIdAndUpdate(req.params.user_id,
+            { $push: { categories: {
+              category: req.body.new_category,
+              icon: req.body.new_icon,
+              color: req.body.new_color,
+            }}}, { new: true })
+              .exec((err, rec) => {
+                if (err) res.send(err)
+                else {
+                  let obj = {}
+                  obj._id = rec._id
+                  obj.email = rec.email
+                  obj.categories = rec.categories
+                  res.json(rec)
+                }
+              })
+
+        }
       })
 }
 
@@ -50,7 +86,13 @@ const removeCategoryById = (req, res) => {
     }}}, { new: true })
       .exec((err, rec) => {
         if (err) res.send(err)
-        else res.json(rec)
+        else {
+          let obj = {}
+          obj._id = rec._id
+          obj.email = rec.email
+          obj.categories = rec.categories
+          res.json(rec)
+        }
       })
 }
 
@@ -58,7 +100,13 @@ const updateUserById = (req, res) => {
   User.findByIdAndUpdate(req.params.user_id, { $set: req.body }, { new: true })
     .exec((err, rec) => {
       if (err) res.send(err)
-      else res.json(rec)
+      else {
+        let obj = {}
+        obj._id = rec._id
+        obj.email = rec.email
+        obj.categories = rec.categories
+        res.json(rec)
+      }
     })
 } // updateUserById
 
@@ -73,6 +121,9 @@ const deleteUserById = (req, res) => {
 module.exports = {
   getUsers,
   getUserById,
+  updateUserById,
+  deleteUserById,
   insertCategoryById,
+  updateCategoryById,
   removeCategoryById,
 }
