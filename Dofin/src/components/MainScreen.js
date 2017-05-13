@@ -51,34 +51,6 @@ class MainScreen extends Component {
     this.props.getIncomeRequest();
     this.props.getDreamRequest();
   }
-  // componentWillUnmount(){
-  //   if (this.props.postIncome !== null) {
-  //     Toast.show({
-  //       text: 'New Income has been update!',
-  //       position: 'bottom',
-  //       buttonText: 'Okay'
-  //     })
-  //   }else if(this.props.getDream.dream !== null){
-  //     Toast.show({
-  //       text: 'New Dream..',
-  //       position: 'bottom',
-  //       buttonText: 'Okay'
-  //     })
-  //   }
-  // }
-
-  drawer(){
-    return (
-      <Drawer>
-        ref={(ref) => this._drawer = ref}
-        type='displace'
-        content={<View style={{backgroundColor: '#000', height: 1000}} />}
-        onClose={this.closeDrawer.bind(this)}
-        onOpen={this.openDrawer.bind(this)}
-        openDrawerOffset={100}
-      </Drawer>
-    )
-  }
   render(){
 
     const chart_wh = 250
@@ -100,7 +72,6 @@ class MainScreen extends Component {
 
     return (
       <Container>
-      {console.log(this.props.getIncomeRequest())}
           <Header>
               <Left>
                 <Button transparent
@@ -188,6 +159,12 @@ class MainScreen extends Component {
             position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}>
               <Icon name="add" />
+            <Button
+              style={{ backgroundColor: '#CDDC39' }}
+              onPress={()=>navigate('Category')}
+            >
+                <Icon name="ios-apps-outline" />
+            </Button>
             <Button
               style={{ backgroundColor: '#CDDC39' }}
               onPress={()=>navigate('Dream')}

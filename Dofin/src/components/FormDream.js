@@ -45,9 +45,7 @@ class FormDream extends Component {
     this.setState({
       loading: !this.state.visible
     });
-    setInterval(() => {
-      this.props.navigation.dispatch(resetAction)
-    }, 3000);
+    this.props.navigation.navigate("Main")
     this.props.dreamRequest(this.state)
   }
   _onChangeInputDream(event){
@@ -86,8 +84,8 @@ class FormDream extends Component {
           </Header>
           <Content style={{display: 'flex'}}>
             <Form onSubmit={()=>this.handleSubmit()}>
-              <Item floatingLabel>
-                <Label>Dreams</Label>
+              <Item >
+                <Icon active name='ios-moon-outline' style={{marginRight: 13}}/>
                 <Input
                   ref="dream"
                   name="dream"
