@@ -12,12 +12,13 @@ const getDream = (req, res) => {
 
 const newDream = (req, res) => {
   db.create({
+    record_by: req.body.record_by,
     dream: req.body.dream,
   }, (err, result) => {
-    if (!err) {
-      res.send(result)
-    }else{
+    if (err) {
       res.send(err)
+    }else{
+      res.send(result)
     }
   })
 }
