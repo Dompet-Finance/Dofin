@@ -2,6 +2,12 @@ const mongoose = require('mongoose'),
       db  = require("./db");
 const passwordHash = require('password-hash')
 
+const categorySchema = mongoose.Schema({
+  category: {type: String},
+  icon: {type: String},
+  color: {type: String}
+}, { _id: false })
+
 const userSchema = mongoose.Schema({
   email: {
     type: String,
@@ -19,9 +25,7 @@ const userSchema = mongoose.Schema({
     required: [true, 'Password is required'],
     set: v => passwordHash.generate(v),
   },
-  categories: [{
-    type: String,
-  }],
+  categories: [categorySchema],
 })
 
 const User = db.model('User', userSchema)
