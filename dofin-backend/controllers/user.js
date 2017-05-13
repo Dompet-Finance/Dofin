@@ -1,14 +1,6 @@
 const User = require('../models/user');
-const Ctl = {}
 
-Ctl.insert = (req, res) => {
-  User.create(req.body, (err, rec) => {
-    if (err) res.send(err)
-    else res.json(rec)
-  })
-} // insert
-
-Ctl.getAll = (req, res) => {
+const getUsers = (req, res) => {
   User.find({}, (err, recs) => {
     if (err) res.send(err)
     else res.json(
@@ -21,10 +13,10 @@ Ctl.getAll = (req, res) => {
       })
     )
   })
-}, // getAll
+} // getUsers
 
-Ctl.getById = (req, res) => {
-  User.findById(req.params.id, (err, rec) => {
+const getUserById = (req, res) => {
+  User.findById(req.params.user_id, (err, rec) => {
     if (err) res.send(err)
     else {
       let obj = {}
@@ -34,22 +26,39 @@ Ctl.getById = (req, res) => {
       res.json(obj)
     }
   })
-}, // getById
+} // getUserById
 
-Ctl.updateById = (req, res) => {
-  User.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
+const insertCategoryById = (req, res) => {
+  User.findByIdAndUpdate(req.params.user_id,
+    { $push: { categories: {
+      category: req.body.category,
+      icon: req.body.icon,
+      color: req.body.color,
+    }}}, { new: true })
+      .exec((err, rec) => {
+        if (err) res.send(err)
+        else res.json(rec)
+      })
+}
+
+const updateUserById = (req, res) => {
+  User.findByIdAndUpdate(req.params.user_id, { $set: req.body }, { new: true })
     .exec((err, rec) => {
       if (err) res.send(err)
       else res.json(rec)
     })
-}, // updateById
+} // updateUserById
 
-Ctl.deleteById = (req, res) => {
+const deleteUserById = (req, res) => {
   User.findByIdAndRemove(req.params.id)
     .exec((err, rec) => {
       if (err) res.send(err)
       else res.json(rec)
     })
-} // deleteById
+} // deleteUserById
 
-module.exports = Ctl
+module.exports = {
+  getUsers,
+  getUserById,
+  insertCategoryById
+}

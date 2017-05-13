@@ -1,8 +1,20 @@
 const User = require('../models/user')
 const passwordHash = require('password-hash')
-const Ctl = {}
 
-Ctl.signup = function(req, res) {
+const initialCategories = [
+  {
+    category: 'Clothing',
+    icon: 'cloud',
+    color: 'green'
+  },
+  {
+    category: 'Housing',
+    icon: 'cloud',
+    color: 'green'
+  }
+]
+
+const signup = function(req, res) {
   User.findOne({ email: req.body.email })
     .exec((err, rec) => {
       if (err) {
@@ -13,7 +25,11 @@ Ctl.signup = function(req, res) {
         let message = `Email '${req.body.email}' has already registered`
         res.json({ message })
       } else {
-        User.create(req.body, error => {
+        User.create({
+          email: req.body.email,
+          password: req.body.password,
+          categories: initialCategories,
+        }, (error, rec) => {
           if (error) {
             if (error.name == "ValidationError") {
               let _error = {}
@@ -28,14 +44,14 @@ Ctl.signup = function(req, res) {
             }
           } else {
             let message = 'Successful registered'
-            res.json({ message })
+            res.json({ _id: rec._id, email: rec.email, message })
           }
         })
       } // end if
     }) // end exec
 } // signup
 
-Ctl.signin = (req, res) => {
+const signin = (req, res) => {
   User.findOne({ email: req.body.email })
     .exec((err, rec) => {
       if (err || !rec) {
@@ -54,4 +70,7 @@ Ctl.signin = (req, res) => {
     }) // end exec
 } // sigin
 
-module.exports = Ctl
+module.exports = {
+  signup,
+  signin,
+}
