@@ -34,8 +34,9 @@ class FormIncome extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nominal: '',
+      amount: '',
       category: '',
+      description: '',
       loading: false,
     }
   }
@@ -51,14 +52,16 @@ class FormIncome extends Component {
     }, 3000);
     this.props.incomeRequest(this.state)
   }
-  _onChangeInputNominal(event){
-    this.setState({nominal: event.nativeEvent.text})
+  _onChangeInputAmount(event){
+    this.setState({amount: event.nativeEvent.text})
   }
   _onChangeInputCategory(event){
     this.setState({category: event.nativeEvent.text})
   }
+  _onChangeInputDescription(event){
+    this.setState({description: event.nativeEvent.text})
+  }
   componentDidMount(){
-    console.log(this.props.postIncome);
     if (this.props.postIncome !== null) {
       this.setState({
         loading: false
@@ -96,11 +99,19 @@ class FormIncome extends Component {
           <Content style={{display: 'flex'}}>
             <Form onSubmit={()=>this.handleSubmit()}>
               <Item floatingLabel>
-                <Label>Nominal</Label>
+                <Label>Amount</Label>
                 <Input
-                  ref="nominal"
-                  name="nominal"
-                  onChange={(event) => { this._onChangeInputNominal(event) }}
+                  ref="amount"
+                  name="amount"
+                  onChange={(event) => { this._onChangeInputAmount(event) }}
+                />
+              </Item>
+              <Item floatingLabel>
+                <Label>Description</Label>
+                <Input
+                  ref="description"
+                  name="description"
+                  onChange={(event) => { this._onChangeInputDescription(event) }}
                 />
               </Item>
               <Item style={{marginTop: 10}}>
@@ -112,12 +123,12 @@ class FormIncome extends Component {
                     title: 'Category'
                   },
                   (buttonIndex) => {
-                    this.setState({ category_income: BUTTONS[buttonIndex] });
+                    this.setState({ category: BUTTONS[buttonIndex] });
                   }
                 )}>Category</Label>
                 <Input
                   placeholder=''
-                  value={this.state.category_income}
+                  value={this.state.category}
                   onChange={(event) => { this._onChangeInputCategory(event) }}
                   ref="category"
                   name="category"
