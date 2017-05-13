@@ -13,7 +13,7 @@ export const getIncome = data => ({
 
 export const incomeRequest = data => {
   return dispatch =>
-    axios.post('http://192.168.0.11:3000/income', {
+    axios.post('http://192.168.0.209:3001/income', {
       nominal: data.nominal,
       category: data.category_income
     })
@@ -23,7 +23,7 @@ export const incomeRequest = data => {
 
 export const getIncomeRequest = () => {
   return dispatch =>
-    axios.get('http://192.168.0.11:3000/income')
+    axios.get('http://192.168.0.209:3001/income')
     .then(response => dispatch(getIncome(response.data.total)))
     .catch(err => console.log(err.message))
 };

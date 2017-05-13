@@ -17,11 +17,16 @@ import {
   Card,
   CardItem,
   Drawer,
-  Toast
+  Toast,
+  Thumbnail
 } from 'native-base';
+import {
+  Image,
+  TouchableOpacity
+} from "react-native";
 import PieChart from 'react-native-pie-chart';
 import {connect} from 'react-redux';
-import {getIncomeRequest} from '../actions';
+import {getIncomeRequest, getDreamRequest} from '../actions';
 
 
 class MainScreen extends Component {
@@ -43,17 +48,24 @@ class MainScreen extends Component {
     this.drawer._root.open()
   };
   componentDidMount(){
-    this.props.getIncomeRequest()
+    this.props.getIncomeRequest();
+    this.props.getDreamRequest();
   }
-  componentWillUnmount(){
-    if (this.props.postIncome !== null) {
-      Toast.show({
-        text: 'New Income has been update!',
-        position: 'bottom',
-        buttonText: 'Okay'
-      })
-    }
-  }
+  // componentWillUnmount(){
+  //   if (this.props.postIncome !== null) {
+  //     Toast.show({
+  //       text: 'New Income has been update!',
+  //       position: 'bottom',
+  //       buttonText: 'Okay'
+  //     })
+  //   }else if(this.props.getDream.dream !== null){
+  //     Toast.show({
+  //       text: 'New Dream..',
+  //       position: 'bottom',
+  //       buttonText: 'Okay'
+  //     })
+  //   }
+  // }
 
   drawer(){
     return (
@@ -75,6 +87,18 @@ class MainScreen extends Component {
     const { navigate } = this.props.navigation;
     const {income} = this.props.getIncome;
     const totalIncome = income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+    const totalExpenses = 2000000;
+    const {dream} = this.props.getDream
+    const totalBalance = income - totalExpenses;
+    let dreamParse;
+    try {
+      dream.map((myDream) => {
+        dreamParse = myDream.dream
+      })
+    } catch (e) {
+      dreamParse = ''
+    }
+
     return (
       <Container>
           <Header>
@@ -94,15 +118,30 @@ class MainScreen extends Component {
               </Right>
           </Header>
           <Content>
+            <TouchableOpacity onPress={()=> navigate('DetailDreams')}>
+              <Card>
+                <CardItem header itemDivider >
+                  <Icon active name="ios-body-outline" style={{color:"#2196F3"}}/>
+                  <Text style={{fontSize: 20, fontWeight: '400'}}>My Dream</Text>
+                </CardItem>
+                <CardItem cardBody>
+                    <Image style={{height: 200, width: "100%"}} source={{uri: "https://cdn.tinybuddha.com/wp-content/uploads/2015/06/Boy-Reaching-for-Stars.png"}}/>
+                </CardItem>
+                <CardItem style={{justifyContent: "center"}}>
+                  <Text style={{fontSize: 25, fontWeight: '500'}}>"{dreamParse}"</Text>
+                </CardItem>
+              </Card>
+            </TouchableOpacity>
             <Card>
               <CardItem header>
-                <Text style={{fontSize: 24, fontWeight: '400'}}>Overview</Text>
+                <Icon active name="ios-calculator" style={{color:"#009688"}}/>
+                <Text style={{fontSize: 20, fontWeight: '400'}}>Overview</Text>
               </CardItem>
 
                 <CardItem>
-                 <Text>Accounts</Text>
+                 <Text>Balance</Text>
                  <Right>
-                    <Text>Rp. 2.000.000</Text>
+                    <Text>Rp. {totalBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
                  </Right>
                 </CardItem>
 
@@ -123,19 +162,23 @@ class MainScreen extends Component {
 
              <Card>
                <CardItem header>
-                 <Text style={{fontSize: 24, fontWeight: '400'}}>Expenses by category</Text>
+                  <Icon active name="ios-pie-outline" style={{color:"#F44336"}}/>
+                 <Text style={{fontSize: 20, fontWeight: '400'}}>Expenses chart</Text>
+                 <Right>
+                    <Text>All Category</Text>
+                 </Right>
                </CardItem>
-               <CardItem>
-                <PieChart
-                  chart_wh={150}
-                  series={series}
-                  sliceColor={sliceColor}
-                />
-                <Right style={{marginTop: -100, marginRight: 10}}>
-                   <Text>All Category</Text>
-                </Right>
+               <CardItem style={{justifyContent: "center"}}>
+               <TouchableOpacity onPress={()=> navigate('DetailCharts')}>
+                  <PieChart
+                    chart_wh={150}
+                    series={series}
+                    sliceColor={sliceColor}
+                  />
+                </TouchableOpacity>
                </CardItem>
               </Card>
+
           </Content>
           <Fab
             active={this.state.active}
@@ -145,6 +188,12 @@ class MainScreen extends Component {
             position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}>
               <Icon name="add" />
+            <Button
+              style={{ backgroundColor: '#CDDC39' }}
+              onPress={()=>navigate('Dream')}
+            >
+                <Icon name="ios-glasses-outline" />
+            </Button>
             <Button
               style={{ backgroundColor: '#34A34F' }}
               onPress={()=>navigate('Income')}
@@ -166,13 +215,15 @@ class MainScreen extends Component {
 const mapsStateToProps = state => {
   return {
     postIncome: state,
-    getIncome: state
+    getIncome: state,
+    getDream: state
   }
 }
 
 const mapsDispatchToProps = dispatch => {
   return {
-    getIncomeRequest: () => dispatch(getIncomeRequest())
+    getIncomeRequest: () => dispatch(getIncomeRequest()),
+    getDreamRequest: () => dispatch(getDreamRequest())
   }
 }
 
