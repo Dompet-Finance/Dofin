@@ -85,11 +85,10 @@ class MainScreen extends Component {
     const series = [123, 321, 123, 789, 537]
     const sliceColor = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800']
     const { navigate } = this.props.navigation;
-    const {income} = this.props.getIncome;
-    const totalIncome = income.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+    const totalIncome = this.props.getIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
     const totalExpenses = 2000000;
     const {dream} = this.props.getDream
-    const totalBalance = income - totalExpenses;
+    const totalBalance = this.props.getIncome - totalExpenses;
     let dreamParse;
     try {
       dream.map((myDream) => {
@@ -101,6 +100,7 @@ class MainScreen extends Component {
 
     return (
       <Container>
+      {console.log(this.props.getIncomeRequest())}
           <Header>
               <Left>
                 <Button transparent
@@ -155,7 +155,7 @@ class MainScreen extends Component {
                <CardItem>
                 <Text>Expenses</Text>
                 <Right>
-                   <Text>Rp. 2.000.000</Text>
+                   <Text>Rp. {totalExpenses.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
                 </Right>
               </CardItem>
              </Card>
@@ -215,7 +215,7 @@ class MainScreen extends Component {
 const mapsStateToProps = state => {
   return {
     postIncome: state,
-    getIncome: state,
+    getIncome: state.income,
     getDream: state
   }
 }
