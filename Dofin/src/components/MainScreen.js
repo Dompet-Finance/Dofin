@@ -26,7 +26,7 @@ import {
 } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import {connect} from 'react-redux';
-import {getIncomeRequest, getDreamRequest} from '../actions';
+import {getIncomeRequest, getDreamRequest, getExpenseRequestById} from '../actions';
 
 
 class MainScreen extends Component {
@@ -50,17 +50,27 @@ class MainScreen extends Component {
   componentDidMount(){
     this.props.getIncomeRequest();
     this.props.getDreamRequest();
+    // this.props.getExpenseRequest();
+    this.props.getExpenseRequestById();
   }
   render(){
+    const chart_wh      = 250
+    const series        = []
+    const sliceColor    = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800']
 
-    const chart_wh = 250
-    const series = [123, 321, 123, 789, 537]
-    const sliceColor = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800']
-    const { navigate } = this.props.navigation;
-    const totalIncome = this.props.getIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
-    const totalExpenses = 2000000;
-    const {dream} = this.props.getDream
-    const totalBalance = this.props.getIncome - totalExpenses;
+    let totalExpenses = 0
+    if (this.props.getExpense !== 0) {
+      this.props.getExpense.map((expenses) => {
+        series.push(expenses.amount)
+        totalExpenses += expenses.amount
+      })
+    }
+
+    const { navigate }  = this.props.navigation;
+    const totalIncome   = this.props.getIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+    const {dream}       = this.props.getDream
+    const totalBalance  = this.props.getIncome - totalExpenses;
+
     let dreamParse;
     try {
       dream.map((myDream) => {
@@ -192,15 +202,18 @@ class MainScreen extends Component {
 const mapsStateToProps = state => {
   return {
     postIncome: state,
-    getIncome: state.income,
-    getDream: state
+    getIncome : state.income,
+    getDream  : state,
+    getExpense: state.expense
   }
 }
 
 const mapsDispatchToProps = dispatch => {
   return {
-    getIncomeRequest: () => dispatch(getIncomeRequest()),
-    getDreamRequest: () => dispatch(getDreamRequest())
+    getIncomeRequest      : () => dispatch(getIncomeRequest()),
+    getDreamRequest       : () => dispatch(getDreamRequest()),
+    getExpenseRequestById : () => dispatch(getExpenseRequestById()),
+    // getExpenseRequest     : () => dispatch(getExpenseRequest())
   }
 }
 

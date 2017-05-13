@@ -11,17 +11,22 @@ export const postExpense = data => ({
   payload: data,
 });
 
-export const getExpense = data => ({
-  type: ActionTypes.GET_EXPENSE,
-  payload: data[0].total_amount,
+// export const getExpenseAmount = data => ({
+//   type: ActionTypes.GET_EXPENSE_AMOUNT,
+//   payload: data[0].total_amount,
+// });
+
+export const getExpenseById = data => ({
+  type: ActionTypes.GET_EXPENSE_BY_ID,
+  payload: data,
 });
 
 export const expenseRequest = data => {
   return dispatch =>
-    axios.post('http://192.168.1.34:8080/expense', {
+    axios.post('http://192.168.0.18:8080/expenses', {
       record_by   : "59158e804412792833f91138",
       amount      : data.amount,
-      description : data.description
+      description : data.description,
       items       : data.items,
       category    : data.category,
       date        : new Date(),
@@ -31,9 +36,16 @@ export const expenseRequest = data => {
     .catch(err => console.log(err.message))
 };
 
-export const getExpenseRequest = () => {
+// export const getExpenseRequest = () => {
+//   return dispatch =>
+//     axios.get('http://192.168.0.18:8080/expenses/59169da29a208a785ad2e99c/total_amount')
+//     .then(response => dispatch(getExpenseAmount(response.data)))
+//     .catch(err => console.log(err.message))
+// };
+
+export const getExpenseRequestById = () => {
   return dispatch =>
-    axios.get('http://192.168.1.34:8080/expense/59158e804412792833f91138/total_amount')
-    .then(response => dispatch(getIncome(response.data)))
+    axios.get('http://192.168.0.18:8080/expenses/59169da29a208a785ad2e99c')
+    .then(response => dispatch(getExpenseById(response.data)))
     .catch(err => console.log(err.message))
 };

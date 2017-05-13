@@ -24,15 +24,6 @@ class DetailDreams extends Component {
   }
   render(){
     const {dream} = this.props.getDream
-    // console.log(dream);
-    // let dreamParse;
-    // try {
-    //   dream.map((myDream) => {
-    //     dreamParse = myDream.dream
-    //   })
-    // } catch (e) {
-    //   dreamParse = ''
-    // }
     const { goBack } = this.props.navigation;
     return (
       <Container>
@@ -63,6 +54,9 @@ class DetailDreams extends Component {
                     <Body>
                        <Text>{myDream.dream}</Text>
                     </Body>
+                    <Right>
+                      <Icon name="ios-walk-outline" />
+                    </Right>
                   </ListItem>
                 </Card>
               )

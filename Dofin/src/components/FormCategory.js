@@ -119,24 +119,26 @@ class Category extends Component {
           </Header>
           <Content style={{display: 'flex'}}>
             <Form onSubmit={()=>this.handleSubmit()}>
-              <Item floatingLabel>
-                <Icon active name='ios-list' placeholder="category" style={{marginRight: 13}}/>
-                <Input
-                  ref="category"
-                  name="category"
-                  onChange={(event) => { this._onChangeInputCategory(event) }}
-                />
-              </Item>
-              <Item>
-                <Icon active name='ios-color-palette' onPress={()=> this.openModalColor()}/>
-                <Input placeholder={this.state.color} disabled/>
-              </Item>
-              <Item>
-                <Icon active name='ios-color-filter-outline' onPress={()=> this.openModalIcon()}/>
-                <Input placeholder={this.state.icon_name} disabled/>
-              </Item>
+              <Card>
+                <Item>
+                  <Icon active name='ios-list' placeholder="category" style={{marginRight: 13}}/>
+                  <Input
+                    ref="category"
+                    name="category"
+                    onChange={(event) => { this._onChangeInputCategory(event) }}
+                  />
+                </Item>
+                <Item>
+                  <Icon active name='ios-color-palette' onPress={()=> this.openModalColor()}/>
+                  <Input placeholder={this.state.color} disabled/>
+                </Item>
+                <Item>
+                  <Icon active name='ios-color-filter-outline' onPress={()=> this.openModalIcon()}/>
+                  <Input placeholder={this.state.icon_name} disabled/>
+                </Item>
+              </Card>
               <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
-                { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
+              { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
               </Button>
             </Form>
 
