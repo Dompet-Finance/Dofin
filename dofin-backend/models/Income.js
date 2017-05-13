@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require('mongoose'),
+      db  = require("./db");
 
-let incomeSchema = new Schema({
+const incomeSchema = mongoose.Schema({
   record_by: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -23,6 +23,6 @@ let incomeSchema = new Schema({
   },
 })
 
-let Income = mongoose.model('Income', incomeSchema)
+const Income = db.model('Income', incomeSchema)
 
 module.exports = Income

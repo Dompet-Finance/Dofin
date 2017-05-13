@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema
+const mongoose = require('mongoose'),
+      db  = require("./db");
 
-let dreamSchema = new Schema({
+const dreamSchema = mongoose.Schema({
   record_by: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -12,6 +12,6 @@ let dreamSchema = new Schema({
   },
 })
 
-let Dream = mongoose.model('Dream', dreamSchema)
+const Dream = db.model("Dream", dreamSchema);
 
 module.exports = Dream

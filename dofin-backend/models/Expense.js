@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require('mongoose'),
+      db  = require("./db");
 
-let expenseSchema = new Schema({
+const expenseSchema = mongoose.Schema({
   record_by: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -34,6 +34,6 @@ let expenseSchema = new Schema({
   },
 })
 
-let Expense = mongoose.model('Expense', expenseSchema)
+const Expense = db.model('Expense', expenseSchema)
 
 module.exports = Expense

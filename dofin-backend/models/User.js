@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require('mongoose'),
+      db  = require("./db");
 const passwordHash = require('password-hash')
 
-let userSchema = new Schema({
+const userSchema = mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Email is required'],
@@ -24,6 +24,6 @@ let userSchema = new Schema({
   }],
 })
 
-let User = mongoose.model('User', userSchema)
+const User = db.model('User', userSchema)
 
 module.exports = User
