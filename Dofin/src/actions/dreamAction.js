@@ -14,7 +14,7 @@ export const getDream = data => ({
 
 export const dreamRequest = data => {
   return dispatch =>
-    axios.post('http://192.168.0.209:8080/dreams', {
+    axios.post('http://192.168.0.18:8080/dreams', {
       record_by: "59158e804412792833f91138",
       dream: data.dream,
     })
@@ -24,7 +24,7 @@ export const dreamRequest = data => {
 
 export const getDreamRequest = () => {
   return dispatch =>
-    axios.get('http://192.168.0.209:8080/dreams')
+    axios.get('http://192.168.0.18:8080/dreams/59158e804412792833f91138')
     .then(response => dispatch(getDream(response.data)))
     .catch(err => console.log(err.message))
 };

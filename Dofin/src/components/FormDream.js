@@ -16,19 +16,13 @@ import {
   Item,
   Label,
   Input,
-  Spinner
+  Spinner,
+  Card
 } from 'native-base';
 
 import {dreamRequest} from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-
-const resetAction = NavigationActions.reset({
-  index: 0,
-  actions: [
-    NavigationActions.navigate({ routeName: 'Main'})
-  ]
-})
 
 class FormDream extends Component {
   constructor(props) {
@@ -84,14 +78,17 @@ class FormDream extends Component {
           </Header>
           <Content style={{display: 'flex'}}>
             <Form onSubmit={()=>this.handleSubmit()}>
-              <Item >
-                <Icon active name='ios-moon-outline' style={{marginRight: 13}}/>
-                <Input
-                  ref="dream"
-                  name="dream"
-                  onChange={(event) => { this._onChangeInputDream(event) }}
-                />
-              </Item>
+              <Card>
+                <Item >
+                  <Icon active name='ios-moon-outline' style={{marginRight: 13}}/>
+                  <Input
+                    ref="dream"
+                    name="dream"
+                    placeholder="dream"
+                    onChange={(event) => { this._onChangeInputDream(event) }}
+                  />
+                </Item>
+              </Card>
               <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
                 { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
               </Button>
