@@ -12,3 +12,5 @@ export const DELETE_DREAM       = 'DELETE_DREAM';
 export const UPDATE_CATEGORY    = 'UPDATE_CATEGORY';
 export const DELETE_CATEGORY    = 'DELETE_CATEGORY';
 export const GET_EXPENSE_AMOUNT_BY_MOUNT    = 'GET_EXPENSE_AMOUNT_BY_MOUNT';
+export const POST_IMAGE = 'POST_IMAGE';
+export const ADD_EXPENSE  = 'ADD_EXPENSE';

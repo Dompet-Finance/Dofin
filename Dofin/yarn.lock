@@ -3355,6 +3355,10 @@ react-dom@^15.5.4:
     object-assign "^4.1.0"
     prop-types "~15.5.7"
 
+react-native-action-button@^2.6.9:
+  version "2.6.9"
+  resolved "https://registry.yarnpkg.com/react-native-action-button/-/react-native-action-button-2.6.9.tgz#f9609d65ac40aac0ae1c2bd05dc7a8811395d62b"
+
 "react-native-camera@https://github.com/lwansbrough/react-native-camera.git":
   version "0.8.0"
   resolved "https://github.com/lwansbrough/react-native-camera.git#8878954e08b6043a079dacc5505889aee44f1312"
@@ -3390,6 +3394,10 @@ react-native-easy-grid@0.1.7:
 react-native-fbsdk@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-0.5.0.tgz#3ccd67d189755df11d366b8de9acb91ea2300e6e"
+
+react-native-image-picker@^0.26.3:
+  version "0.26.3"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.3.tgz#0ad2eede49501a7046d8046a73813696539c3dcd"
 
 react-native-keyboard-aware-scroll-view@0.2.7:
   version "0.2.7"

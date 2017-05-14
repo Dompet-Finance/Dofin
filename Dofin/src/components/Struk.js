@@ -16,10 +16,22 @@ import {
   Label,
   Input,
   Segment,
-  ActionSheet
+  ActionSheet,
+  Thumbnail,
 } from 'native-base';
+import {
+  ListView,
+  CameraRoll,
+  Image,
+  Dimensions,
+  Modal,
+  ScrollView,
+  TouchableHighlight
+} from 'react-native';
 import { connect } from 'react-redux';
+
 import { expenseRequest } from '../actions';
+import Camera from './Camera'
 
 class FormStruk extends Component {
   constructor(props){
@@ -28,8 +40,13 @@ class FormStruk extends Component {
       page: 'Struk',
       active: '',
       amount: '',
+      category: '',
+      items: [],
       description: '',
-      category: ''
+      location: '',
+      photos: '',
+      images: [],
+      modalVisible: false,
     }
   }
   static navigationOptions = {
@@ -54,10 +71,48 @@ class FormStruk extends Component {
     this.setState({ amount: Number(amount) })
   }
   _onChangeInputCategory(category){
-    this.setState({ category: category })
+    this.setState({ category })
+  }
+  _onChangeInputItems(items){
+    this.setState({ items })
+  }
+  _onChangeInputDescription(description){
+    this.setState({ description })
+  }
+  _onChangeInputLocation(location){
+    this.setState({ location })
+  }
+  _onChangeInputPhotos(photos){
+    this.setState({ photos: photos.node.image.uri })
   }
   _sendData() {
     this.props.expenseRequest(this.state)
+  }
+  toggleModal = () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  }
+  getPhotos() {
+    CameraRoll.getPhotos({
+      first: 20,
+      assetType: 'All'
+    })
+    .then((r) => {
+      this.setState({images: r.edges})
+    })
+  }
+
+  setIndex(index) {
+    this.setState({ index })
+  }
+
+  componentDidUpdate() {
+    console.log('update');
+    if (this.state.items.length == 0) {
+      this.setState({items: this.props.camera[0]})
+    } else {
+      console.log('stop the update');
+    }
+    console.log(this.state.items);
   }
 
   render(){
@@ -73,6 +128,8 @@ class FormStruk extends Component {
       'Education',
       'Cancel'
     ];
+    const { width } = Dimensions.get('window')
+    console.log(this.props.camera);
     return (
       <Container>
           <Header>
@@ -99,29 +156,32 @@ class FormStruk extends Component {
             <View>
               <Form>
                 <Item inlineLabel>
+                  <Icon name="ios-cash" style={{color:"#558B2F"}} />
                   <Input
                     name="amount"
                     onChangeText={text => this._onChangeInputAmount(text)}
                     placeholder="Amount"
-                    // keyboardType = 'numeric'
+                    keyboardType = 'numeric'
                   />
                 </Item>
                 <Item>
+                  <Icon name='cart' style={{color:"#3F51B5"}} />
                   <Input
                     name="item"
-                    // onChangeText={text => this.setState({form: text})}
+                    onChangeText={text => this._onChangeInputItems(text)}
                     placeholder="Item"
                   />
                 </Item>
                 <Item>
+                  <Icon name='create' style={{color: "#424242"}} />
                   <Input
                     name="description"
-                    // onChangeText={text => this.setState({form: text})}
+                    onChangeText={text => this._onChangeInputDescription(text)}
                     placeholder="Description"
                   />
                 </Item>
                 <Item>
-                  <Icon name='cube'/>
+                  <Icon name='cube' style={{color:"#757575"}}/>
                   <Label onPress={() => ActionSheet.show(
                     {
                       options: BUTTONS,
@@ -139,17 +199,17 @@ class FormStruk extends Component {
                   />
                 </Item>
                 <Item>
-                  <Input placeholder="Location"/>
+                  <Icon name='pin' style={{color:"#e53935"}} />
+                  <Input
+                    name="location"
+                    onChangeText={text => this._onChangeInputLocation(text)}
+                    placeholder="Location"/>
                 </Item>
                 <Item>
+                  <Icon name='calendar' style={{color:"#1E88E5"}} />
                   <Input placeholder="Date"/>
                 </Item>
-                <Button
-                  onPress={() => this.simulateCamera()}
-                  title="simulateCamera"
-                >
-                  <Icon name="camera" />
-                </Button>
+                <Button full success onPress={() => this._sendData()}><Text> Add Transaction </Text></Button>
               </Form>
             </View>
           )}
@@ -157,29 +217,32 @@ class FormStruk extends Component {
             <View>
               <Form>
                 <Item inlineLabel>
+                  <Icon name="ios-cash" style={{color:"#558B2F"}} />
                   <Input
                     name="amount"
                     onChangeText={text => this._onChangeInputAmount(text)}
                     placeholder="Amount"
-                    // keyboardType = 'numeric'
+                    keyboardType = 'numeric'
                   />
                 </Item>
                 <Item>
+                  <Icon name='cart' style={{color:"#3F51B5"}} />
                   <Input
                     name="item"
-                    // onChangeText={text => this.setState({form: text})}
+                    onChangeText={text => this._onChangeInputItems(text)}
                     placeholder="Item"
                   />
                 </Item>
                 <Item>
+                  <Icon name='create' style={{color: "#424242"}} />
                   <Input
                     name="description"
-                    // onChangeText={text => this.setState({form: text})}
+                    onChangeText={text => this._onChangeInputDescription(text)}
                     placeholder="Description"
                   />
                 </Item>
                 <Item>
-                  <Icon name='cube'/>
+                  <Icon name='cube' style={{color:"#757575"}} />
                   <Label onPress={() => ActionSheet.show(
                     {
                       options: BUTTONS,
@@ -197,23 +260,25 @@ class FormStruk extends Component {
                   />
                 </Item>
                 <Item>
-                  <Input placeholder="Location"/>
+                  <Icon name='pin' style={{color:"#e53935"}} />
+                  <Input
+                    name="location"
+                    onChangeText={text => this._onChangeInputLocation(text)}
+                    placeholder="Location"/>
                 </Item>
                 <Item>
+                  <Icon name='calendar' style={{color:"#1E88E5"}} />
                   <Input placeholder="Date"/>
                 </Item>
-                <Button
-                  onPress={() => this.simulateCamera()}
-                  title="simulateCamera"
-                >
-                  <Icon name="camera" />
-                </Button>
-                <Button primary style={{alignItems: 'center'}} onPress={() => this._sendData()}><Text> Save </Text></Button>
+                <Button full success onPress={() => this._sendData()}><Text> Add Transaction </Text></Button>
               </Form>
             </View>
 
           )}
           </Content>
+          {(this.state.page === 'Struk') && (
+            <Camera />
+          )}
       </Container>
     )
   }
@@ -236,7 +301,11 @@ const styles = {
     color: '#000',
     padding: 10,
     margin: 40
-  }
+  },
+  photos: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
 };
 
 const mapDispatchToProps = dispatch => {
@@ -245,5 +314,10 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    camera: state.camera
+  }
+}
 
-export default connect(null, mapDispatchToProps)(FormStruk)
+export default connect(mapStateToProps, mapDispatchToProps)(FormStruk)
