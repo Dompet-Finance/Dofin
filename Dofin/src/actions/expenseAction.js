@@ -1,11 +1,6 @@
 import * as ActionTypes from './constants';
 import axios from 'axios'
 
-export const postImage = newExpense => ({
-  type: ADD_EXPENSE,
-  payload: newExpense,
-});
-
 export const postExpense = data => ({
   type: ActionTypes.ADD_EXPENSE,
   payload: data,
@@ -23,7 +18,7 @@ export const getExpenseById = data => ({
 
 export const expenseRequest = data => {
   return dispatch =>
-    axios.post('http://192.168.0.209:8080/expenses', {
+    axios.post('http://192.168.0.145:8080/expenses', {
       record_by   : "59158e804412792833f91138",
       amount      : data.amount,
       description : data.description,

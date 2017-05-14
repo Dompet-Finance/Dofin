@@ -22,7 +22,8 @@ import {
 } from 'native-base';
 import {
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  DrawerLayoutAndroid,
 } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import {connect} from 'react-redux';
@@ -30,9 +31,8 @@ import {
   getIncomeRequest, getDreamRequest,
   getExpenseRequestById, getTotalAmountByMonthById,
   getExpenseTotalByMonthRequest
-
 } from '../actions';
-
+import HeaderDrawer from './HeaderDrawer';
 
 class MainScreen extends Component {
   constructor(props) {
@@ -75,7 +75,6 @@ class MainScreen extends Component {
     const totalIncome   = this.props.getIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
     const {dream}       = this.props.getDream
     // const totalBalance  = this.props.getIncome - totalExpenses;
-
     let dreamParse;
     try {
       dream.map((myDream) => {
@@ -84,13 +83,23 @@ class MainScreen extends Component {
     } catch (e) {
       dreamParse = ''
     }
-
+    let navigationView = (
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
+          <HeaderDrawer {...this.props} />
+      </View>
+    );
     return (
+      <DrawerLayoutAndroid
+        ref={c => this.drawer = c}
+        drawerWidth={300}
+        drawerPosition={DrawerLayoutAndroid.positions.Left}
+        renderNavigationView={() => navigationView}
+      >
       <Container>
           <Header>
               <Left>
                 <Button transparent
-                  onPress={()=>navigate('Drawer')}
+                  onPress={ ()=> this.drawer.openDrawer()}
                 >
                     <Icon name='menu' />
                 </Button>
@@ -131,7 +140,6 @@ class MainScreen extends Component {
                     <Text>Rp. </Text>
                  </Right>
                 </CardItem>
-
                 <CardItem>
                  <Text>Income</Text>
                  <Right>
@@ -146,26 +154,24 @@ class MainScreen extends Component {
                 </Right>
               </CardItem>
              </Card>
-
-             <Card>
-               <CardItem header>
-                  <Icon active name="ios-pie-outline" style={{color:"#F44336"}}/>
-                 <Text style={{fontSize: 20, fontWeight: '400'}}>Expenses chart</Text>
-                 <Right>
-                    <Text>All Category</Text>
-                 </Right>
-               </CardItem>
-               <CardItem style={{justifyContent: "center"}}>
-               <TouchableOpacity onPress={()=> navigate('DetailCharts')}>
-                  <PieChart
-                    chart_wh={150}
-                    series={series}
-                    sliceColor={sliceColor}
-                  />
-                </TouchableOpacity>
-               </CardItem>
-              </Card>
-
+               <Card>
+                 <CardItem header>
+                    <Icon active name="ios-pie-outline" style={{color:"#F44336"}}/>
+                   <Text style={{fontSize: 20, fontWeight: '400'}}>Expenses chart</Text>
+                   <Right>
+                      <Text>All Category</Text>
+                   </Right>
+                 </CardItem>
+                 <CardItem style={{justifyContent: "center"}}>
+                 <TouchableOpacity onPress={()=> navigate('DetailCharts')}>
+                    <PieChart
+                      chart_wh={150}
+                      series={series}
+                      sliceColor={sliceColor}
+                    />
+                  </TouchableOpacity>
+                 </CardItem>
+                </Card>
           </Content>
           <Fab
             active={this.state.active}
@@ -207,6 +213,7 @@ class MainScreen extends Component {
             </Button>
           </Fab>
       </Container>
+      </DrawerLayoutAndroid>
     )
   }
 }

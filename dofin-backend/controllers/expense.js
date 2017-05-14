@@ -1,7 +1,13 @@
 const Expense = require('../models/expense')
 const mongoose = require('mongoose')
+const Vision = require('@google-cloud/vision');
+const vision = Vision({
+  project_id: "vision-167301"
+});
+const fs = require('fs')
 
 const newExpense = (req, res) => {
+  console.log(req.body);
   Expense.create({
     record_by: req.body.record_by,
     amount: req.body.amount,
@@ -114,6 +120,70 @@ const removeExpenseById = (req, res) => {
     })
 } // removeExpenseById
 
+const newPhoto = (req, res) => {
+  var Image = {
+    src: `data:${req.body.blob.type};base64,${req.body.blob.data}`
+  };
+  const data = Image.src;
+  function decodeBase64Image(dataString) {
+    var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+      response = {};
+
+    if (matches.length !== 3) {
+      return new Error('Invalid input string');
+    }
+
+    response.type = matches[1];
+    response.data = new Buffer(matches[2], 'base64');
+
+    return response;
+  }
+  var imageBuffer = decodeBase64Image(data);
+  fs.writeFile('photo.jpg', imageBuffer.data , function(err){
+    //Finished
+    if (err) {
+      console.log(err);
+    } else {
+      var fileName = './photo.jpg'
+      vision.readDocument(fileName)
+        .then((results) => {
+          const fullTextAnnotation = results[1].responses[0].fullTextAnnotation;
+          // res.send(fullTextAnnotation.text);
+          var data = fullTextAnnotation.text
+          var array = data.split('\n')
+
+          // connect price within item
+          var array2 = array.map((val, i) => {
+            var tempval = ''
+            if (i < array.length-1)
+              tempval = array[i+1].replace(/(\d+)[\,\.](\d{3})/g, '$1$2')
+                          .replace(/(\d+)[\,\.]\s+/g, '$1')
+            if (/[1-9]\s?x\s?\d{3,}/i.test(tempval))
+              return `${val} ${tempval}`
+            return val
+          })
+
+          // filter min 3 digit, tidak boleh -000
+          var lines = array2.filter(val => /\d{3}/.test(val) && !/\-\d{3}/.test(val))
+
+          var items = lines.filter(val => /^\D/.test(val) && /\d{3,}$/.test(val))
+                        .map(val => {
+                          var obj = {}
+                          obj.item = val.substr(0, val.lastIndexOf(' '))
+                          obj.price = +val.substr(val.lastIndexOf(' ') + 1)
+                          return obj
+                        })
+
+          res.send(items)
+          console.log(items);
+        })
+        .catch((err) => {
+          console.error('ERROR:', err);
+        });
+    }
+  });
+} // newPhoto
+
 module.exports = {
   newExpense,
   getTotalAmountById,
@@ -121,4 +191,5 @@ module.exports = {
   getTotalAmountByMonthById,
   getTotalAmountByCategoryThisYearById,
   removeExpenseById,
+  newPhoto
 }

@@ -1,3 +1,5 @@
+"use strict"
+
 const mongoose = require('mongoose'),
       db  = require("./db");
 const passwordHash = require('password-hash')
