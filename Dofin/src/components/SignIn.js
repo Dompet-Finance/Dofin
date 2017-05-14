@@ -1,34 +1,58 @@
 import React, {Component} from 'react';
 import {
-  View,
-  Text,
   TextInput,
-  Button,
   Image,
   TouchableOpacity,
   StatusBar,
+  AsyncStorage
  } from 'react-native';
+
+ import {
+   Text, View, Container, Header, Title, Content, Footer,
+   FooterTab, Button, Left, Right, Body, Icon, Card, CardItem,Thumbnail
+ } from 'native-base';
+
 import FBSDK, { LoginManager } from 'react-native-fbsdk';
 
 class SignIn extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      username : '',
-      password : '',
+      username : 'admin',
+      password : 'admin',
     }
   }
   pressButton() {
     return true
   }
 
+  static navigationOptions = {
+    header: null
+  }
+
+  authCheck(){
+    this.props.navigation.navigate("MainScreen")
+  }
+  componentDidMount(){
+    try {
+      const value = AsyncStorage.getItem(username);
+      if (value !== null){
+        this.props.navigation.navigate("MainScreen")
+      }
+    } catch (error) {
+      return false
+    }
+  }
+
   _fbAuth() {
-    console.log(LoginManager);
-    LoginManager.logInWithReadPermissions(['public_profile']).then(function (result) {
+    let self = this;
+    LoginManager.logInWithReadPermissions(['public_profile',"email", "user_friends"]).then(function (result) {
       if (result.isCancelled) {
         console.log('Login was cancelled');
       } else {
-        console.log('Login success' + result.grantedPermissions.toString());
+        self.authCheck()
+        AsyncStorage.setItem(username, "admin")
+        // console.log('Login success' + result.grantedPermissions.toString());
       }
     }, function (error) {
       console.log('An error has occured: ' + error);
@@ -44,11 +68,6 @@ class SignIn extends React.Component {
             source={{uri: 'https://maxcdn.icons8.com/Share/icon/Animals//dolphin1600.png'}}
           />
           <Text style={styles.title}>DoFin</Text>
-        </View>
-        <View>
-          <TouchableOpacity onPress={() => this._fbAuth()}>
-            <Text>Facebook</Text>
-          </TouchableOpacity>
         </View>
         <View style={styles.container}>
           <StatusBar
@@ -74,12 +93,22 @@ class SignIn extends React.Component {
               ref={(input) => this.password = input}
               onChangeText={text => this.setState({password : text})}
             />
-            <TouchableOpacity style={styles.buttonContainer}>
-              <Text style={styles.buttonText}>LOGIN</Text>
+            <TouchableOpacity style={styles.buttonContainer} onPress={()=> this.authCheck()}>
+              <Text style={styles.buttonText}>SIGN IN</Text>
             </TouchableOpacity>
+
           </View>
         </View>
+        <Footer>
+          <FooterTab>
+              <Button full onPress={() => this._fbAuth()}>
+                <Text style={{fontSize: 15, color: "#FFF", marginBottom: 5}}>SIGN IN WITH FACEBOOK</Text>
+                <Icon name="logo-facebook" style={{fontSize: 25, color: "#FFF"}}/>
+              </Button>
+          </FooterTab>
+        </Footer>
       </View>
+
     )
   }
 }
@@ -87,7 +116,7 @@ class SignIn extends React.Component {
 const styles = {
   loginWrapper: {
     flex: 1,
-    backgroundColor: '#1976D2',
+    backgroundColor: '#0288D1',
   },
   logoImageWrapper: {
     flex: 1,
@@ -99,7 +128,7 @@ const styles = {
     height: 90,
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     color: 'white',
     padding: 5,
     fontWeight: 'bold',

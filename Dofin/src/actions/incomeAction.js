@@ -26,7 +26,7 @@ export const incomeRequest = data => {
 
 export const getIncomeRequest = () => {
   return dispatch =>
-    axios.get('http://192.168.0.145:8080/income/59158e804412792833f91138/total_amount')
+    axios.get('http://192.168.0.209:8080/income/59158e804412792833f91138/total_amount')
     .then(response => dispatch(getIncome(response.data)))
     .catch(err => console.log(err.message))
 };

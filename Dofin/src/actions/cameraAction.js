@@ -8,7 +8,7 @@ export const postImage = data => ({
 
 export const imgPostRequest = newImage => {
   return dispatch =>
-  axios.post('http://192.168.0.145:8080/expenses/photo', {blob: {
+  axios.post('http://192.168.0.209:8080/expenses/photo', {blob: {
     type: newImage.type,
     data: newImage.data
   }})
