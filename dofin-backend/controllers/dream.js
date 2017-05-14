@@ -7,6 +7,16 @@ const getDreamsByUserId = (req, res) => {
   })
 } // getDreamsByUserId
 
+const updateDreamsByUserId = (req, res) => {
+  Dream.update(
+    { _id: req.body._id },
+    { $set: {record_by: req.body.record_by, dream: req.body.dream }}, { new: true })
+    .exec((err, rec) => {
+      if (err) res.send(err)
+      else res.json(rec)
+    })
+} // updateDreamsById
+
 const newDream = (req, res) => {
   Dream.create({
     record_by: req.body.record_by,
@@ -18,15 +28,15 @@ const newDream = (req, res) => {
 } // newDream
 
 const removeDreamById = (req, res) => {
-  Dream.findByIdAndRemove(req.params.id)
-    .exec((err, rec) => {
-      if (err) res.send(err)
-      else res.json(rec)
-    })
+  Dream.findByIdAndRemove(req.params.id, (err, rec) => {
+    if (err) res.send(err)
+    else res.json(rec)
+  })
 } // removeDreamById
 
 module.exports = {
   getDreamsByUserId,
   newDream,
+  updateDreamsByUserId,
   removeDreamById,
 }
