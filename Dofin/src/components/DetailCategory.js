@@ -68,7 +68,7 @@ class DetailDreams extends Component {
           <Header>
               <Left>
                 <Button transparent
-                  onPress={() => this.props.navigation.navigate("Main")}
+                  onPress={() => this.props.navigation.navigate("MainScreen")}
                 >
                     <Icon name='arrow-back' />
                 </Button>
