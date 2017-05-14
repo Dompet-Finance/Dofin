@@ -56,7 +56,7 @@ class MainScreen extends Component {
   render(){
     const chart_wh      = 250
     const series        = []
-    const sliceColor    = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800']
+    const sliceColor    = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800', '#E91E63', '#F44336', '#9C27B0', '#2196F3', '#03A9F4', '#009688', '#8BC34A', '#FFC107']
 
     let totalExpenses = 0
     if (this.props.getExpense !== 0) {
@@ -95,6 +95,7 @@ class MainScreen extends Component {
               </Body>
               <Right>
                   <Button transparent>
+                    <Icon name="md-notifications"/>
                   </Button>
               </Right>
           </Header>

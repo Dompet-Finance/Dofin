@@ -13,7 +13,7 @@ export const getCategory = data => ({
 
 export const postRequestCategory = data => {
   return dispatch =>
-    axios.put('http://192.168.0.18:8080/users/59169dd60de1b3789527f322/categories', {
+    axios.put('http://192.168.0.209:8080/users/59169dd60de1b3789527f322/categories', {
       category: data.category,
       icon: data.icon_name,
       color: data.color
@@ -24,7 +24,7 @@ export const postRequestCategory = data => {
 
 export const getRequestCategory = data => {
   return dispatch =>
-    axios.get('http://192.168.0.18:8080/users/59169dd60de1b3789527f322')
+    axios.get('http://192.168.0.209:8080/users/59169dd60de1b3789527f322')
     .then(response => dispatch(getCategory(response.data)))
     .catch(err => console.log(err.message))
 };

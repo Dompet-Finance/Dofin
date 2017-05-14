@@ -19,7 +19,6 @@ import {
 import {connect} from 'react-redux';
 import {getDreamRequest, deleteDreamRequest} from '../actions';
 
-
 class DetailDreams extends Component {
   constructor(props){
     super(props)

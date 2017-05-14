@@ -23,7 +23,7 @@ export const getExpenseById = data => ({
 
 export const expenseRequest = data => {
   return dispatch =>
-    axios.post('http://192.168.0.18:8080/expenses', {
+    axios.post('http://192.168.0.209:8080/expenses', {
       record_by   : "59158e804412792833f91138",
       amount      : data.amount,
       description : data.description,
@@ -38,14 +38,14 @@ export const expenseRequest = data => {
 
 // export const getExpenseRequest = () => {
 //   return dispatch =>
-//     axios.get('http://192.168.0.18:8080/expenses/59169da29a208a785ad2e99c/total_amount')
+//     axios.get('http://192.168.0.209:8080/expenses/59169da29a208a785ad2e99c/total_amount')
 //     .then(response => dispatch(getExpenseAmount(response.data)))
 //     .catch(err => console.log(err.message))
 // };
 
 export const getExpenseRequestById = () => {
   return dispatch =>
-    axios.get('http://192.168.0.18:8080/expenses/59169da29a208a785ad2e99c')
+    axios.get('http://192.168.0.209:8080/expenses/59169da29a208a785ad2e99c')
     .then(response => dispatch(getExpenseById(response.data)))
     .catch(err => console.log(err.message))
 };

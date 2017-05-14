@@ -20,7 +20,7 @@ import {
   Card
 } from 'native-base';
 
-import {dreamRequest} from '../actions';
+import {updateDreamRequest} from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
@@ -30,6 +30,8 @@ class FormDream extends Component {
     this.state = {
       dream: '',
       description: '',
+      _id: '',
+      record_by: '',
       loading: false,
     }
   }
@@ -40,8 +42,8 @@ class FormDream extends Component {
     this.setState({
       loading: !this.state.visible
     });
+    this.props.updateDreamRequest(this.state)
     this.props.navigation.navigate("Main")
-    this.props.dreamRequest(this.state)
   }
   _onChangeInputDream(event){
     this.setState({dream: event.nativeEvent.text})
@@ -56,23 +58,28 @@ class FormDream extends Component {
         loading: false
       });
     }
-
+    this.setState({
+      dream       : this.props.navigation.state.params.data.dream,
+      description : "",
+      _id         : this.props.navigation.state.params.data._id,
+      record_by   : this.props.navigation.state.params.data._id
+    });
   }
   render(){
-
+    const {dream} = this.props.navigation.state.params.data
     const { goBack } = this.props.navigation;
     return (
       <Container>
           <Header>
             <Left>
               <Button transparent
-                onPress={() => goBack()}
+                onPress={() => this.props.navigation.navigate("DetailDreams")}
               >
                   <Icon name='arrow-back' />
               </Button>
             </Left>
             <Body>
-              <Title>My Dream</Title>
+              <Title>Edit Dream</Title>
             </Body>
             <Right>
               <Button transparent>
@@ -88,6 +95,7 @@ class FormDream extends Component {
                     ref="dream"
                     name="dream"
                     placeholder="dream"
+                    value={this.state.dream}
                     onChange={(event) => { this._onChangeInputDream(event) }}
                   />
 
@@ -98,6 +106,7 @@ class FormDream extends Component {
                     ref="description"
                     name="description"
                     placeholder="description"
+                    value={this.state.description}
                     onChange={(event) => { this._onChangeInputDescription(event) }}
                   />
                 </Item>
@@ -115,7 +124,7 @@ class FormDream extends Component {
 
 const mapsDispatchToProps = dispatch => {
   return {
-    dreamRequest : data => dispatch(dreamRequest(data))
+    updateDreamRequest : data => dispatch(updateDreamRequest(data))
   }
 }
 

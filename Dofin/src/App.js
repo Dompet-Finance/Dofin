@@ -14,18 +14,20 @@ import FormCategory from './components/FormCategory'
 import Icons from './components/Icons'
 import Colors from './components/Colors'
 import SingleDream from './components/SingleDream'
+import EditDream from './components/EditDream'
 
 const App = StackNavigator({
-  Main  : {screen: MainScreen},
-  Income: {screen: FormIncome},
-  Dream: {screen: FormDream},
-  Struk : {screen: Struk},
-  Drawer: {screen: Drawer},
-  DetailDreams: {screen: DetailDreams},
-  DetailCharts: {screen: DetailCharts},
-  Category: {screen: FormCategory},
-  Icons: {screen: Icons},
-  Colors: {screen: Colors},
-  SingleDream: {screen: SingleDream}
+  Main          : {screen: MainScreen},
+  Income        : {screen: FormIncome},
+  Dream         : {screen: FormDream},
+  Struk         : {screen: Struk},
+  Drawer        : {screen: Drawer},
+  DetailDreams  : {screen: DetailDreams},
+  DetailCharts  : {screen: DetailCharts},
+  Category      : {screen: FormCategory},
+  Icons         : {screen: Icons},
+  Colors        : {screen: Colors},
+  SingleDream   : {screen: SingleDream},
+  EditDream     : {screen: EditDream}
 },{ headerMode: 'screen' })
 export default App

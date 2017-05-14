@@ -13,7 +13,7 @@ export const getIncome = data => ({
 
 export const incomeRequest = data => {
   return dispatch =>
-    axios.post('http://192.168.0.18:8080/income', {
+    axios.post('http://192.168.0.209:8080/income', {
       record_by   : "59158e804412792833f91138",
       amount      : data.amount,
       description : data.description,
@@ -26,7 +26,7 @@ export const incomeRequest = data => {
 
 export const getIncomeRequest = () => {
   return dispatch =>
-    axios.get('http://192.168.0.18:8080/income/59158e804412792833f91138/total_amount')
+    axios.get('http://192.168.0.209:8080/income/59158e804412792833f91138/total_amount')
     .then(response => dispatch(getIncome(response.data)))
     .catch(err => console.log(err.message))
 };
