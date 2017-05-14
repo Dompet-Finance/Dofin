@@ -11,10 +11,10 @@ export const postExpense = data => ({
   payload: data,
 });
 
-// export const getExpenseAmount = data => ({
-//   type: ActionTypes.GET_EXPENSE_AMOUNT,
-//   payload: data[0].total_amount,
-// });
+export const getTotalExpenseAmountByMonth = data => ({
+  type: ActionTypes.GET_EXPENSE_AMOUNT_BY_MOUNT,
+  payload: data,
+});
 
 export const getExpenseById = data => ({
   type: ActionTypes.GET_EXPENSE_BY_ID,
@@ -36,12 +36,12 @@ export const expenseRequest = data => {
     .catch(err => console.log(err.message))
 };
 
-// export const getExpenseRequest = () => {
-//   return dispatch =>
-//     axios.get('http://192.168.0.209:8080/expenses/59169da29a208a785ad2e99c/total_amount')
-//     .then(response => dispatch(getExpenseAmount(response.data)))
-//     .catch(err => console.log(err.message))
-// };
+export const getExpenseTotalByMonthRequest = () => {
+  return dispatch =>
+    axios.get('http://192.168.0.209:8080/expenses/59169da29a208a785ad2e99c/total_amount_by_month')
+    .then(response => dispatch(getTotalExpenseAmountByMonth(response.data)))
+    .catch(err => console.log(err.message))
+};
 
 export const getExpenseRequestById = () => {
   return dispatch =>

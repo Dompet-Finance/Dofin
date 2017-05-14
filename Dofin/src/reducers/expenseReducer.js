@@ -26,7 +26,7 @@ const addExpense = (state, newExpense) => {
 const expenseReducer = (state = 0, action) => {
   switch(action.type) {
     case ActionTypes.ADD_EXPENSE: return (state, action.payload)
-    // case ActionTypes.GET_EXPENSE_AMOUNT: return action.payload
+    case ActionTypes.GET_EXPENSE_AMOUNT_BY_MOUNT: return action.payload
     case ActionTypes.GET_EXPENSE_BY_ID: return action.payload
     default: return state;
   }

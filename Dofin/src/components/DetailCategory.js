@@ -17,7 +17,7 @@ import {
   Spinner
 } from 'native-base';
 import {connect} from 'react-redux';
-import {getDreamRequest, deleteDreamRequest} from '../actions';
+import {getRequestCategory, deleteRequestCategory} from '../actions';
 
 class DetailDreams extends Component {
   constructor(props){
@@ -31,13 +31,21 @@ class DetailDreams extends Component {
   static navigationOptions = {
     header: null
   }
+  componentDidMount(){
+    this.props.getRequestCategory()
+  }
   actions(actions, data){
+    let _id = this.props.getCategory.category._id
+    let dataToDelete = {
+      id: _id,
+      category: data.category
+    }
     if (actions === "Detail") {
-      this.props.navigation.navigate("SingleDream", {data: data})
+      this.props.navigation.navigate("SingleCategory", {data: data})
     }else if (actions === "Edit") {
-      this.props.navigation.navigate("EditDream", {data: data})
+      this.props.navigation.navigate("EditCategory", {data: data, user_id: this.props.getCategory.category._id})
     }else if (actions === "Delete") {
-      this.props.deleteDreamRequest(data)
+      this.props.deleteRequestCategory(dataToDelete)
       this.props.navigation.navigate("Main")
       // let conf = confirm("Are you sure?")
       // if (conf) {
@@ -49,13 +57,14 @@ class DetailDreams extends Component {
     this.setState({ actions: actions });
   }
   render(){
-    const {dream} = this.props.getDream
+    const {category} = this.props.getCategory
     const { goBack } = this.props.navigation;
     const BUTTONS = ["Detail", "Edit", "Delete"];
     const DESTRUCTIVE_INDEX = 3;
     const CANCEL_INDEX = 2;
     return (
       <Container>
+
           <Header>
               <Left>
                 <Button transparent
@@ -65,7 +74,7 @@ class DetailDreams extends Component {
                 </Button>
               </Left>
               <Body>
-                  <Title>My Dreams</Title>
+                  <Title>List Category</Title>
               </Body>
               <Right>
                   <Button transparent>
@@ -73,15 +82,15 @@ class DetailDreams extends Component {
               </Right>
           </Header>
           <Content>
-            {(dream.length !== 0) ? dream.map((myDream) => {
+            {(category.categories !== undefined) ? category.categories.map((cat) => {
               return (
-                <Card key={myDream._id}>
+                <Card key={cat._id}>
                   <ListItem icon>
                     <Left>
                       <Icon name="ios-walk-outline" />
                     </Left>
                     <Body>
-                       <Text>{myDream.dream}</Text>
+                       <Text>{cat.category}</Text>
                     </Body>
                     <Right>
                       <Icon name="ios-apps" onPress={()=> ActionSheet.show(
@@ -92,7 +101,7 @@ class DetailDreams extends Component {
                             title: 'Actions'
                           },
                           (buttonIndex) => {
-                            this.actions(actions=BUTTONS[buttonIndex], data=myDream)
+                            this.actions(actions=BUTTONS[buttonIndex], data=cat)
                           }
                         )}/>
                     </Right>
@@ -109,14 +118,14 @@ class DetailDreams extends Component {
 }
 const mapsStateToProps = state => {
   return {
-    getDream: state
+    getCategory: state
   }
 }
 
 const mapsDispatchToProps = dispatch => {
   return {
-    getDreamRequest   : () => dispatch(getDreamRequest()),
-    deleteDreamRequest: (data) => dispatch(deleteDreamRequest(data))
+    getRequestCategory   : () => dispatch(getRequestCategory()),
+    deleteRequestCategory: (data) => dispatch(deleteRequestCategory(data))
   }
 }
 

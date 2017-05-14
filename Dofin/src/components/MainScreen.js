@@ -26,7 +26,12 @@ import {
 } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import {connect} from 'react-redux';
-import {getIncomeRequest, getDreamRequest, getExpenseRequestById} from '../actions';
+import {
+  getIncomeRequest, getDreamRequest,
+  getExpenseRequestById, getTotalAmountByMonthById,
+  getExpenseTotalByMonthRequest
+
+} from '../actions';
 
 
 class MainScreen extends Component {
@@ -50,26 +55,26 @@ class MainScreen extends Component {
   componentDidMount(){
     this.props.getIncomeRequest();
     this.props.getDreamRequest();
-    // this.props.getExpenseRequest();
-    this.props.getExpenseRequestById();
+    this.props.getExpenseTotalByMonthRequest();
+    // this.props.getExpenseRequestById();
   }
   render(){
     const chart_wh      = 250
     const series        = []
     const sliceColor    = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800', '#E91E63', '#F44336', '#9C27B0', '#2196F3', '#03A9F4', '#009688', '#8BC34A', '#FFC107']
-
     let totalExpenses = 0
     if (this.props.getExpense !== 0) {
-      this.props.getExpense.map((expenses) => {
-        series.push(expenses.amount)
-        totalExpenses += expenses.amount
+      this.props.getExpense.map((expenses, index) => {
+        console.log(expenses);
+        // series.push(expenses.amount)
+        // totalExpenses += expenses.amount
       })
     }
 
     const { navigate }  = this.props.navigation;
     const totalIncome   = this.props.getIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
     const {dream}       = this.props.getDream
-    const totalBalance  = this.props.getIncome - totalExpenses;
+    // const totalBalance  = this.props.getIncome - totalExpenses;
 
     let dreamParse;
     try {
@@ -123,7 +128,7 @@ class MainScreen extends Component {
                 <CardItem>
                  <Text>Balance</Text>
                  <Right>
-                    <Text>Rp. {totalBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
+                    <Text>Rp. </Text>
                  </Right>
                 </CardItem>
 
@@ -137,7 +142,7 @@ class MainScreen extends Component {
                <CardItem>
                 <Text>Expenses</Text>
                 <Right>
-                   <Text>Rp. {totalExpenses.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
+                   <Text>Rp. </Text>
                 </Right>
               </CardItem>
              </Card>
@@ -170,6 +175,12 @@ class MainScreen extends Component {
             position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}>
               <Icon name="add" />
+            <Button
+              style={{ backgroundColor: '#CDDC39' }}
+              onPress={()=>navigate('DetailCategory')}
+            >
+              <Icon name="ios-stats-outline" />
+            </Button>
             <Button
               style={{ backgroundColor: '#CDDC39' }}
               onPress={()=>navigate('Category')}
@@ -214,7 +225,7 @@ const mapsDispatchToProps = dispatch => {
     getIncomeRequest      : () => dispatch(getIncomeRequest()),
     getDreamRequest       : () => dispatch(getDreamRequest()),
     getExpenseRequestById : () => dispatch(getExpenseRequestById()),
-    // getExpenseRequest     : () => dispatch(getExpenseRequest())
+    getExpenseTotalByMonthRequest     : () => dispatch(getExpenseTotalByMonthRequest())
   }
 }
 
