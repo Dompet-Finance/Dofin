@@ -34,14 +34,13 @@ class SignIn extends React.Component {
     this.props.navigation.navigate("MainScreen")
   }
   componentDidMount(){
-    try {
-      const value = AsyncStorage.getItem(username);
+    AsyncStorage.getItem("username").then((value) => {
+    })
+    .then(res => {
       if (value !== null){
         this.props.navigation.navigate("MainScreen")
       }
-    } catch (error) {
-      return false
-    }
+    });
   }
 
   _fbAuth() {

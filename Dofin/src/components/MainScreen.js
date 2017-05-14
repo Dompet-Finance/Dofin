@@ -56,6 +56,12 @@ class MainScreen extends Component {
     this.props.getIncomeRequest();
     this.props.getDreamRequest();
     this.props.getExpenseTotalByMonthRequest();
+    try {
+      let check = AsyncStorage.getItem("username")
+      console.log(check);
+    } catch (e) {
+
+    }
     // this.props.getExpenseRequestById();
   }
   render(){
