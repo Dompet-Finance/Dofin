@@ -80,6 +80,7 @@ const updateCategoryById = (req, res) => {
 
 const removeCategoryById = (req, res) => {
   // belum divalidasi
+  // console.log(req.params.user_id);
   User.findByIdAndUpdate(req.params.user_id,
     { $pull: { categories: {
       category: req.body.category,

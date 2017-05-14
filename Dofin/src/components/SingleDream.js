@@ -50,7 +50,7 @@ class SingleDream extends Component {
           <Header>
             <Left>
               <Button transparent
-                onPress={() => goBack()}
+                onPress={() => this.props.navigation.navigate("DetailDreams")}
               >
                   <Icon name='arrow-back' />
               </Button>
