@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View} from 'react-native';
+import { Image, View, AsyncStorage} from 'react-native';
 import {
   Container,
   Content,
@@ -19,6 +19,14 @@ import {
 class DrawerContent extends Component {
   constructor(props) {
     super(props)
+  }
+
+  _logout(){
+    try {
+      AsyncStorage.removeItem(username)
+    } catch (e) {
+    }
+    this.props.navigation.navigate("Main")
   }
 
   render() {
@@ -73,6 +81,17 @@ class DrawerContent extends Component {
                 </Left>
                 <Body>
                   <Text>Category</Text>
+                </Body>
+                <Right>
+                  <Icon name="arrow-round-forward" />
+                </Right>
+              </ListItem>
+              <ListItem icon onPress={() => {this._logout()}}>
+                <Left>
+                    <Icon name="cube" style={{color:"#757575"}} />
+                </Left>
+                <Body>
+                  <Text>Logout</Text>
                 </Body>
                 <Right>
                   <Icon name="arrow-round-forward" />
