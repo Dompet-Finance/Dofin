@@ -32,8 +32,6 @@ import {
   getExpenseRequestById, getTotalAmountByMonthById,
   getExpenseTotalByMonthRequest
 } from '../actions';
-
-import {getIncomeRequest, getDreamRequest} from '../actions';
 import HeaderDrawer from './HeaderDrawer';
 
 class MainScreen extends Component {
@@ -101,7 +99,7 @@ class MainScreen extends Component {
           <Header>
               <Left>
                 <Button transparent
-                  onPress={()=>navigate('Drawer')}
+                  onPress={ ()=> this.drawer.openDrawer()}
                 >
                     <Icon name='menu' />
                 </Button>

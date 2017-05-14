@@ -19,6 +19,7 @@ import DetailCategory from './components/DetailCategory'
 import SingleCategory from './components/SingleCategory'
 import EditCategory from './components/EditCategory'
 import Transactions from './components/Transactions'
+import Drawer from './components/HeaderDrawer'
 
 const App = StackNavigator({
   Main          : {screen: MainScreen},
