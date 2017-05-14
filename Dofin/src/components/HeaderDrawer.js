@@ -22,10 +22,7 @@ class DrawerContent extends Component {
   }
 
   _logout(){
-    try {
-      AsyncStorage.removeItem(username)
-    } catch (e) {
-    }
+    AsyncStorage.removeItem("username")
     this.props.navigation.navigate("Main")
   }
 
@@ -42,18 +39,7 @@ class DrawerContent extends Component {
           </Image>
           <Content>
             <List>
-              <ListItem icon onPress={() => navigate('SignIn')}>
-                <Left>
-                    <Icon name="ios-contact" style={{color:"#283593"}} />
-                </Left>
-                <Body>
-                  <Text>Login</Text>
-                </Body>
-                <Right>
-                  <Icon name="arrow-round-forward" />
-                </Right>
-              </ListItem>
-              <ListItem icon onPress={() => navigate('Transactions')}>
+              <ListItem icon onPress={() => navigate('Struk')}>
                 <Left>
                     <Icon name="ios-cash" style={{color:"#558B2F"}} />
                 </Left>
@@ -75,7 +61,7 @@ class DrawerContent extends Component {
                   <Icon name="arrow-round-forward" />
                 </Right>
               </ListItem>
-              <ListItem icon onPress={() => alert('Category Page')}>
+              <ListItem icon onPress={() => navigate('DetailCategory')}>
                 <Left>
                     <Icon name="cube" style={{color:"#757575"}} />
                 </Left>
