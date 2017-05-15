@@ -63,7 +63,7 @@ class Category extends Component {
     this.setState({
       loading: !this.state.visible
     });
-    this.props.navigation.navigate("Main")
+    this.props.navigation.navigate("DetailCategory")
     this.props.postRequestCategory(this.state)
   }
   _onChangeInputCategory(event){
@@ -110,7 +110,7 @@ class Category extends Component {
     }
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
                 onPress={() => goBack()}
@@ -147,7 +147,7 @@ class Category extends Component {
                   <Input value={this.state.icon_name} placeholder="icon" disabled/>
                 </Item>
               </Card>
-              <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
+              <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
               { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
               </Button>
             </Form>

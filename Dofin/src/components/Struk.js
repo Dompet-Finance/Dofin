@@ -132,7 +132,7 @@ class FormStruk extends Component {
     console.log(this.props.camera);
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
                 onPress={() => goBack()}
@@ -141,9 +141,9 @@ class FormStruk extends Component {
               </Button>
             </Left>
             <Body>
-              <Segment>
-                <Button first onPress={() => this.activePageStruk()}><Text style={{fontSize: 11}}>Struk</Text></Button>
-                <Button last onPress={() => this.activePageNonStruk()}><Text style={{fontSize: 11}}>Non Struk</Text></Button>
+              <Segment style={{backgroundColor: "#2196F3"}}>
+                <Button first onPress={() => this.activePageStruk()} style={{backgroundColor: "#2196F3"}}><Text style={{fontSize: 11}}>Struk</Text></Button>
+                <Button last onPress={() => this.activePageNonStruk()} style={{backgroundColor: "#2196F3"}}><Text style={{fontSize: 11}}>Non Struk</Text></Button>
               </Segment>
             </Body>
             <Right>

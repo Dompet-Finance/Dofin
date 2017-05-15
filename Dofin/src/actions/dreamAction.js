@@ -27,6 +27,7 @@ export const dreamRequest = data => {
     axios.post('http://192.168.0.209:8080/dreams', {
       record_by: "59158e804412792833f91138",
       dream: data.dream,
+      description: data.description,
     })
     .then(response => dispatch(postDream(response.data)))
     .catch(err => console.log(err.message))

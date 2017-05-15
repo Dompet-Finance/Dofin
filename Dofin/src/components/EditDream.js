@@ -43,7 +43,7 @@ class FormDream extends Component {
       loading: !this.state.visible
     });
     this.props.updateDreamRequest(this.state)
-    this.props.navigation.navigate("Main")
+    this.props.navigation.navigate("DetailDreams")
   }
   _onChangeInputDream(event){
     this.setState({dream: event.nativeEvent.text})
@@ -70,7 +70,7 @@ class FormDream extends Component {
     const { goBack } = this.props.navigation;
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
                 onPress={() => this.props.navigation.navigate("DetailDreams")}
@@ -112,7 +112,7 @@ class FormDream extends Component {
                 </Item>
               </Card>
 
-              <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
+              <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
                 { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
               </Button>
             </Form>

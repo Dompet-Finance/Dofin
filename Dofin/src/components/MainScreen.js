@@ -24,7 +24,8 @@ import {
   Image,
   TouchableOpacity,
   DrawerLayoutAndroid,
-  AsyncStorage
+  AsyncStorage,
+  StatusBar
 } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import {connect} from 'react-redux';
@@ -35,6 +36,9 @@ import {
   getTotalAmountByCategoryThisYearById
 } from '../actions';
 import HeaderDrawer from './HeaderDrawer';
+
+const ACCESS_TOKEN = "access_token";
+
 
 class MainScreen extends Component {
   constructor(props) {
@@ -56,6 +60,16 @@ class MainScreen extends Component {
   };
   componentWillMount(){
     this.props.getIncomeRequest();
+    this.props.getDreamRequest();
+    this.props.getExpenseRequestById();
+    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
+      if (value === null) {
+        this.props.navigation.navigate("Main")
+      }else {
+        console.log(value);
+        return false
+      }
+    }).done();
   }
   componentDidMount(){
     this.props.getIncomeRequest();
@@ -63,15 +77,14 @@ class MainScreen extends Component {
     // this.props.getExpenseTotalByMonthRequest();
     this.props.getExpenseRequestById();
     // this.props.getTotalAmountByCategoryThisYearById();
-    AsyncStorage.getItem("username").then((value) => {
-    })
-    .then(res => {
-      if (value === null){
+    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
+      if (value === null) {
         this.props.navigation.navigate("Main")
       }else {
-        this.props.navigation.navigate("MainScreen")
+        console.log(value);
+        return false
       }
-    });
+    }).done();
   }
   _getTotal(arr) {
     var sums = {}, counts = {}, results = [], category;
@@ -87,6 +100,7 @@ class MainScreen extends Component {
     return sums;
   }
   render(){
+
     const chart_wh      = 250
     const sliceColor    = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800', '#E91E63', '#F44336', '#9C27B0', '#2196F3', '#03A9F4', '#009688', '#8BC34A', '#FFC107']
     let totalExpenses   = 0
@@ -98,7 +112,6 @@ class MainScreen extends Component {
       let cat = []
       this.props.getExpense.map((expenses, index) => {
         totalExpenses += expenses.amount
-        console.log(expenses.amount);
         data.push(expenses)
         let obj = {}
         obj.category = expenses.category
@@ -142,8 +155,10 @@ class MainScreen extends Component {
         drawerPosition={DrawerLayoutAndroid.positions.Left}
         renderNavigationView={() => navigationView}
       >
+      <View>
+      </View>
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
               <Left>
                 <Button transparent
                   onPress={ ()=> this.drawer.openDrawer()}
@@ -177,7 +192,7 @@ class MainScreen extends Component {
             </TouchableOpacity>
             <Card>
               <CardItem header>
-                <Icon active name="ios-calculator" style={{color:"#009688"}}/>
+                <Icon active name="ios-calculator" style={{color:"#2196F3"}}/>
                 <Text style={{fontSize: 20, fontWeight: '400'}}>Overview</Text>
               </CardItem>
 
@@ -203,7 +218,7 @@ class MainScreen extends Component {
              </Card>
                <Card>
                  <CardItem header>
-                    <Icon active name="ios-pie-outline" style={{color:"#F44336"}}/>
+                    <Icon active name="ios-pie-outline" style={{color:"#2196F3"}}/>
                    <Text style={{fontSize: 20, fontWeight: '400'}}>Expenses chart</Text>
                    <Right>
                       <Text>All Category</Text>
@@ -237,24 +252,6 @@ class MainScreen extends Component {
             position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}>
               <Icon name="add" />
-            <Button
-              style={{ backgroundColor: '#CDDC39' }}
-              onPress={()=>navigate('DetailCategory')}
-            >
-              <Icon name="ios-stats-outline" />
-            </Button>
-            <Button
-              style={{ backgroundColor: '#CDDC39' }}
-              onPress={()=>navigate('Category')}
-            >
-                <Icon name="ios-apps-outline" />
-            </Button>
-            <Button
-              style={{ backgroundColor: '#CDDC39' }}
-              onPress={()=>navigate('Dream')}
-            >
-                <Icon name="ios-glasses-outline" />
-            </Button>
             <Button
               style={{ backgroundColor: '#34A34F' }}
               onPress={()=>navigate('Income')}

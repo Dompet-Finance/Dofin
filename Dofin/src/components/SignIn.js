@@ -14,12 +14,15 @@ import {
 
 import FBSDK, { LoginManager } from 'react-native-fbsdk';
 
+const ACCESS_TOKEN = "access_token";
+
 class SignIn extends React.Component {
   constructor(props){
     super(props)
     this.state = {
       username : 'admin',
       password : 'admin',
+      token: ""
     }
   }
   pressButton() {
@@ -30,28 +33,24 @@ class SignIn extends React.Component {
     header: null
   }
 
-  authCheck(){
-    this.props.navigation.navigate("MainScreen")
+  _setStorage(){
+    AsyncStorage.setItem(ACCESS_TOKEN, "RERtukj67456");
+    this.setState({"token": "RERtukj67456"});
   }
-  componentDidMount(){
-    AsyncStorage.getItem("username").then((value) => {
-    })
-    .then(res => {
-      if (value !== null){
-        this.props.navigation.navigate("MainScreen")
-      }
-    });
+
+  componentDidMount() {
+    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
+        this.setState({"token": value});
+    }).done();
   }
 
   _fbAuth() {
-    let self = this;
+    let self = this
     LoginManager.logInWithReadPermissions(['public_profile',"email", "user_friends"]).then(function (result) {
       if (result.isCancelled) {
         console.log('Login was cancelled');
       } else {
-        self.authCheck()
-        AsyncStorage.setItem(username, "admin")
-        // console.log('Login success' + result.grantedPermissions.toString());
+        self._setStorage()
       }
     }, function (error) {
       console.log('An error has occured: ' + error);
@@ -59,6 +58,13 @@ class SignIn extends React.Component {
   }
 
   render() {
+    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
+      if (value === "RERtukj67456") {
+        this.props.navigation.navigate("MainScreen")
+      }else {
+        return false
+      }
+    }).done();
     return(
       <View style={styles.loginWrapper}>
         <View style={styles.logoImageWrapper}>
@@ -115,7 +121,7 @@ class SignIn extends React.Component {
 const styles = {
   loginWrapper: {
     flex: 1,
-    backgroundColor: '#0288D1',
+    backgroundColor: "#2196F3"
   },
   logoImageWrapper: {
     flex: 1,

@@ -44,10 +44,10 @@ class SingleDream extends Component {
   }
   render(){
     const { goBack } = this.props.navigation;
-    const {dream} = this.props.navigation.state.params.data
+    const {dream, description} = this.props.navigation.state.params.data
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
                 onPress={() => this.props.navigation.navigate("DetailDreams")}
@@ -70,7 +70,7 @@ class SingleDream extends Component {
                         <Thumbnail source={{uri: "https://cdn.tinybuddha.com/wp-content/uploads/2015/06/Boy-Reaching-for-Stars.png"}} />
                         <Body>
                             <Text>{dream}</Text>
-                            <Text note></Text>
+                            <Text note>{description}</Text>
                         </Body>
                     </Left>
                 </CardItem>
