@@ -112,7 +112,7 @@ class EditCategory extends Component {
     const { navigate } = this.props.navigation;
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
                 onPress={() => goBack()}
@@ -150,7 +150,7 @@ class EditCategory extends Component {
                   <Input value={this.state.icon} placeholder="icon" disabled/>
                 </Item>
               </Card>
-              <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
+              <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
               { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
               </Button>
             </Form>

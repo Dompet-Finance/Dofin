@@ -97,13 +97,12 @@ class DetailCharts extends Component {
       }
     }
     const series = Object.values(this._getTotal(dataCalculate))
-    console.log(series);
     const {dream} = this.props.getDream
     const { goBack } = this.props.navigation;
     const { footer, footerView, footerLast, badge, categoryMedia} = styles
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
               <Left>
                 <Button transparent
                   onPress={() => goBack()}

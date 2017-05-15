@@ -76,7 +76,7 @@ class FormIncome extends Component {
     const CANCEL_INDEX = 2;
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
                 onPress={() => goBack()}

@@ -29,6 +29,7 @@ import {
 
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class SingleDream extends Component {
   constructor(props) {
@@ -40,16 +41,12 @@ class SingleDream extends Component {
     header: null
   }
 
-  componentDidMount(){
-
-  }
   render(){
     const { goBack } = this.props.navigation;
     const {data} = this.props.navigation.state.params
-    console.log(data);
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
                 onPress={() => this.props.navigation.navigate("DetailCategory")}
@@ -70,11 +67,10 @@ class SingleDream extends Component {
             <CardItem>
             <ListItem avatar>
                 <Left>
-                    <Thumbnail source={{uri: "https://cdn.tinybuddha.com/wp-content/uploads/2015/06/Boy-Reaching-for-Stars.png"}} />
+                      <IconCustom name={data.icon} style={{width: 50, fontSize: 30}}/>
                 </Left>
                 <Right>
                   <Text style={{color: data.color}}>{data.category}</Text>
-                  <Text note>Doing what you like will always keep you happy . .</Text>
                 </Right>
             </ListItem>
             </CardItem>

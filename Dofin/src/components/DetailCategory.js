@@ -18,6 +18,7 @@ import {
 } from 'native-base';
 import {connect} from 'react-redux';
 import {getRequestCategory, deleteRequestCategory} from '../actions';
+import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class DetailDreams extends Component {
   constructor(props){
@@ -30,6 +31,9 @@ class DetailDreams extends Component {
   }
   static navigationOptions = {
     header: null
+  }
+  componentWillMount(){
+    this.props.getRequestCategory()
   }
   componentDidMount(){
     this.props.getRequestCategory()
@@ -65,7 +69,7 @@ class DetailDreams extends Component {
     return (
       <Container>
 
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
               <Left>
                 <Button transparent
                   onPress={() => this.props.navigation.navigate("MainScreen")}
@@ -77,7 +81,8 @@ class DetailDreams extends Component {
                   <Title>List Category</Title>
               </Body>
               <Right>
-                  <Button transparent>
+                  <Button transparent onPress={()=>this.props.navigation.navigate("Category")}>
+                    <IconCustom name="border-color" size={25} style={{color: "#FFF"}}/>
                   </Button>
               </Right>
           </Header>
@@ -87,10 +92,13 @@ class DetailDreams extends Component {
                 <Card key={cat._id}>
                   <ListItem icon>
                     <Left>
-                      <Icon name="ios-walk-outline" />
+                    <Button iconLeft style={{borderRadius: 120, backgroundColor: "#2196F3"}}>
+                        <Icon name="ios-bulb" style={{fontSize: 20, marginLeft: 8}}/>
+                    </Button>
                     </Left>
                     <Body>
                        <Text>{cat.category}</Text>
+                       <Text note>{cat.color}</Text>
                     </Body>
                     <Right>
                       <Icon name="ios-apps" onPress={()=> ActionSheet.show(
