@@ -41,7 +41,7 @@ class FormIncome extends Component {
     this.setState({
       loading: !this.state.visible
     });
-    this.props.navigation.navigate("Main")
+    this.props.navigation.navigate("MainScreen")
     this.props.incomeRequest(this.state)
   }
   _onChangeInputAmount(event){
@@ -101,6 +101,7 @@ class FormIncome extends Component {
                     ref="amount"
                     name="amount"
                     placeholder="amount"
+                    keyboardType="numeric"
                     onChange={(event) => { this._onChangeInputAmount(event) }}
                   />
                 </Item>

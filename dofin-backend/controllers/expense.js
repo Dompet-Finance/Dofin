@@ -7,7 +7,6 @@ const vision = Vision({
 const fs = require('fs')
 
 const newExpense = (req, res) => {
-  console.log(req.body);
   Expense.create({
     record_by: req.body.record_by,
     amount: req.body.amount,
@@ -45,6 +44,7 @@ const getTotalAmountByMonthById = (req, res) => {
       {$project: {
         month: { $month: "$date" },
         year: { $year: "$date" },
+        category: '$category',
         amount: 1, // or
         record_by: 1,
       }},
@@ -52,12 +52,12 @@ const getTotalAmountByMonthById = (req, res) => {
         record_by: mongoose.Types.ObjectId(req.params.user_id),
       }},
       {$group: {
-        _id: { year: '$year', month: '$month' },
+        _id: { year: '$year', month: '$month', category: '$category' },
         total_amount: { $sum: "$amount" },
       }},
       {$group: {
         _id: { year: '$_id.year' },
-        months: { $addToSet: { month: "$_id.month", total_amount: "$total_amount" } },
+        months: { $addToSet: { month: "$_id.month", category: "$_id.category", total_amount: "$total_amount" } },
       }},
     ])
       .exec((err, rec) => {

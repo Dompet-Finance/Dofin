@@ -40,7 +40,7 @@ class FormDream extends Component {
     this.setState({
       loading: !this.state.visible
     });
-    this.props.navigation.navigate("Main")
+    this.props.navigation.navigate("MainScreen")
     this.props.dreamRequest(this.state)
   }
   _onChangeInputDream(event){

@@ -47,7 +47,7 @@ class DrawerContent extends Component {
                   <Text>Expenses</Text>
                 </Body>
                 <Right>
-                  <Icon name="arrow-round-forward" />
+                  <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
               <ListItem icon onPress={() => navigate('DetailDreams')}>
@@ -58,7 +58,7 @@ class DrawerContent extends Component {
                   <Text>Dreams</Text>
                 </Body>
                 <Right>
-                  <Icon name="arrow-round-forward" />
+                  <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
               <ListItem icon onPress={() => navigate('DetailCategory')}>
@@ -69,7 +69,7 @@ class DrawerContent extends Component {
                   <Text>Category</Text>
                 </Body>
                 <Right>
-                  <Icon name="arrow-round-forward" />
+                  <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
               <ListItem icon onPress={() => {this._logout()}}>
@@ -80,7 +80,7 @@ class DrawerContent extends Component {
                   <Text>Logout</Text>
                 </Body>
                 <Right>
-                  <Icon name="arrow-round-forward" />
+                  <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
             </List>
