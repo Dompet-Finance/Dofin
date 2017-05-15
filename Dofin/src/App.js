@@ -20,22 +20,24 @@ import SingleCategory from './components/SingleCategory'
 import EditCategory from './components/EditCategory'
 import Transactions from './components/Transactions'
 import Drawer from './components/HeaderDrawer'
+import CredentialCheck from './components/CredentialCheck'
 
 const App = StackNavigator({
-  Main          : {screen: MainScreen},
-  Income        : {screen: FormIncome},
-  Dream         : {screen: FormDream},
-  Struk         : {screen: Struk},
-  Drawer        : {screen: Drawer},
-  DetailDreams  : {screen: DetailDreams},
-  DetailCharts  : {screen: DetailCharts},
-  Category      : {screen: FormCategory},
-  DetailCategory: {screen: DetailCategory},
-  EditCategory  : {screen: EditCategory},
-  Icons         : {screen: Icons},
-  Colors        : {screen: Colors},
-  SingleDream   : {screen: SingleDream},
-  EditDream     : {screen: EditDream},
-  SingleCategory: {screen: SingleCategory}
+  Main            : {screen: SignIn},
+  MainScreen      : {screen: MainScreen},
+  Income          : {screen: FormIncome},
+  Dream           : {screen: FormDream},
+  Struk           : {screen: Struk},
+  Drawer          : {screen: Drawer},
+  DetailDreams    : {screen: DetailDreams},
+  DetailCharts    : {screen: DetailCharts},
+  Category        : {screen: FormCategory},
+  DetailCategory  : {screen: DetailCategory},
+  EditCategory    : {screen: EditCategory},
+  Icons           : {screen: Icons},
+  Colors          : {screen: Colors},
+  SingleDream     : {screen: SingleDream},
+  EditDream       : {screen: EditDream},
+  SingleCategory  : {screen: SingleCategory}
 },{ headerMode: 'screen' })
 export default App

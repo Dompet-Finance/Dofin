@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View} from 'react-native';
+import { Image, View, AsyncStorage} from 'react-native';
 import {
   Container,
   Content,
@@ -21,6 +21,11 @@ class DrawerContent extends Component {
     super(props)
   }
 
+  _logout(){
+    AsyncStorage.removeItem("username")
+    this.props.navigation.navigate("Main")
+  }
+
   render() {
     const { navigate } = this.props.navigation
     return (
@@ -34,18 +39,7 @@ class DrawerContent extends Component {
           </Image>
           <Content>
             <List>
-              <ListItem icon onPress={() => navigate('SignIn')}>
-                <Left>
-                    <Icon name="ios-contact" style={{color:"#283593"}} />
-                </Left>
-                <Body>
-                  <Text>Login</Text>
-                </Body>
-                <Right>
-                  <Icon name="arrow-round-forward" />
-                </Right>
-              </ListItem>
-              <ListItem icon onPress={() => navigate('Transactions')}>
+              <ListItem icon onPress={() => navigate('Struk')}>
                 <Left>
                     <Icon name="ios-cash" style={{color:"#558B2F"}} />
                 </Left>
@@ -67,12 +61,23 @@ class DrawerContent extends Component {
                   <Icon name="arrow-round-forward" />
                 </Right>
               </ListItem>
-              <ListItem icon onPress={() => alert('Category Page')}>
+              <ListItem icon onPress={() => navigate('DetailCategory')}>
                 <Left>
                     <Icon name="cube" style={{color:"#757575"}} />
                 </Left>
                 <Body>
                   <Text>Category</Text>
+                </Body>
+                <Right>
+                  <Icon name="arrow-round-forward" />
+                </Right>
+              </ListItem>
+              <ListItem icon onPress={() => {this._logout()}}>
+                <Left>
+                    <Icon name="cube" style={{color:"#757575"}} />
+                </Left>
+                <Body>
+                  <Text>Logout</Text>
                 </Body>
                 <Right>
                   <Icon name="arrow-round-forward" />
