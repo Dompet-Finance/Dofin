@@ -16,6 +16,11 @@ export const getExpenseById = data => ({
   payload: data,
 });
 
+export const getTotalAmountByCategoryThisYear = data => ({
+  type: ActionTypes.GET_TOTAL_AMOUNT_YEAR_BY_ID,
+  payload: data,
+});
+
 export const expenseRequest = data => {
   return dispatch =>
     axios.post('http://192.168.0.209:8080/expenses', {
@@ -42,5 +47,12 @@ export const getExpenseRequestById = () => {
   return dispatch =>
     axios.get('http://192.168.0.209:8080/expenses/59169da29a208a785ad2e99c')
     .then(response => dispatch(getExpenseById(response.data)))
+    .catch(err => console.log(err.message))
+};
+
+export const getTotalAmountByCategoryThisYearById = () => {
+  return dispatch =>
+    axios.get('http://192.168.0.209:8080/expenses/59169da29a208a785ad2e99c/total_amount_by_category')
+    .then(response => dispatch(getTotalAmountByCategoryThisYear(response.data)))
     .catch(err => console.log(err.message))
 };
