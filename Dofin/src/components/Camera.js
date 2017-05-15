@@ -35,7 +35,7 @@ class CameraScan extends React.Component {
     };
 
   ImagePicker.launchCamera(options, (response) => {
-    console.log('Response =', response);
+    // console.log('Response =', response);
     function b64toBlob(b64Data, contentType, sliceSize) {
         contentType = contentType || '';
         sliceSize = sliceSize || 512;
@@ -77,8 +77,10 @@ class CameraScan extends React.Component {
 
       this.setState({
         images: blob
+      }, () => {
+        this.props.imgPostRequest(this.state.images)
       });
-      this.props.imgPostRequest(this.state.images)
+
     }
   });
 }
