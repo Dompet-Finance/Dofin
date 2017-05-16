@@ -57,6 +57,8 @@ const expenseReducer = (state = initialState, { type, payload }) => {
     case ActionTypes.GET_EXPENSE_AMOUNT_BY_MOUNT: return payload
     case ActionTypes.GET_EXPENSE_BY_ID: return payload
     case ActionTypes.GET_EXPENSE: return (state, payload)
+    case ActionTypes.GET_TOTAL_AMOUNT_YEAR_BY_ID: return (state, action.payload)
+
     default: return state;
   }
 }

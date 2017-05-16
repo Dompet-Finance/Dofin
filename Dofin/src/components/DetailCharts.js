@@ -21,39 +21,93 @@ import {
 } from 'native-base';
 import {connect} from 'react-redux';
 import PieChart from 'react-native-pie-chart';
-import {getDreamRequest} from '../actions';
+import {getDreamRequest, getExpenseRequestById} from '../actions';
 
-class DetailDreams extends Component {
+class DetailCharts extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      month: 1,
-
+      items: '',
+      selectedService: ''
     }
   }
 
-  onValueChange(value) {
-    this.setState({month: +value})
+  componentWillMount(){
+    const {category} = this.props.navigation.state.params
+    this.setState({items: category})
+  }
+  componentDidMount(){
+    this.props.getExpenseRequestById();
   }
 
   static navigationOptions = {
     header: null
   }
+
+  _getTotal(arr) {
+    var sums = {}, counts = {}, results = [], category;
+    for (var i = 0; i < arr.length; i++) {
+        category = arr[i].category;
+        if (!(category in sums)) {
+            sums[category] = 0;
+            counts[category] = 0;
+        }
+        sums[category] += arr[i].amount;
+        counts[category]++;
+    }
+    return sums;
+  }
+
   render(){
-    const chart_wh = 250
-    const series = [123, 321, 123, 789, 1000]
-    const sliceColor = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800']
+
+    let serviceItems = this.state.items.map( (s, i) => {
+        return <Picker.Item key={i} value={s} label={s} />
+    });
+    const chart_wh      = 250
+    const sliceColor    = ['#2196F3','#FFEB3B', '#4CAF50', '#FF9800', '#E91E63', '#F44336', '#9C27B0', '#2196F3', '#03A9F4', '#009688', '#8BC34A', '#FFC107','#F44336']
+    let dataCalculate   = []
+    let color = []
+    if (this.props.getExpense !== 0) {
+      let data = []
+      let cat = []
+      this.props.getExpense.map((expenses, index) => {
+        data.push(expenses)
+        let obj = {}
+        obj.category = expenses.category
+        obj.amount = expenses.amount
+        cat.push(obj)
+      })
+      cat.map((calculateAmount, index) => {
+        console.log(calculateAmount);
+        if (this.state.selectedService !== "") {
+          if (calculateAmount.category === this.state.selectedService) {
+            dataCalculate.push(calculateAmount)
+          }
+        }else{
+          dataCalculate.push(calculateAmount)
+        }
+      })
+
+      let uniqueCategory = [...new Set(data.map(item => item.category))];
+      for (var i = 0; i < uniqueCategory.length; i++) {
+        let objColor = {}
+        objColor.category = uniqueCategory[i]
+        objColor.color = sliceColor[i]
+        color.push(objColor)
+      }
+    }
+    const series = Object.values(this._getTotal(dataCalculate))
     const {dream} = this.props.getDream
     const { goBack } = this.props.navigation;
     const { footer, footerView, footerLast, badge, categoryMedia} = styles
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
               <Left>
                 <Button transparent
                   onPress={() => goBack()}
                 >
-                    <Icon name='arrow-back' />
+                    <Icon name='ios-arrow-back-outline' />
                 </Button>
               </Left>
               <Body>
@@ -68,21 +122,35 @@ class DetailDreams extends Component {
             <View style={{backgroundColor: '#3F51B5'}}>
               <Picker
                 style={{color: 'white'}}
-                selectedValue={this.state.month.toString()}
-                onValueChange={value => this.onValueChange(value)}
+                selectedValue={this.state.selectedService}
+                onValueChange={(service) => ( this.setState({selectedService:service}) )}
                 mode="dialog">
-                <Item label="Investment" value="1" />
-                <Item label="Salary" value="2" />
-
+                {serviceItems}
              </Picker>
             </View>
             <Card>
               <CardItem header>
                 <Text style={{fontSize: 24, fontWeight: '400'}}>Expenses chart</Text>
                 <Right>
-                   <Text>All Category</Text>
+                  {(this.state.selectedService !== "") ? (
+                      <Text>{this.state.selectedService}</Text>
+                    ) : <Text>All Categories</Text>}
                 </Right>
               </CardItem>
+              {(color !== undefined) ? (color.map((dataColor) => {
+                return (
+                (this.state.selectedService !== "") ? (
+                    <View>
+                    </View>
+                ) : (
+                    <View key={dataColor.color}>
+                     <Icon name="ios-cog-outline" style={{color: dataColor.color}}/>
+                     <Text>{dataColor.category}</Text>
+                    </View>
+                  )
+                )
+
+              })) : <Text>No data</Text>}
               <CardItem style={{justifyContent: "center"}}>
                  <PieChart
                    chart_wh={150}
@@ -90,6 +158,7 @@ class DetailDreams extends Component {
                    sliceColor={sliceColor}
                  />
               </CardItem>
+              {(series.length === 1) ? (<Text>{series}</Text>) : (<Text></Text>)}
              </Card>
 
           </Content>
@@ -135,14 +204,16 @@ const styles = {
 
 const mapsStateToProps = state => {
   return {
-    getDream: state
+    getDream: state,
+    getExpense: state.expense
   }
 }
 
 const mapsDispatchToProps = dispatch => {
   return {
-    getDreamRequest: () => dispatch(getDreamRequest())
+    getDreamRequest: () => dispatch(getDreamRequest()),
+    getExpenseRequestById : () => dispatch(getExpenseRequestById()),
   }
 }
 
-export default connect(mapsStateToProps, mapsDispatchToProps)(DetailDreams)
+export default connect(mapsStateToProps, mapsDispatchToProps)(DetailCharts)

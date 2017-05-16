@@ -1,8 +1,10 @@
 import { incomeRequest, getIncomeRequest } from './incomeAction';
 import { dreamRequest, getDreamRequest, updateDreamRequest, deleteDreamRequest } from './dreamAction';
 import { postRequestCategory, getRequestCategory, updateRequestCategory, deleteRequestCategory } from './categoryAction';
-import { expenseRequest, getExpenseRequestById, getExpenseRequest, getExpenseTotalByMonthRequest } from './expenseAction';
+import { expenseRequest, getExpenseRequestById, getExpenseRequest, getExpenseTotalByMonthRequest, getTotalAmountByCategoryThisYearById } from './expenseAction';
 import { imgPostRequest } from './cameraAction';
+import { signUpRequest, signInRequest, logout } from './userAction';
+import { getNotifRequest, notifRequest } from './notificationAction';
 
 export{
   incomeRequest,
@@ -19,5 +21,11 @@ export{
   deleteRequestCategory,
   getExpenseTotalByMonthRequest,
   expenseRequest,
-  imgPostRequest
+  imgPostRequest,
+  getTotalAmountByCategoryThisYearById,
+  signUpRequest,
+  signInRequest,
+  logout,
+  getNotifRequest,
+  notifRequest
 }

@@ -41,7 +41,7 @@ class FormIncome extends Component {
     this.setState({
       loading: !this.state.visible
     });
-    this.props.navigation.navigate("Main")
+    this.props.navigation.navigate("MainScreen")
     this.props.incomeRequest(this.state)
   }
   _onChangeInputAmount(event){
@@ -76,12 +76,12 @@ class FormIncome extends Component {
     const CANCEL_INDEX = 2;
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
                 onPress={() => goBack()}
               >
-                  <Icon name='arrow-back' />
+                  <Icon name='ios-arrow-back-outline' />
               </Button>
             </Left>
             <Body>
@@ -101,6 +101,7 @@ class FormIncome extends Component {
                     ref="amount"
                     name="amount"
                     placeholder="amount"
+                    keyboardType="numeric"
                     onChange={(event) => { this._onChangeInputAmount(event) }}
                   />
                 </Item>

@@ -24,15 +24,21 @@ import {
   Image,
   TouchableOpacity,
   DrawerLayoutAndroid,
+  AsyncStorage,
+  StatusBar
 } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import {connect} from 'react-redux';
 import {
   getIncomeRequest, getDreamRequest,
   getExpenseRequestById, getTotalAmountByMonthById,
-  getExpenseTotalByMonthRequest
+  getExpenseTotalByMonthRequest,
+  getTotalAmountByCategoryThisYearById
 } from '../actions';
 import HeaderDrawer from './HeaderDrawer';
+
+const ACCESS_TOKEN = "access_token";
+const USER_PROFILES = "user_profiles";
 
 class MainScreen extends Component {
   constructor(props) {
@@ -52,35 +58,75 @@ class MainScreen extends Component {
   openDrawer() {
     this.drawer._root.open()
   };
+  componentWillMount(){
+    this.props.getIncomeRequest();
+    this.props.getDreamRequest();
+    this.props.getExpenseRequestById();
+
+  }
   componentDidMount(){
     this.props.getIncomeRequest();
     this.props.getDreamRequest();
-    this.props.getExpenseTotalByMonthRequest();
-    try {
-      let check = AsyncStorage.getItem("username")
-      console.log(check);
-    } catch (e) {
-
+    // this.props.getExpenseTotalByMonthRequest();
+    this.props.getExpenseRequestById();
+    // this.props.getTotalAmountByCategoryThisYearById();
+    AsyncStorage.getItem(USER_PROFILES).then((value) => {
+      if (value === null) {
+        this.props.navigation.navigate("Main")
+      }else {
+        return false
+      }
+    }).done();
+  }
+  _getTotal(arr) {
+    var sums = {}, counts = {}, results = [], category;
+    for (var i = 0; i < arr.length; i++) {
+        category = arr[i].category;
+        if (!(category in sums)) {
+            sums[category] = 0;
+            counts[category] = 0;
+        }
+        sums[category] += arr[i].amount;
+        counts[category]++;
     }
-    // this.props.getExpenseRequestById();
+    return sums;
   }
   render(){
-    const chart_wh      = 250
-    const series        = []
-    const sliceColor    = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800', '#E91E63', '#F44336', '#9C27B0', '#2196F3', '#03A9F4', '#009688', '#8BC34A', '#FFC107']
-    let totalExpenses = 0
-    if (this.props.getExpense !== 0) {
-      this.props.getExpense.map((expenses, index) => {
-        console.log(expenses);
-        // series.push(expenses.amount)
-        // totalExpenses += expenses.amount
-      })
-    }
 
+    const chart_wh      = 250
+    const sliceColor    = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800', '#E91E63', '#F44336', '#9C27B0', '#2196F3', '#03A9F4', '#009688', '#8BC34A', '#FFC107']
+    let totalExpenses   = 0
+    let dataCalculate   = []
+    let color = []
+    let uniqueCategory
+    if (this.props.getExpense !== 0) {
+      let data = []
+      let cat = []
+      this.props.getExpense.map((expenses, index) => {
+        totalExpenses += expenses.amount
+        data.push(expenses)
+        let obj = {}
+        obj.category = expenses.category
+        obj.amount = expenses.amount
+        cat.push(obj)
+      })
+      uniqueCategory = [...new Set(data.map(item => item.category))];
+      cat.map((calculateAmount, index) => {
+        dataCalculate.push(calculateAmount)
+      })
+
+      for (var i = 0; i < uniqueCategory.length; i++) {
+        let objColor = {}
+        objColor.category = uniqueCategory[i]
+        objColor.color = sliceColor[i]
+        color.push(objColor)
+      }
+    }
+    const series = Object.values(this._getTotal(dataCalculate))
     const { navigate }  = this.props.navigation;
-    const totalIncome   = this.props.getIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+    const totalIncome   = this.props.getIncome
     const {dream}       = this.props.getDream
-    // const totalBalance  = this.props.getIncome - totalExpenses;
+    const totalBalance  = this.props.getIncome - totalExpenses;
     let dreamParse;
     try {
       dream.map((myDream) => {
@@ -101,8 +147,10 @@ class MainScreen extends Component {
         drawerPosition={DrawerLayoutAndroid.positions.Left}
         renderNavigationView={() => navigationView}
       >
+      <View>
+      </View>
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
               <Left>
                 <Button transparent
                   onPress={ ()=> this.drawer.openDrawer()}
@@ -114,12 +162,16 @@ class MainScreen extends Component {
                   <Title>Dashboard</Title>
               </Body>
               <Right>
-                  <Button transparent>
-                    <Icon name="md-notifications"/>
-                  </Button>
+              <Button
+                transparent
+                onPress={ () => navigate('PushNotifications', {notifications: this.state.notifications})}
+              >
+                <Icon name="md-notifications"/>
+              </Button>
               </Right>
           </Header>
           <Content>
+          {(dreamParse !== undefined) ? (
             <TouchableOpacity onPress={()=> navigate('DetailDreams')}>
               <Card>
                 <CardItem header itemDivider >
@@ -134,48 +186,59 @@ class MainScreen extends Component {
                 </CardItem>
               </Card>
             </TouchableOpacity>
+          ) : <Text>No Dream Available</Text>}
+
             <Card>
               <CardItem header>
-                <Icon active name="ios-calculator" style={{color:"#009688"}}/>
+                <Icon active name="ios-calculator" style={{color:"#2196F3"}}/>
                 <Text style={{fontSize: 20, fontWeight: '400'}}>Overview</Text>
               </CardItem>
 
                 <CardItem>
                  <Text>Balance</Text>
                  <Right>
-                    <Text>Rp. </Text>
+                    <Text>Rp. {totalBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
                  </Right>
                 </CardItem>
                 <CardItem>
                  <Text>Income</Text>
                  <Right>
-                    <Text>Rp. {totalIncome}</Text>
+                    <Text>Rp. {totalIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
                  </Right>
                </CardItem>
 
                <CardItem>
                 <Text>Expenses</Text>
                 <Right>
-                   <Text>Rp. </Text>
+                   <Text>Rp. {totalExpenses.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
                 </Right>
               </CardItem>
              </Card>
                <Card>
                  <CardItem header>
-                    <Icon active name="ios-pie-outline" style={{color:"#F44336"}}/>
+                    <Icon active name="ios-pie-outline" style={{color:"#2196F3"}}/>
                    <Text style={{fontSize: 20, fontWeight: '400'}}>Expenses chart</Text>
                    <Right>
                       <Text>All Category</Text>
                    </Right>
                  </CardItem>
+                 {(color !== undefined) ? (color.map((dataColor, index) => {
+                   return (
+                     <View key={dataColor.color}>
+                      <Icon name="ios-cog-outline" style={{color: dataColor.color}}/>
+                      <Text>{dataColor.category}: {Math.ceil(series[index] / totalExpenses * 100)} %</Text>
+                     </View>
+                   )
+                 })) : <Text>No data</Text>}
                  <CardItem style={{justifyContent: "center"}}>
-                 <TouchableOpacity onPress={()=> navigate('DetailCharts')}>
-                    <PieChart
-                      chart_wh={150}
-                      series={series}
-                      sliceColor={sliceColor}
-                    />
-                  </TouchableOpacity>
+                   <TouchableOpacity>
+                      <PieChart
+                        chart_wh={150}
+                        series={series}
+                        sliceColor={sliceColor}
+                      />
+                    </TouchableOpacity>
+
                  </CardItem>
                 </Card>
           </Content>
@@ -187,24 +250,6 @@ class MainScreen extends Component {
             position="bottomRight"
             onPress={() => this.setState({ active: !this.state.active })}>
               <Icon name="add" />
-            <Button
-              style={{ backgroundColor: '#CDDC39' }}
-              onPress={()=>navigate('DetailCategory')}
-            >
-              <Icon name="ios-stats-outline" />
-            </Button>
-            <Button
-              style={{ backgroundColor: '#CDDC39' }}
-              onPress={()=>navigate('Category')}
-            >
-                <Icon name="ios-apps-outline" />
-            </Button>
-            <Button
-              style={{ backgroundColor: '#CDDC39' }}
-              onPress={()=>navigate('Dream')}
-            >
-                <Icon name="ios-glasses-outline" />
-            </Button>
             <Button
               style={{ backgroundColor: '#34A34F' }}
               onPress={()=>navigate('Income')}
@@ -223,6 +268,8 @@ class MainScreen extends Component {
     )
   }
 }
+// navigate to detail chart
+//onPress={()=> navigate('DetailCharts', {category: uniqueCategory})}
 
 const mapsStateToProps = state => {
   return {
@@ -235,10 +282,11 @@ const mapsStateToProps = state => {
 
 const mapsDispatchToProps = dispatch => {
   return {
-    getIncomeRequest      : () => dispatch(getIncomeRequest()),
-    getDreamRequest       : () => dispatch(getDreamRequest()),
-    getExpenseRequestById : () => dispatch(getExpenseRequestById()),
-    getExpenseTotalByMonthRequest     : () => dispatch(getExpenseTotalByMonthRequest())
+    getIncomeRequest                    : () => dispatch(getIncomeRequest()),
+    getDreamRequest                     : () => dispatch(getDreamRequest()),
+    getExpenseRequestById               : () => dispatch(getExpenseRequestById()),
+    getExpenseTotalByMonthRequest       : () => dispatch(getExpenseTotalByMonthRequest()),
+    getTotalAmountByCategoryThisYearById: () => dispatch(getTotalAmountByCategoryThisYearById())
   }
 }
 

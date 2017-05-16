@@ -12,14 +12,18 @@ import {
    FooterTab, Button, Left, Right, Body, Icon, Card, CardItem,Thumbnail
  } from 'native-base';
 
-import FBSDK, { LoginManager } from 'react-native-fbsdk';
+import FBSDK, { LoginManager, GraphRequest, GraphRequestManager, AccessToken } from 'react-native-fbsdk';
+
+const ACCESS_TOKEN = "access_token";
+const USER_PROFILES = "user_profiles";
 
 class SignIn extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      username : 'admin',
-      password : 'admin',
+      username : '',
+      password : '',
+      token: ""
     }
   }
   pressButton() {
@@ -30,28 +34,67 @@ class SignIn extends React.Component {
     header: null
   }
 
-  authCheck(){
-    this.props.navigation.navigate("MainScreen")
+  _setStorage(){
+    AsyncStorage.setItem(ACCESS_TOKEN, "RERtukj67456");
+    this.setState({"token": "RERtukj67456"});
   }
-  componentDidMount(){
-    AsyncStorage.getItem("username").then((value) => {
-    })
-    .then(res => {
-      if (value !== null){
-        this.props.navigation.navigate("MainScreen")
-      }
-    });
+
+  _localSignInAndSetStorage(){
+    if (this.state.username === "admin" && this.state.password === "admin") {
+      AsyncStorage.setItem(ACCESS_TOKEN, "RERtukj67456");
+      this.setState({"token": "RERtukj67456"});
+    }else {
+      return false
+    }
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
+        this.setState({"token": value});
+    }).done();
   }
 
   _fbAuth() {
-    let self = this;
-    LoginManager.logInWithReadPermissions(['public_profile',"email", "user_friends"]).then(function (result) {
+    let self = this
+    LoginManager.logInWithReadPermissions(['public_profile']).then(function (result) {
       if (result.isCancelled) {
         console.log('Login was cancelled');
       } else {
-        self.authCheck()
-        AsyncStorage.setItem(username, "admin")
-        // console.log('Login success' + result.grantedPermissions.toString());
+        AccessToken.getCurrentAccessToken().then(
+          (data) => {
+            let accessToken = data.accessToken
+            // alert(accessToken.toString())
+
+            const responseInfoCallback = (error, result) => {
+              if (error) {
+                console.log(error)
+                // alert('Error fetching data: ' + error.toString());
+              } else {
+                // console.log(JSON.stringify(result))
+                AsyncStorage.setItem(USER_PROFILES, JSON.stringify(result));
+                self._setStorage()
+                // alert('Success fetching data: ' + result.toString());
+              }
+            }
+
+            const infoRequest = new GraphRequest(
+              '/me',
+              {
+                accessToken: accessToken,
+                parameters: {
+                  fields: {
+                    string: 'email, name, picture.type(large)'
+                  }
+                }
+              },
+              responseInfoCallback
+            );
+
+            // Start the graph request.
+            new GraphRequestManager().addRequest(infoRequest).start()
+
+          }
+        )
       }
     }, function (error) {
       console.log('An error has occured: ' + error);
@@ -59,6 +102,13 @@ class SignIn extends React.Component {
   }
 
   render() {
+    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
+      if (value === "RERtukj67456") {
+        this.props.navigation.navigate("MainScreen")
+      }else {
+        return false
+      }
+    }).done();
     return(
       <View style={styles.loginWrapper}>
         <View style={styles.logoImageWrapper}>
@@ -92,7 +142,7 @@ class SignIn extends React.Component {
               ref={(input) => this.password = input}
               onChangeText={text => this.setState({password : text})}
             />
-            <TouchableOpacity style={styles.buttonContainer} onPress={()=> this.authCheck()}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={()=> this._localSignInAndSetStorage()}>
               <Text style={styles.buttonText}>SIGN IN</Text>
             </TouchableOpacity>
 
@@ -115,7 +165,7 @@ class SignIn extends React.Component {
 const styles = {
   loginWrapper: {
     flex: 1,
-    backgroundColor: '#0288D1',
+    backgroundColor: "#2196F3"
   },
   logoImageWrapper: {
     flex: 1,

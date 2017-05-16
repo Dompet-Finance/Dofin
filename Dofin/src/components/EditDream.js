@@ -42,8 +42,8 @@ class FormDream extends Component {
     this.setState({
       loading: !this.state.visible
     });
+    this.props.navigation.navigate("DetailDreams")
     this.props.updateDreamRequest(this.state)
-    this.props.navigation.navigate("Main")
   }
   _onChangeInputDream(event){
     this.setState({dream: event.nativeEvent.text})
@@ -60,7 +60,7 @@ class FormDream extends Component {
     }
     this.setState({
       dream       : this.props.navigation.state.params.data.dream,
-      description : "",
+      description : this.props.navigation.state.params.data.description,
       _id         : this.props.navigation.state.params.data._id,
       record_by   : this.props.navigation.state.params.data._id
     });
@@ -70,12 +70,12 @@ class FormDream extends Component {
     const { goBack } = this.props.navigation;
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
                 onPress={() => this.props.navigation.navigate("DetailDreams")}
               >
-                  <Icon name='arrow-back' />
+                  <Icon name='ios-arrow-back-outline' />
               </Button>
             </Left>
             <Body>
@@ -112,7 +112,7 @@ class FormDream extends Component {
                 </Item>
               </Card>
 
-              <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
+              <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
                 { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
               </Button>
             </Form>

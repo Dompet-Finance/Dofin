@@ -1,6 +1,27 @@
 "use strict"
 
 const User = require('../models/user');
+const hash = require('password-hash');
+
+const signUpUser = (req, res) => {
+  User.create(req.body, (err, rec) => {
+    if (err) {
+      res.send(err)
+    }else {
+      res.send(rec)
+    }
+  })
+}
+
+const signInUser = (req, res) => {
+  User.findOne({email: req.body.email}, (err, rec) => {
+    if (err) {
+      res.send(err)
+    }else {
+      res.send(rec)
+    }
+  })
+}
 
 const getUsers = (req, res) => {
   User.find({}, (err, recs) => {
@@ -129,4 +150,6 @@ module.exports = {
   insertCategoryById,
   updateCategoryById,
   removeCategoryById,
+  signUpUser,
+  signInUser
 }

@@ -16,71 +16,105 @@ import {
   Icon
 } from 'native-base';
 
+import {
+  TouchableOpacity
+} from 'react-native';
+import {connect} from 'react-redux';
+import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
+import {logout} from '../actions';
+
+const USER_PROFILES = "user_profiles";
+
 class DrawerContent extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      name: '',
+      picture: ''
+    }
   }
 
   _logout(){
-    AsyncStorage.removeItem("username")
+    AsyncStorage.removeItem(USER_PROFILES);
+    this.props.logout()
     this.props.navigation.navigate("Main")
+  }
+
+  componentWillMount(){
+    try {
+      let self = this
+      AsyncStorage.getItem(USER_PROFILES).then((value) => {
+        let data
+        if (value !== null) {
+            data = JSON.parse(value)
+            self.setState({name: data.name, picture: data.picture.data.url})
+        }else {
+          self.setState({name: "admin", picture: ""})
+        }
+      }).done();
+    } catch (e) {
+
+    }
+
   }
 
   render() {
     const { navigate } = this.props.navigation
     return (
       <Container style={styles.container}>
-          <Image source={{uri: 'https://image.freepik.com/free-psd/abstract-background-design_1297-87.jpg'}} style={styles.profile}>
-            <Image
-              style={styles.avatar}
-              source={{uri: 'https://i1.wp.com/img11.deviantart.net/fcd9/i/2010/182/b/9/aang_the_last_airbender_by_cigsace.png?resize=498%2C413'}}
-            />
-            <Text style={styles.name}>Your Profile Here</Text>
-          </Image>
+      <TouchableOpacity onPress={()=> navigate("DetailProfile")}>
+        <View style={styles.profile}>
+          <Image
+            style={styles.avatar}
+            source={{uri: this.state.picture}}
+          />
+          <Text style={styles.name}>{this.state.name}</Text>
+        </View>
+      </TouchableOpacity>
           <Content>
             <List>
               <ListItem icon onPress={() => navigate('Struk')}>
                 <Left>
-                    <Icon name="ios-cash" style={{color:"#558B2F"}} />
+                    <IconCustom name="cash-usd" size={25} style={{color: "#2196F3"}}/>
                 </Left>
                 <Body>
                   <Text>Expenses</Text>
                 </Body>
                 <Right>
-                  <Icon name="arrow-round-forward" />
+                  <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
               <ListItem icon onPress={() => navigate('DetailDreams')}>
                 <Left>
-                    <Icon name="ios-trophy" style={{color:"#F9A825"}} />
+                    <IconCustom name="run-fast" size={25} style={{color: "#2196F3"}}/>
                 </Left>
                 <Body>
                   <Text>Dreams</Text>
                 </Body>
                 <Right>
-                  <Icon name="arrow-round-forward" />
+                  <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
               <ListItem icon onPress={() => navigate('DetailCategory')}>
                 <Left>
-                    <Icon name="cube" style={{color:"#757575"}} />
+                    <IconCustom name="buffer" size={25} style={{color: "#2196F3"}}/>
                 </Left>
                 <Body>
                   <Text>Category</Text>
                 </Body>
                 <Right>
-                  <Icon name="arrow-round-forward" />
+                  <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
               <ListItem icon onPress={() => {this._logout()}}>
                 <Left>
-                    <Icon name="cube" style={{color:"#757575"}} />
+                    <IconCustom name="logout" size={25} style={{color: "#2196F3"}}/>
                 </Left>
                 <Body>
                   <Text>Logout</Text>
                 </Body>
                 <Right>
-                  <Icon name="arrow-round-forward" />
+                  <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
             </List>
@@ -98,7 +132,8 @@ const styles = {
     height: 200,
     backgroundColor: '#3949AB',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: "#2196F3"
   },
   avatar: {
     width: 80,
@@ -112,4 +147,11 @@ const styles = {
     color: '#fff'
   }
 };
-export default DrawerContent;
+
+const mapsDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+
+export default connect(null, mapsDispatchToProps)(DrawerContent)

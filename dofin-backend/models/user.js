@@ -11,6 +11,7 @@ const categorySchema = mongoose.Schema({
 }, { _id: false })
 
 const userSchema = mongoose.Schema({
+  name: {type: String},
   email: {
     type: String,
     required: [true, 'Email is required'],

@@ -427,6 +427,7 @@ class FormStruk extends Component {
               <Title>
                 New Expense
               </Title>
+
             </Body>
             <Right>
             </Right>

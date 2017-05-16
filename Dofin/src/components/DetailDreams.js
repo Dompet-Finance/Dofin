@@ -16,9 +16,12 @@ import {
   Card,
   Spinner
 } from 'native-base';
+import {
+  Alert
+} from 'react-native';
 import {connect} from 'react-redux';
 import {getDreamRequest, deleteDreamRequest} from '../actions';
-
+import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class DetailDreams extends Component {
   constructor(props){
@@ -32,20 +35,30 @@ class DetailDreams extends Component {
   static navigationOptions = {
     header: null
   }
+  // componentWillMount(){
+  //   this.props.getDreamRequest()
+  // }
+  componentDidMount(){
+    this.props.getDreamRequest()
+  }
+
   actions(actions, data){
     if (actions === "Detail") {
       this.props.navigation.navigate("SingleDream", {data: data})
     }else if (actions === "Edit") {
       this.props.navigation.navigate("EditDream", {data: data})
     }else if (actions === "Delete") {
-      this.props.deleteDreamRequest(data)
-      this.props.navigation.navigate("Main")
-      // let conf = confirm("Are you sure?")
-      // if (conf) {
-      //   this.props.deleteDreamRequest(data)
-      // }else {
-      //   return false;
-      // }
+      Alert.alert(
+        'Are you sure?',
+        '',
+        [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
+          {text: 'OK', onPress: () => {
+            this.props.deleteDreamRequest(data)
+            this.props.navigation.navigate("DetailDreams")
+          }},
+        ]
+      )
     }
     this.setState({ actions: actions });
   }
@@ -57,32 +70,36 @@ class DetailDreams extends Component {
     const CANCEL_INDEX = 2;
     return (
       <Container>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
               <Left>
                 <Button transparent
                   onPress={() => this.props.navigation.navigate("MainScreen")}
                 >
-                    <Icon name='arrow-back' />
+                    <Icon name='ios-arrow-back-outline' />
                 </Button>
               </Left>
               <Body>
                   <Title>My Dreams</Title>
               </Body>
               <Right>
-                  <Button transparent>
+                  <Button transparent onPress={()=>this.props.navigation.navigate('Dream')}>
+                    <IconCustom name="border-color" size={25} style={{color: "#FFF"}}/>
                   </Button>
               </Right>
           </Header>
           <Content>
-            {(dream.length !== 0) ? dream.map((myDream) => {
+            {(dream !== undefined) ? dream.map((myDream) => {
               return (
                 <Card key={myDream._id}>
                   <ListItem icon>
                     <Left>
-                      <Icon name="ios-walk-outline" />
+                      <Button iconLeft style={{borderRadius: 120, backgroundColor: "#2196F3"}}>
+                          <Icon name="ios-walk-outline" style={{fontSize: 25, marginLeft: 9}}/>
+                      </Button>
                     </Left>
                     <Body>
-                       <Text>{myDream.dream}</Text>
+                        <Text>{myDream.dream}</Text>
+                        <Text note>{myDream.description}</Text>
                     </Body>
                     <Right>
                       <Icon name="ios-apps" onPress={()=> ActionSheet.show(
