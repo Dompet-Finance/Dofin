@@ -86,21 +86,6 @@ class MainScreen extends Component {
         return false
       }
     }).done();
-    if (this.state.appState === 'active') {
-      let date = new Date(Date.now() + (this.state.seconds * 1000));
-      let message = "It seems you have a lot of expenses lately"
-
-      if (Platform.OS === 'ios') {
-        date = date.toISOString();
-      }
-
-      PushNotification.localNotificationSchedule({
-        message,
-        date,
-        foreground: true,
-      });
-      this.setState({notifications: message})
-    }
   }
 
   render(){
@@ -114,6 +99,45 @@ class MainScreen extends Component {
         dateFormat = expenses.date
       })
 
+    let dataCalculate   = []
+    let color = []
+    let uniqueCategory
+    if (this.props.getExpense.length !== 0 && this.props.getIncome !== 0) {
+      let data = []
+      let cat = []
+      this.props.getExpense.map((expenses, index) => {
+        totalExpenses += expenses.amount
+        data.push(expenses)
+        let obj = {}
+        obj.category = expenses.category
+        obj.amount = expenses.amount
+        cat.push(obj)
+      })
+      uniqueCategory = [...new Set(data.map(item => item.category))];
+      cat.map((calculateAmount, index) => {
+        dataCalculate.push(calculateAmount)
+      })
+
+      for (var i = 0; i < uniqueCategory.length; i++) {
+        let objColor = {}
+        objColor.category = uniqueCategory[i]
+        objColor.color = sliceColor[i]
+        color.push(objColor)
+      }
+      if (this.state.appState === 'active' && totalExpenses >= (this.props.getIncome * 0.4)) {
+        let date = new Date(Date.now() + (this.state.seconds * 1000));
+        let message = "It seems you have a lot of expenses lately"
+
+        if (Platform.OS === 'ios') {
+          date = date.toISOString();
+        }
+
+        PushNotification.localNotificationSchedule({
+          message,
+          date,
+          foreground: true,
+        });
+      }
     }
 
     const {dream}       = this.props.getDream
