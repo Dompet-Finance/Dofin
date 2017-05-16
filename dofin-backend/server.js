@@ -7,6 +7,7 @@ const income = require('./routes/income');
 const dream = require('./routes/dream');
 const expense = require('./routes/expense');
 const user = require('./routes/user');
+const notification = require('./routes/notification');
 
 app.use(require('morgan')('dev'))
 app.use(cors())
@@ -18,6 +19,7 @@ app.use("/income", income);
 app.use("/dreams", dream);
 app.use("/expenses", expense);
 app.use("/users", user);
+app.use("/notification", notification);
 
 app.listen(8080 || process.env.PORT, () => {
   console.log(`Server running!`);

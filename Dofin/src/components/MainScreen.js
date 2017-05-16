@@ -38,7 +38,7 @@ import {
 import HeaderDrawer from './HeaderDrawer';
 
 const ACCESS_TOKEN = "access_token";
-
+const USER_PROFILES = "user_profiles";
 
 class MainScreen extends Component {
   constructor(props) {
@@ -70,7 +70,7 @@ class MainScreen extends Component {
     // this.props.getExpenseTotalByMonthRequest();
     this.props.getExpenseRequestById();
     // this.props.getTotalAmountByCategoryThisYearById();
-    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
+    AsyncStorage.getItem(USER_PROFILES).then((value) => {
       if (value === null) {
         this.props.navigation.navigate("Main")
       }else {
@@ -162,9 +162,12 @@ class MainScreen extends Component {
                   <Title>Dashboard</Title>
               </Body>
               <Right>
-                  <Button transparent>
-                    <Icon name="md-notifications"/>
-                  </Button>
+              <Button
+                transparent
+                onPress={ () => navigate('PushNotifications', {notifications: this.state.notifications})}
+              >
+                <Icon name="md-notifications"/>
+              </Button>
               </Right>
           </Header>
           <Content>
