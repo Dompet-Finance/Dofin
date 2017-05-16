@@ -4,7 +4,7 @@ import { postRequestCategory, getRequestCategory, updateRequestCategory, deleteR
 import { expenseRequest, getExpenseRequestById, getExpenseRequest, getExpenseTotalByMonthRequest, getTotalAmountByCategoryThisYearById } from './expenseAction';
 import { imgPostRequest } from './cameraAction';
 import { placesRequest } from './placesAction';
-import { getNotifRequest, notifRequest } from './notificationonAction';
+import { getNotifRequest, notifRequest } from './notificationAction';
 
 export{
   incomeRequest,

@@ -25,7 +25,7 @@ import {
   TouchableOpacity,
   DrawerLayoutAndroid,
   AsyncStorage,
-  StatusBar
+  StatusBar,
   AppState,
   Platform,
 } from "react-native";
@@ -96,7 +96,16 @@ class MainScreen extends Component {
         return false
       }
     }).done();
-    if (this.state.appState === 'active' && this.props.getIncome > 100000000000) {
+    let totalExpenses   = 0
+    this.props.getExpense.map((expenses, index) => {
+      totalExpenses += expenses.amount
+      data.push(expenses)
+      let obj = {}
+      obj.category = expenses.category
+      obj.amount = expenses.amount
+      cat.push(obj)
+    })
+    if (this.state.appState === 'active' && totalExpenses >= (this.props.getIncome * 0.4)) {
       let date = new Date(Date.now() + (this.state.seconds * 1000));
       let message = "It seems you have a lot of expenses lately"
 
@@ -338,19 +347,12 @@ const mapsStateToProps = state => {
 
 const mapsDispatchToProps = dispatch => {
   return {
-<<<<<<< 56e988d3483a65562e5aac637596c9a133f21838
     getIncomeRequest                    : () => dispatch(getIncomeRequest()),
     getDreamRequest                     : () => dispatch(getDreamRequest()),
     getExpenseRequestById               : () => dispatch(getExpenseRequestById()),
     getExpenseTotalByMonthRequest       : () => dispatch(getExpenseTotalByMonthRequest()),
-    getTotalAmountByCategoryThisYearById: () => dispatch(getTotalAmountByCategoryThisYearById())
-=======
-    getIncomeRequest      : () => dispatch(getIncomeRequest()),
-    getDreamRequest       : () => dispatch(getDreamRequest()),
-    getExpenseRequestById : () => dispatch(getExpenseRequestById()),
-    getExpenseTotalByMonthRequest     : () => dispatch(getExpenseTotalByMonthRequest())
-    notifRequest          : notif => dispatch(notifRequest(notif))
->>>>>>> google places, notifications, fab and login styling
+    getTotalAmountByCategoryThisYearById: () => dispatch(getTotalAmountByCategoryThisYearById()),
+    notifRequest                        : notif => dispatch(notifRequest(notif))
   }
 }
 

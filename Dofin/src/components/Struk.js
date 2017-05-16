@@ -35,6 +35,14 @@ import { connect } from 'react-redux';
 import { expenseRequest, placesRequest } from '../actions';
 import Camera from './Camera'
 
+const { width, height } = Dimensions.get('window')
+
+const SCREEN_HEIGHT = height
+const SCREEN_WIDTH = width
+const ASPECT_RATIO = width / height
+const LATITUDE_DELTA = 0.0922
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
+
 class FormStruk extends Component {
   constructor(props){
     super(props)
@@ -49,8 +57,13 @@ class FormStruk extends Component {
       photos: '',
       images: [],
       modalVisible: false,
+      initialPosition: 'unknown',
+      lastPosition: 'unknown',
     }
   }
+
+  watchID: ?number = null;
+
   static navigationOptions = {
     header: null
   }
@@ -108,7 +121,22 @@ class FormStruk extends Component {
   }
 
   componentDidMount() {
-    this.props.placesRequest()
+    navigator.geolocation.getCurrentPosition(
+     (position) => {
+       var initialPosition = JSON.stringify(position);
+       this.setState({initialPosition});
+     },
+     (error) => alert(JSON.stringify(error)),
+     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+   );
+   this.watchID = navigator.geolocation.watchPosition((position) => {
+     var lastPosition = JSON.stringify(position);
+     this.setState({lastPosition});
+     this.props.placesRequest(JSON.parse(this.state.lastPosition))
+   });
+  }
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
   render(){
     const { navigate, goBack } = this.props.navigation
@@ -215,7 +243,7 @@ class FormStruk extends Component {
                     dataSource = {dataSource}
                     renderRow = {(data, i) =>
                       <TouchableOpacity onPress={() => this.setState({location: data})}>
-                        <Badge>
+                        <Badge style={styles.location} >
                           <Text>{data}</Text>
                         </Badge>
                       </TouchableOpacity>
@@ -323,12 +351,16 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center'
   },
+  location: {
+    backgroundColor: '#E0E0E0',
+    margin: 10
+  }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     expenseRequest: newExpense => dispatch(expenseRequest(newExpense)),
-    placesRequest: () => dispatch(placesRequest())
+    placesRequest: position => dispatch(placesRequest(position))
   }
 }
 

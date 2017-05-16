@@ -34,17 +34,6 @@ export default class SignupForm extends Component {
       <View style={styles.container}>
         <View style={styles.form} ref={(ref) => this.formRef = ref}>
           <CustomTextInput
-            ref={(ref) => this.mobileInputRef = ref}
-            placeholder={'Full name'}
-            editable={!isLoading}
-            returnKeyType={'next'}
-            blurOnSubmit={false}
-            withRef={true}
-            onSubmitEditing={() => this.usernameInputRef.focus()}
-            onChangeText={(value) => this.setState({ fullName: value })}
-            isEnabled={!isLoading}
-          />
-          <CustomTextInput
             ref={(ref) => this.usernameInputRef = ref}
             placeholder={'Username'}
             editable={!isLoading}
