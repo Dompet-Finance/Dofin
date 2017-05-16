@@ -21,6 +21,10 @@ import EditCategory from './components/EditCategory'
 import Transactions from './components/Transactions'
 import Drawer from './components/HeaderDrawer'
 import CredentialCheck from './components/CredentialCheck'
+import PushNotifications from './components/PushNotifications'
+import LoginAnimation from './components/login/app'
+import Fab from './components/fab/fab'
+import Geolocation from './components/GetLokasi'
 
 const App = StackNavigator({
   Main            : {screen: SignIn},
@@ -38,6 +42,7 @@ const App = StackNavigator({
   Colors          : {screen: Colors},
   SingleDream     : {screen: SingleDream},
   EditDream       : {screen: EditDream},
+  PushNotifications: {screen: PushNotifications},
   SingleCategory  : {screen: SingleCategory}
 },{ headerMode: 'screen' })
 export default App

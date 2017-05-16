@@ -18,6 +18,7 @@ import {
   Segment,
   ActionSheet,
   Thumbnail,
+  Badge
 } from 'native-base';
 import {
   ListView,
@@ -26,11 +27,12 @@ import {
   Dimensions,
   Modal,
   ScrollView,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import { expenseRequest } from '../actions';
+import { expenseRequest, placesRequest } from '../actions';
 import Camera from './Camera'
 
 class FormStruk extends Component {
@@ -105,18 +107,11 @@ class FormStruk extends Component {
     this.setState({ index })
   }
 
-  componentDidUpdate() {
-    console.log('update');
-    if (this.state.items.length == 0) {
-      this.setState({items: this.props.camera[0]})
-    } else {
-      console.log('stop the update');
-    }
-    console.log(this.state.items);
+  componentDidMount() {
+    this.props.placesRequest()
   }
-
   render(){
-    const {goBack} = this.props.navigation
+    const { navigate, goBack } = this.props.navigation
     const BUTTONS = [
       'Food and Drink',
       'Travel',
@@ -129,7 +124,15 @@ class FormStruk extends Component {
       'Cancel'
     ];
     const { width } = Dimensions.get('window')
-    console.log(this.props.camera);
+    const { places } = this.props
+    let placesData = []
+    if (this.props.places !== 0) {
+      places.map((place) => {
+        placesData.push(place.placeName);
+      })
+    }
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    const dataSource = ds.cloneWithRows(placesData)
     return (
       <Container>
           <Header style={{backgroundColor: "#2196F3"}}>
@@ -202,8 +205,22 @@ class FormStruk extends Component {
                   <Icon name='pin' style={{color:"#e53935"}} />
                   <Input
                     name="location"
-                    onChangeText={text => this._onChangeInputLocation(text)}
-                    placeholder="Location"/>
+                    value={this.state.location}
+                    placeholder="Location"
+                  />
+                </Item>
+                <Item>
+                  <ListView
+                    horizontal={true}
+                    dataSource = {dataSource}
+                    renderRow = {(data, i) =>
+                      <TouchableOpacity onPress={() => this.setState({location: data})}>
+                        <Badge>
+                          <Text>{data}</Text>
+                        </Badge>
+                      </TouchableOpacity>
+                    }
+                  />
                 </Item>
                 <Item>
                   <Icon name='calendar' style={{color:"#1E88E5"}} />
@@ -310,13 +327,15 @@ const styles = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    expenseRequest: newExpense => dispatch(expenseRequest(newExpense))
+    expenseRequest: newExpense => dispatch(expenseRequest(newExpense)),
+    placesRequest: () => dispatch(placesRequest())
   }
 }
 
 const mapStateToProps = state => {
   return {
-    camera: state.camera
+    camera: state.camera,
+    places: state.places
   }
 }
 

@@ -18,7 +18,7 @@ import {
   CardItem,
   Drawer,
   Toast,
-  Thumbnail
+  Thumbnail,
 } from 'native-base';
 import {
   Image,
@@ -26,6 +26,8 @@ import {
   DrawerLayoutAndroid,
   AsyncStorage,
   StatusBar
+  AppState,
+  Platform,
 } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import {connect} from 'react-redux';
@@ -33,9 +35,15 @@ import {
   getIncomeRequest, getDreamRequest,
   getExpenseRequestById, getTotalAmountByMonthById,
   getExpenseTotalByMonthRequest,
-  getTotalAmountByCategoryThisYearById
+  getTotalAmountByCategoryThisYearById,
+  notifRequest
 } from '../actions';
+import PushNotification from 'react-native-push-notification';
+import IconBadge from 'react-native-icon-badge';
+
 import HeaderDrawer from './HeaderDrawer';
+import PushController from './PushController';
+import PushNotifications from './PushNotifications';
 
 const ACCESS_TOKEN = "access_token";
 
@@ -46,7 +54,10 @@ class MainScreen extends Component {
     this.state = {
         active: false,
         showToast: false,
-        income: ''
+        income: '',
+        seconds: 1,
+        appState: AppState.currentState,
+        notifications: []
     };
   }
   static navigationOptions = {
@@ -85,6 +96,21 @@ class MainScreen extends Component {
         return false
       }
     }).done();
+    if (this.state.appState === 'active' && this.props.getIncome > 100000000000) {
+      let date = new Date(Date.now() + (this.state.seconds * 1000));
+      let message = "It seems you have a lot of expenses lately"
+
+      if (Platform.OS === 'ios') {
+        date = date.toISOString();
+      }
+
+      PushNotification.localNotificationSchedule({
+        message,
+        date,
+        foreground: true,
+      });
+      this.props.notifRequest(message)
+    }
   }
   _getTotal(arr) {
     var sums = {}, counts = {}, results = [], category;
@@ -170,9 +196,37 @@ class MainScreen extends Component {
                   <Title>Dashboard</Title>
               </Body>
               <Right>
-                  <Button transparent>
+
+                {(this.state.notifications.length !== 0) && (
+                  <IconBadge
+                    MainElement={
+                      <Button
+                        transparent
+                        onPress={ () => navigate('PushNotifications', {notifications: this.state.notifications})}
+                      >
+                        <Icon name="md-notifications"/>
+                      </Button>
+                    }
+                    BadgeElement={
+                      <Text style={{color:'#FFFFFF'}}>{this.state.notifications.length}</Text>
+                    }
+
+                    IconBadgeStyle={
+                      {width:15,
+                      height:15,
+                      backgroundColor: '#b71c1c'}
+                    }
+                  />
+                )}
+                {(this.state.notifications.length === 0) && (
+                  <Button
+                    transparent
+                    onPress={ () => navigate('PushNotifications', {notifications: this.state.notifications})}
+                  >
                     <Icon name="md-notifications"/>
                   </Button>
+                )}
+                  <PushController />
               </Right>
           </Header>
           <Content>
@@ -284,11 +338,19 @@ const mapsStateToProps = state => {
 
 const mapsDispatchToProps = dispatch => {
   return {
+<<<<<<< 56e988d3483a65562e5aac637596c9a133f21838
     getIncomeRequest                    : () => dispatch(getIncomeRequest()),
     getDreamRequest                     : () => dispatch(getDreamRequest()),
     getExpenseRequestById               : () => dispatch(getExpenseRequestById()),
     getExpenseTotalByMonthRequest       : () => dispatch(getExpenseTotalByMonthRequest()),
     getTotalAmountByCategoryThisYearById: () => dispatch(getTotalAmountByCategoryThisYearById())
+=======
+    getIncomeRequest      : () => dispatch(getIncomeRequest()),
+    getDreamRequest       : () => dispatch(getDreamRequest()),
+    getExpenseRequestById : () => dispatch(getExpenseRequestById()),
+    getExpenseTotalByMonthRequest     : () => dispatch(getExpenseTotalByMonthRequest())
+    notifRequest          : notif => dispatch(notifRequest(notif))
+>>>>>>> google places, notifications, fab and login styling
   }
 }
 

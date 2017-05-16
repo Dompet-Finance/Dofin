@@ -12,10 +12,6 @@ export const imgPostRequest = newImage => {
     type: newImage.type,
     data: newImage.data
   }})
-  .then(res => dispatch(postImage([ { item: 'MUFFIN, REGULAR, BLUEBERRY 1 x', price: 27000 },
-  { item: 'MUFFIN, REGULAR, BLUEBERRY 1 x', price: 27000 },
-  { item: 'CAFFE LATTE, GRANDE, 1X', price: 40000 },
-  { item: 'CSR DONATION 1x', price: 1000 } ]
-)))
+  .then(res => dispatch(postImage(res.data)))
   .catch(err => console.log(err.message))
 };

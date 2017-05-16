@@ -121,6 +121,20 @@ const deleteUserById = (req, res) => {
     })
 } // deleteUserById
 
+const insertNotification = (req, res) => {
+  console.log(req.body);
+  // User.findByIdAndUpdate(req.params.user_id,
+  //   { $push: { notifications: {
+  //     notification: req.body.notification
+  //   }}}, { new: true })
+  //     .exec((err, rec) => {
+  //       if (err) res.send(err)
+  //       else {
+  //         res.json(rec)
+  //       }
+  //     })
+}
+
 module.exports = {
   getUsers,
   getUserById,
@@ -129,4 +143,5 @@ module.exports = {
   insertCategoryById,
   updateCategoryById,
   removeCategoryById,
+  insertNotification,
 }

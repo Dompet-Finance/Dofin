@@ -3,6 +3,8 @@ import { dreamRequest, getDreamRequest, updateDreamRequest, deleteDreamRequest }
 import { postRequestCategory, getRequestCategory, updateRequestCategory, deleteRequestCategory } from './categoryAction';
 import { expenseRequest, getExpenseRequestById, getExpenseRequest, getExpenseTotalByMonthRequest, getTotalAmountByCategoryThisYearById } from './expenseAction';
 import { imgPostRequest } from './cameraAction';
+import { placesRequest } from './placesAction';
+import { getNotifRequest, notifRequest } from './notificationonAction';
 
 export{
   incomeRequest,
@@ -20,5 +22,8 @@ export{
   getExpenseTotalByMonthRequest,
   expenseRequest,
   imgPostRequest,
-  getTotalAmountByCategoryThisYearById
+  getTotalAmountByCategoryThisYearById,
+  placesRequest,
+  getNotifRequest,
+  notifRequest
 }
