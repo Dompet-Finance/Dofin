@@ -25,13 +25,11 @@ export const imgPostRequest = newImage => {
           data: newImage.data
         }})
           .then(res => {
+            // console.log(res.data)
             dispatch(setLoading(false))
-            return dispatch(postImage([
-              { item: 'MUFFIN, REGULAR, BLUEBERRY 1 x', price: 27000 },
-              { item: 'MUFFIN, REGULAR, BLUEBERRY 1 x', price: 27000 },
-              { item: 'CAFFE LATTE, GRANDE, 1X', price: 40000 },
-              { item: 'CSR DONATION 1x', price: 1000 } ]
-            ))
+            let initialState = [{item: '', price: ''}]
+            return dispatch(postImage(res.data.length ?
+              res.data : initialState ))
           })
           .catch(err => {
             console.log(err)
