@@ -87,7 +87,9 @@ class FormStruk extends Component {
     if (!amount.length) {
       return alert('Amount field is required')
     }
-    if (!date.length) {
+    // alert(date.length)
+    // console.log(typeof date);
+    if (date === '') {
       return alert('Date field is required')
     }
     if (!description.length) {

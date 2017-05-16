@@ -99,6 +99,7 @@ class MainScreen extends Component {
     let dataCalculate   = []
     let color = []
     let uniqueCategory
+    console.log(this.props.getExpense);
     if (this.props.getExpense !== 0) {
       let data = []
       let cat = []
@@ -276,7 +277,7 @@ const mapsStateToProps = state => {
     postIncome: state,
     getIncome : state.income,
     getDream  : state,
-    getExpense: state.expense.data
+    getExpense: state.expense.data.expensesById
   }
 }
 

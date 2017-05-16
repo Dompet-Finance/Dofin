@@ -3,7 +3,21 @@ import * as ActionTypes from '../actions/constants';
 const initialState = {
   errorMessage: '',
   successMessage: '',
-  data: [],
+  data: {
+    totalByCategoryThisYear: [],
+    expensesById: [],
+  },
+}
+
+const getExpensesById = (state, payload) => {
+  let newState = {
+    ...state,
+    data: {
+      ...state.data,
+      expensesById: payload
+    }
+  }
+  return newState
 }
 
 const addExpense = (state) => {
@@ -55,7 +69,7 @@ const expenseReducer = (state = initialState, { type, payload }) => {
     case 'RESET_ERROR_MESSAGE': return resetErrorMessage(state, payload)
     case 'RESET_SUCCESS_MESSAGE': return resetSuccessMessage(state, payload)
     case ActionTypes.GET_EXPENSE_AMOUNT_BY_MOUNT: return payload
-    case ActionTypes.GET_EXPENSE_BY_ID: return payload
+    case ActionTypes.GET_EXPENSE_BY_ID: return getExpensesById(state, payload)
     case ActionTypes.GET_EXPENSE: return (state, payload)
     case ActionTypes.GET_TOTAL_AMOUNT_YEAR_BY_ID: return (state, action.payload)
 
