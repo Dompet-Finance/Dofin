@@ -276,7 +276,7 @@ const mapsStateToProps = state => {
     postIncome: state,
     getIncome : state.income,
     getDream  : state,
-    getExpense: state.expense
+    getExpense: state.expense.data
   }
 }
 

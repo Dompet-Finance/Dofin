@@ -174,7 +174,7 @@ const newPhoto = (req, res) => {
                           return obj
                         })
 
-          res.send(items)
+          res.send(data)
           console.log(items);
         })
         .catch((err) => {
