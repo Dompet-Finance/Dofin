@@ -16,32 +16,54 @@ import {
   Icon
 } from 'native-base';
 
+import {
+  TouchableOpacity
+} from 'react-native';
+
 import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ACCESS_TOKEN = "access_token";
+const USER_PROFILES = "user_profiles";
 
 class DrawerContent extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      name: '',
+      picture: ''
+    }
   }
 
   _logout(){
     AsyncStorage.removeItem(ACCESS_TOKEN);
+    AsyncStorage.removeItem(USER_PROFILES);
     this.props.navigation.navigate("Main")
+  }
+
+  componentWillMount(){
+    let self = this
+    AsyncStorage.getItem(USER_PROFILES).then((value) => {
+      let data
+      if (value !== null) {
+          data = JSON.parse(value)
+      }
+        self.setState({name: data.name, picture: data.picture.data.url})
+    }).done();
   }
 
   render() {
     const { navigate } = this.props.navigation
     return (
       <Container style={styles.container}>
-      <View style={styles.profile}>
-      <Image
-        style={styles.avatar}
-        source={{uri: 'https://i1.wp.com/img11.deviantart.net/fcd9/i/2010/182/b/9/aang_the_last_airbender_by_cigsace.png?resize=498%2C413'}}
-      />
-      <Text style={styles.name}>Your Profile Here</Text>
-      </View>
-
+      <TouchableOpacity onPress={()=> navigate("DetailProfile")}>
+        <View style={styles.profile}>
+          <Image
+            style={styles.avatar}
+            source={{uri: this.state.picture}}
+          />
+          <Text style={styles.name}>{this.state.name}</Text>
+        </View>
+      </TouchableOpacity>
           <Content>
             <List>
               <ListItem icon onPress={() => navigate('Struk')}>

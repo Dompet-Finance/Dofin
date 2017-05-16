@@ -81,7 +81,7 @@ class FormIncome extends Component {
               <Button transparent
                 onPress={() => goBack()}
               >
-                  <Icon name='arrow-back' />
+                  <Icon name='ios-arrow-back-outline' />
               </Button>
             </Left>
             <Body>
