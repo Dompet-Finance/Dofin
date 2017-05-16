@@ -21,7 +21,7 @@ import {
   Card,
   CardItem
 } from 'native-base';
-import {Modal, TouchableHighlight} from 'react-native';
+import {Modal, TouchableHighlight, Alert} from 'react-native';
 
 import {postRequestCategory} from '../actions';
 import { connect } from 'react-redux';
@@ -60,11 +60,20 @@ class Category extends Component {
     header: null
   }
   _sendData(){
-    this.setState({
-      loading: !this.state.visible
-    });
-    this.props.navigation.navigate("DetailCategory")
-    this.props.postRequestCategory(this.state)
+    Alert.alert(
+      'Are you sure?',
+      '',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
+        {text: 'OK', onPress: () => {
+          this.setState({
+            loading: !this.state.visible
+          });
+          this.props.navigation.navigate("DetailCategory")
+          this.props.postRequestCategory(this.state)
+        }},
+      ]
+    )
   }
   _onChangeInputCategory(event){
     this.setState({category: event.nativeEvent.text})

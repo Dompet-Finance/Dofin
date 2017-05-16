@@ -18,7 +18,8 @@ import {
   CardItem,
   Drawer,
   Toast,
-  Thumbnail
+  Thumbnail,
+  Spinner
 } from 'native-base';
 import {
   Image,
@@ -36,6 +37,7 @@ import {
   getTotalAmountByCategoryThisYearById
 } from '../actions';
 import HeaderDrawer from './HeaderDrawer';
+import moment from 'moment';
 
 const ACCESS_TOKEN = "access_token";
 const USER_PROFILES = "user_profiles";
@@ -62,14 +64,11 @@ class MainScreen extends Component {
     this.props.getIncomeRequest();
     this.props.getDreamRequest();
     this.props.getExpenseRequestById();
-
   }
   componentDidMount(){
     this.props.getIncomeRequest();
     this.props.getDreamRequest();
-    // this.props.getExpenseTotalByMonthRequest();
     this.props.getExpenseRequestById();
-    // this.props.getTotalAmountByCategoryThisYearById();
     AsyncStorage.getItem(USER_PROFILES).then((value) => {
       if (value === null) {
         this.props.navigation.navigate("Main")
@@ -78,51 +77,50 @@ class MainScreen extends Component {
       }
     }).done();
   }
-  _getTotal(arr) {
-    var sums = {}, counts = {}, results = [], category;
-    for (var i = 0; i < arr.length; i++) {
-        category = arr[i].category;
-        if (!(category in sums)) {
-            sums[category] = 0;
-            counts[category] = 0;
-        }
-        sums[category] += arr[i].amount;
-        counts[category]++;
-    }
-    return sums;
-  }
+
   render(){
-    let totalExpenses   = 0
-    if (this.props.getExpense !== 0) {
-      let data = []
-      let cat = []
-      this.props.getExpense.map((expenses, index) => {
-        totalExpenses += expenses.amount
-        data.push(expenses)
-        let obj = {}
-        obj.category = expenses.category
-        obj.amount = expenses.amount
-        cat.push(obj)
-      })
-    }
     const { navigate }  = this.props.navigation;
     const totalIncome   = this.props.getIncome
+    let totalExpenses   = 0
+    let dateFormat
+    if (this.props.getExpense !== 0) {
+      this.props.getExpense.map((expenses, index) => {
+        totalExpenses += expenses.amount
+        dateFormat = expenses.date
+      })
+
+    }
+
     const {dream}       = this.props.getDream
     const totalBalance  = this.props.getIncome - totalExpenses;
     let dreamParse;
     let dreamParseDescription;
+    let dreamParseTarget;
     try {
       dream.map((myDream) => {
         dreamParse = myDream.dream
         dreamParseDescription = myDream.description
+        dreamParseTarget = myDream.target_value
       })
     } catch (e) {
       dreamParse = ''
       dreamParseDescription = ''
+      dreamParseTarget = ''
+    }
+
+    let date = new Date(dateFormat);
+    let avgExpensesPerDay = Math.ceil(totalExpenses / date.getDate())
+    let avgIncomePerDay = Math.ceil(totalIncome / 30)
+    let moneyBalancePerDay = avgIncomePerDay - avgExpensesPerDay
+    let value = moneyBalancePerDay * 0.3
+    let TargetDays = Math.ceil(dreamParseTarget / value)
+    // console.log(moneyBalancePerDay);
+    if (moneyBalancePerDay < 0) {
+      colorDream = "#FF1744"
     }
     let navigationView = (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
-          <HeaderDrawer {...this.props} />
+        <HeaderDrawer {...this.props} />
       </View>
     );
     return (
@@ -157,21 +155,45 @@ class MainScreen extends Component {
           </Header>
           <Content>
           {(dreamParse !== undefined) ? (
-            <TouchableOpacity onPress={()=> navigate('DetailDreams')}>
               <Card>
-                <CardItem header itemDivider >
-                  <Text style={{fontSize: 20, fontWeight: '400', fontFamily: 'Roboto'}}>My Dream</Text>
+                <CardItem header itemDivider>
+                  {(dreamParse === "") ? (
+                    <Spinner color='#2196F3'/>
+                  ) : (
+                    <View>
+                      <Text style={{fontSize: 20, fontWeight: '500'}}><Icon name="ios-bulb" style={{fontSize: 30, color: colorDream}}/> {dreamParse.toUpperCase()}</Text>
+                      <Button transparent>
+                          <Text>Rp. {dreamParseTarget.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
+                      </Button>
+                    </View>
+                  )}
+                  <Right>
+                  {(dreamParseTarget === "") ? (
+                    <Spinner color='#2196F3'/>
+                  ) : (
+                    <View>
+                    {(moneyBalancePerDay < 0) ? (
+                      <Text note> You spend more than you earn!</Text>
+                    ) : (
+                      <Text note> you can get it in {TargetDays} days</Text>
+                    )}
+                    </View>
+                  )}
+
+                  </Right>
                 </CardItem>
                 <CardItem cardBody>
                     <Image style={{height: 200, width: "100%"}} source={{uri: "https://cdn.tinybuddha.com/wp-content/uploads/2015/06/Boy-Reaching-for-Stars.png"}}/>
                 </CardItem>
                 <CardItem style={{justifyContent: "center", flex: 1, flexDirection: 'column'}}>
-                  <Text style={{fontSize: 22, fontWeight: '500'}}>"{dreamParse.toUpperCase()}"</Text>
-                  <Text note >{dreamParseDescription}</Text>
+                  {(dreamParseDescription === "") ? (
+                    <Spinner color='#2196F3'/>
+                  ) : (
+                    <Text note>{dreamParseDescription}</Text>
+                  )}
                 </CardItem>
               </Card>
-            </TouchableOpacity>
-          ) : <Text>No Dream Available</Text>}
+          ) : <Spinner color='#68A57B' />}
 
             <Card>
               <CardItem header>

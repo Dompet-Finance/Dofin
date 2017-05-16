@@ -19,7 +19,9 @@ import {
   Spinner,
   Card
 } from 'native-base';
-
+import {
+  Alert
+} from 'react-native';
 import {dreamRequest} from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
@@ -30,6 +32,7 @@ class FormDream extends Component {
     this.state = {
       dream: '',
       description: '',
+      target_value: '',
       loading: false,
     }
   }
@@ -37,17 +40,36 @@ class FormDream extends Component {
     header: null
   }
   _sendData(){
-    this.setState({
-      loading: !this.state.visible
-    });
-    this.props.navigation.navigate("DetailDreams")
-    this.props.dreamRequest(this.state)
+    let self = this
+    Alert.alert(
+      'Are you sure?',
+      '',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
+        {text: 'OK', onPress: () => {
+          const { dream, description, target_value } = self.state
+          if ((dream === "") || (description === "") || (target_value === "")) {
+            return alert('All field is required!')
+          }else {
+            self.setState({
+              loading: !self.state.visible
+            });
+            self.props.navigation.navigate("MainScreen")
+            self.props.dreamRequest(self.state)
+          }
+        }},
+      ]
+    )
+
   }
   _onChangeInputDream(event){
     this.setState({dream: event.nativeEvent.text})
   }
   _onChangeInputDescription(event){
     this.setState({description: event.nativeEvent.text})
+  }
+  _onChangeInputTargetValue(event){
+    this.setState({target_value: event.nativeEvent.text})
   }
 
   componentDidMount(){
@@ -99,6 +121,16 @@ class FormDream extends Component {
                     name="description"
                     placeholder="description"
                     onChange={(event) => { this._onChangeInputDescription(event) }}
+                  />
+                </Item>
+                <Item >
+                  <Icon active name='logo-usd' style={{marginRight: 13}}/>
+                  <Input
+                    ref="target_value"
+                    name="target_value"
+                    placeholder="Target Value"
+                    keyboardType="numeric"
+                    onChange={(event) => { this._onChangeInputTargetValue(event) }}
                   />
                 </Item>
               </Card>

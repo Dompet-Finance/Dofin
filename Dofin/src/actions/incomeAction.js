@@ -1,6 +1,7 @@
 import * as ActionTypes from './constants';
 import axios from 'axios'
 const host = 'http://dofin-backend-dev.us-west-2.elasticbeanstalk.com'
+const localHost = 'http://192.168.0.19:8080'
 
 export const postIncome = data => ({
   type: ActionTypes.NEW_INCOME,
@@ -14,7 +15,7 @@ export const getIncome = data => ({
 
 export const incomeRequest = data => {
   return dispatch =>
-    axios.post(host+'/income', {
+    axios.post(localHost+'/income', {
       record_by   : "59158e804412792833f91138",
       amount      : data.amount,
       description : data.description,
@@ -27,7 +28,7 @@ export const incomeRequest = data => {
 
 export const getIncomeRequest = () => {
   return dispatch =>
-    axios.get(host+'/income/59158e804412792833f91138/total_amount')
+    axios.get(localHost+'/income/59158e804412792833f91138/total_amount')
     .then(response => dispatch(getIncome(response.data)))
     .catch(err => console.log(err.message))
 };

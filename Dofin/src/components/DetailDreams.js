@@ -35,9 +35,7 @@ class DetailDreams extends Component {
   static navigationOptions = {
     header: null
   }
-  // componentWillMount(){
-  //   this.props.getDreamRequest()
-  // }
+
   componentDidMount(){
     this.props.getDreamRequest()
   }
@@ -55,7 +53,7 @@ class DetailDreams extends Component {
           {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
           {text: 'OK', onPress: () => {
             this.props.deleteDreamRequest(data)
-            this.props.navigation.navigate("DetailDreams")
+            this.props.getDreamRequest()
           }},
         ]
       )
@@ -90,7 +88,7 @@ class DetailDreams extends Component {
           <Content>
             {(dream !== undefined) ? dream.map((myDream) => {
               return (
-                <Card key={myDream._id}>
+                <Card key={myDream.dream}>
                   <ListItem icon>
                     <Left>
                       <Button iconLeft style={{borderRadius: 120, backgroundColor: "#2196F3"}}>
