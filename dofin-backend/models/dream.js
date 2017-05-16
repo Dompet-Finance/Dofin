@@ -14,6 +14,10 @@ const dreamSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  target_value: {
+    type: Number,
+    required: true,
+  },
 })
 
 const Dream = db.model("Dream", dreamSchema);

@@ -1,6 +1,7 @@
 import { POST_IMAGE } from './constants';
 import axios from 'axios'
 const host = 'http://dofin-backend-dev.us-west-2.elasticbeanstalk.com'
+const localHost = 'http://192.168.0.19:8080'
 
 export const postImage = data => ({
   type: POST_IMAGE,
@@ -20,7 +21,7 @@ export const resetItems = data => ({
 export const imgPostRequest = newImage => {
   return dispatch => {
     // console.log(newImage)
-    return axios.post(host + '/expenses/photo', {blob: {
+    return axios.post(localHost + '/expenses/photo', {blob: {
           type: newImage.type,
           data: newImage.data
         }})

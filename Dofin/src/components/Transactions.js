@@ -286,7 +286,6 @@ class Transactions extends React.Component {
                 transparent
                 onPress={() => goBack()}
                 >
-
                   <Icon name="chevron-left" size={25} color="#fff" />
               </Button>
             </Left>

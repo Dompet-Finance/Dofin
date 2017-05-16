@@ -1,6 +1,7 @@
 import * as ActionTypes from './constants';
 import axios from 'axios'
 const host = 'http://dofin-backend-dev.us-west-2.elasticbeanstalk.com'
+const localHost = 'http://192.168.0.19:8080'
 
 function isError(data) {
   return data.hasOwnProperty('errors') ? true : false
@@ -48,7 +49,7 @@ export const getTotalAmountByCategoryThisYear = data => ({
 
 export const expenseRequest = data => {
   return dispatch =>
-    axios.post(host + '/expenses', {
+    axios.post(localHost + '/expenses', {
       record_by   : data.record_by,
       amount      : data.amount,
       description : data.description,
@@ -87,7 +88,7 @@ export const assignExpenseType = data => {
 
 export const expenseRequestTotalByCategory = data => {
   return dispatch =>
-    axios.get(host + `/expenses/${data.id}/total_amount_by_category`, { timeout: 7000 })
+    axios.get(localHost + `/expenses/${data.id}/total_amount_by_category`, { timeout: 7000 })
     .then(response => {
       // console.log(response.data)
       return isError(response.data) ?
@@ -113,14 +114,14 @@ export const getExpenseTotalByMonthRequest = () => {
 
 export const getExpenseRequestById = () => {
   return dispatch =>
-    axios.get(host+'/expenses/59169da29a208a785ad2e99c')
+    axios.get(localHost+'/expenses/59169da29a208a785ad2e99c')
     .then(response => dispatch(getExpenseById(response.data)))
     .catch(err => console.log(err.message))
 };
 
 export const getTotalAmountByCategoryThisYearById = () => {
   return dispatch =>
-    axios.get(host+'/expenses/59169da29a208a785ad2e99c/total_amount_by_category')
+    axios.get(localHost+'/expenses/59169da29a208a785ad2e99c/total_amount_by_category')
     .then(response => dispatch(getTotalAmountByCategoryThisYear(response.data)))
     .catch(err => console.log(err.message))
 };

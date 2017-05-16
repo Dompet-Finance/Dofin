@@ -35,9 +35,6 @@ class DetailDreams extends Component {
   static navigationOptions = {
     header: null
   }
-  // componentWillMount(){
-  //   this.props.getRequestCategory()
-  // }
   componentDidMount(){
     this.props.getRequestCategory()
   }
@@ -67,6 +64,7 @@ class DetailDreams extends Component {
     this.setState({ actions: actions });
   }
   render(){
+    console.log(this.props.getCategory.category);
     const {category} = this.props.getCategory
     const { goBack } = this.props.navigation;
     const BUTTONS = ["Detail", "Edit", "Delete"];

@@ -1,6 +1,7 @@
 import * as ActionTypes from './constants';
 import axios from 'axios'
 const host = 'http://dofin-backend-dev.us-west-2.elasticbeanstalk.com'
+const localHost = 'http://192.168.0.19:8080'
 
 export const postCategory = data => ({
   type: ActionTypes.NEW_CATEGORY,
@@ -24,7 +25,7 @@ export const deleteCategory = data => ({
 
 export const postRequestCategory = data => {
   return dispatch =>
-    axios.put(host+'/users/59169dd60de1b3789527f322/categories', {
+    axios.put(localHost+'/users/59169dd60de1b3789527f322/categories', {
       category: data.category,
       icon: data.icon_name,
       color: data.color
@@ -35,14 +36,14 @@ export const postRequestCategory = data => {
 
 export const getRequestCategory = data => {
   return dispatch =>
-    axios.get(host+'/users/59169dd60de1b3789527f322')
+    axios.get(localHost+'/users/59169dd60de1b3789527f322')
     .then(response => dispatch(getCategory(response.data)))
     .catch(err => console.log(err.message))
 };
 
 export const updateRequestCategory = data => {
   return dispatch =>
-    axios.patch(host+'/users/'+data.user_id+'/categories', {
+    axios.patch(localHost+'/users/'+data.user_id+'/categories', {
       new_category  : data.category,
       old_category  : data.old_category,
       new_icon      : data.icon,
@@ -54,7 +55,7 @@ export const updateRequestCategory = data => {
 
 export const deleteRequestCategory = data => {
   return dispatch =>
-    axios.put(host+'/users/'+data.id+'/categories/delete', {
+    axios.put(localHost+'/users/'+data.id+'/categories/delete', {
       category: data.category
     })
     .then(response => dispatch(deleteCategory(response.data)))

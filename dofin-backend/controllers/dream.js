@@ -10,7 +10,7 @@ const getDreamsByUserId = (req, res) => {
 const updateDreamsByUserId = (req, res) => {
   Dream.update(
     { _id: req.body._id },
-    { $set: {record_by: req.body.record_by, dream: req.body.dream, description: req.body.description }}, { new: true })
+    { $set: {record_by: req.body.record_by, dream: req.body.dream, description: req.body.description, target_value: req.body.target_value }}, { new: true })
     .exec((err, rec) => {
       if (err) res.send(err)
       else res.json(rec)
@@ -21,7 +21,8 @@ const newDream = (req, res) => {
   Dream.create({
     record_by: req.body.record_by,
     dream: req.body.dream,
-    description: req.body.description
+    description: req.body.description,
+    target_value: req.body.target_value
   }, (err, rec) => {
     if (err) res.send(err)
     else res.json(rec)

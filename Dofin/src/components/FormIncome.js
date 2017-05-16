@@ -38,11 +38,26 @@ class FormIncome extends Component {
     header: null
   }
   _sendData(){
-    this.setState({
-      loading: !this.state.visible
-    });
-    this.props.navigation.navigate("MainScreen")
-    this.props.incomeRequest(this.state)
+
+    Alert.alert(
+      'Are you sure?',
+      '',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
+        {text: 'OK', onPress: () => {
+          const { amount, category, description } = this.state
+          if (amount || category || description) {
+            return alert('All field is required')
+          }else {
+            this.setState({
+              loading: !this.state.visible
+            });
+            this.props.navigation.navigate("MainScreen")
+            this.props.incomeRequest(this.state)
+          }
+        }},
+      ]
+    )
   }
   _onChangeInputAmount(event){
     this.setState({amount: event.nativeEvent.text})
