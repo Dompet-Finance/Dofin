@@ -150,31 +150,44 @@ const newPhoto = (req, res) => {
           const fullTextAnnotation = results[1].responses[0].fullTextAnnotation;
           // res.send(fullTextAnnotation.text);
           var data = fullTextAnnotation.text
-          var array = data.split('\n')
-
-          // connect price within item
-          var array2 = array.map((val, i) => {
-            var tempval = ''
-            if (i < array.length-1)
-              tempval = array[i+1].replace(/(\d+)[\,\.](\d{3})/g, '$1$2')
-                          .replace(/(\d+)[\,\.]\s+/g, '$1')
-            if (/[1-9]\s?x\s?\d{3,}/i.test(tempval))
-              return `${val} ${tempval}`
-            return val
-          })
+          let array = data.split('\n')
 
           // filter min 3 digit, tidak boleh -000
-          var lines = array2.filter(val => /\d{3}/.test(val) && !/\-\d{3}/.test(val))
+          let lines = array.filter(val =>
+            /\d{3}/.test(val) &&
+            !/\-\d{3}/.test(val) &&
+            !/^TOTAL/i.test(val) &&
+            !/^TUNAI/i.test(val) &&
+            !/^CASH/i.test(val) &&
+            !/^KEMBALI/i.test(val) &&
+            !/^NETTO/i.test(val) &&
+            !/^SUB\s?TOTAL/i.test(val) &&
+            !/^GRAND\s?TOTAL/i.test(val) &&
+            !/^DPP/i.test(val) &&
+            !/^DASAR PENGENAAN PAJAK/i.test(val) &&
+            !/^GROSS/i.test(val) &&
+            !/^PPN/i.test(val) &&
+            !/^VAT/i.test(val)
+          )
 
-          var items = lines.filter(val => /^\D/.test(val) && /\d{3,}$/.test(val))
-                        .map(val => {
-                          var obj = {}
-                          obj.item = val.substr(0, val.lastIndexOf(' '))
-                          obj.price = +val.substr(val.lastIndexOf(' ') + 1)
-                          return obj
-                        })
+          let normalized = lines.map((val, i) =>
+            val.replace(/(\d+)[\,\.](\d{3})/g, '$1$2')
+              .replace(/(\d+)[\,\.]\s+/g, '$1')
+          )
 
-          res.send(data)
+          // filter only 3 - 8
+          let items = normalized.filter(val =>
+            /^\D/.test(val) &&
+            /\d{3,}$/.test(val) &&
+            !/\d{9,}$/.test(val))
+              .map(val => {
+                let obj = {}
+                obj.item = val.substr(0, val.lastIndexOf(' '))
+                obj.price = +val.substr(val.lastIndexOf(' ') + 1)
+                return obj
+              })
+
+          res.json(items)
           console.log(items);
         })
         .catch((err) => {
