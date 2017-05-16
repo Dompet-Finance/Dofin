@@ -91,6 +91,7 @@ class LoginForm extends Component {
   }
 
   render () {
+    console.log(this.props.getUser);
     if (this.props.getUser !== 0) {
       let data = {
         email: this.props.getUser.email,
