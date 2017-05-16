@@ -41,6 +41,7 @@ const App = StackNavigator({
   SingleDream     : {screen: SingleDream},
   EditDream       : {screen: EditDream},
   SingleCategory  : {screen: SingleCategory},
-  DetailProfile   : {screen: DetailProfile}
+  DetailProfile   : {screen: DetailProfile},
+  Transaction     : {screen: Transactions}
 },{ headerMode: 'screen' })
 export default App
