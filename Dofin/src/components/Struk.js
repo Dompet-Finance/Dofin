@@ -402,27 +402,12 @@ class FormStruk extends Component {
     return (
 
       <Container style={{backgroundColor: '#fff'}}>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left >
               <Button transparent style={{width: 40}}
-                onPress={() => {
-                  Alert.alert(
-                    `Cancel`,
-                    'Do you really want to cancel?',
-                    [
-                      {text: 'Yes', onPress: () => {
-                        goBack()
-                      }},
-                      {text: 'No'}
-                    ],
-                    {
-                      cancelable: false
-                    }
-                  )
-
-                }}
+                onPress={() => goBack()}
                 >
-                  <Icon name='arrow-back' />
+                  <Icon name='ios-arrow-back-outline' />
               </Button>
             </Left>
             <Body>

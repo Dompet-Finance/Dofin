@@ -276,15 +276,18 @@ class Transactions extends React.Component {
     const {
       footer, footerView, footerLast, badge, categoryMedia
     } = styles
-
+    const { goBack } = this.props.navigation;
     return (
       <FadeInView style={{width: '100%', height: '100%'}}>
         <Container style={{backgroundColor: '#fff'}}>
-          <Header>
+          <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button
-                transparent>
-                  <Icon name="menu" size={25} color="#fff" />
+                transparent
+                onPress={() => goBack()}
+                >
+
+                  <Icon name="chevron-left" size={25} color="#fff" />
               </Button>
             </Left>
             <Body>

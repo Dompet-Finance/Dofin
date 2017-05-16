@@ -92,14 +92,7 @@ class MainScreen extends Component {
     return sums;
   }
   render(){
-
-    const chart_wh      = 250
-    const sliceColor    = ['#F44336','#2196F3','#FFEB3B', '#4CAF50', '#FF9800', '#E91E63', '#F44336', '#9C27B0', '#2196F3', '#03A9F4', '#009688', '#8BC34A', '#FFC107']
     let totalExpenses   = 0
-    let dataCalculate   = []
-    let color = []
-    let uniqueCategory
-    console.log(this.props.getExpense);
     if (this.props.getExpense !== 0) {
       let data = []
       let cat = []
@@ -111,30 +104,21 @@ class MainScreen extends Component {
         obj.amount = expenses.amount
         cat.push(obj)
       })
-      uniqueCategory = [...new Set(data.map(item => item.category))];
-      cat.map((calculateAmount, index) => {
-        dataCalculate.push(calculateAmount)
-      })
-
-      for (var i = 0; i < uniqueCategory.length; i++) {
-        let objColor = {}
-        objColor.category = uniqueCategory[i]
-        objColor.color = sliceColor[i]
-        color.push(objColor)
-      }
     }
-    const series = Object.values(this._getTotal(dataCalculate))
     const { navigate }  = this.props.navigation;
     const totalIncome   = this.props.getIncome
     const {dream}       = this.props.getDream
     const totalBalance  = this.props.getIncome - totalExpenses;
     let dreamParse;
+    let dreamParseDescription;
     try {
       dream.map((myDream) => {
         dreamParse = myDream.dream
+        dreamParseDescription = myDream.description
       })
     } catch (e) {
       dreamParse = ''
+      dreamParseDescription = ''
     }
     let navigationView = (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -150,7 +134,7 @@ class MainScreen extends Component {
       >
       <View>
       </View>
-      <Container>
+      <Container style={{backgroundColor: '#fff'}}>
           <Header style={{backgroundColor: "#2196F3"}}>
               <Left>
                 <Button transparent
@@ -176,14 +160,14 @@ class MainScreen extends Component {
             <TouchableOpacity onPress={()=> navigate('DetailDreams')}>
               <Card>
                 <CardItem header itemDivider >
-                  <Icon active name="ios-body-outline" style={{color:"#2196F3"}}/>
-                  <Text style={{fontSize: 20, fontWeight: '400'}}>My Dream</Text>
+                  <Text style={{fontSize: 20, fontWeight: '400', fontFamily: 'Roboto'}}>My Dream</Text>
                 </CardItem>
                 <CardItem cardBody>
                     <Image style={{height: 200, width: "100%"}} source={{uri: "https://cdn.tinybuddha.com/wp-content/uploads/2015/06/Boy-Reaching-for-Stars.png"}}/>
                 </CardItem>
-                <CardItem style={{justifyContent: "center"}}>
-                  <Text style={{fontSize: 25, fontWeight: '500'}}>"{dreamParse}"</Text>
+                <CardItem style={{justifyContent: "center", flex: 1, flexDirection: 'column'}}>
+                  <Text style={{fontSize: 22, fontWeight: '500'}}>"{dreamParse.toUpperCase()}"</Text>
+                  <Text note >{dreamParseDescription}</Text>
                 </CardItem>
               </Card>
             </TouchableOpacity>
@@ -191,57 +175,29 @@ class MainScreen extends Component {
 
             <Card>
               <CardItem header>
-                <Icon active name="ios-calculator" style={{color:"#2196F3"}}/>
                 <Text style={{fontSize: 20, fontWeight: '400'}}>Overview</Text>
               </CardItem>
 
                 <CardItem>
                  <Text>Balance</Text>
                  <Right>
-                    <Text>Rp. {totalBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
+                    <Text style={{fontWeight: '500'}}>Rp. {totalBalance.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
                  </Right>
                 </CardItem>
                 <CardItem>
                  <Text>Income</Text>
                  <Right>
-                    <Text>Rp. {totalIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
+                    <Text style={{fontWeight: '500'}}>Rp. {totalIncome.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
                  </Right>
                </CardItem>
 
                <CardItem>
                 <Text>Expenses</Text>
                 <Right>
-                   <Text>Rp. {totalExpenses.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
+                   <Text style={{fontWeight: '500'}}>Rp. {totalExpenses.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}</Text>
                 </Right>
               </CardItem>
              </Card>
-               <Card>
-                 <CardItem header>
-                    <Icon active name="ios-pie-outline" style={{color:"#2196F3"}}/>
-                   <Text style={{fontSize: 20, fontWeight: '400'}}>Expenses chart</Text>
-                   <Right>
-                      <Text>All Category</Text>
-                   </Right>
-                 </CardItem>
-                 {(color !== undefined) ? (color.map((dataColor, index) => {
-                   return (
-                     <View key={dataColor.color}>
-                      <Icon name="ios-cog-outline" style={{color: dataColor.color}}/>
-                      <Text>{dataColor.category}: {Math.ceil(series[index] / totalExpenses * 100)} %</Text>
-                     </View>
-                   )
-                 })) : <Text>No data</Text>}
-                 <CardItem style={{justifyContent: "center"}}>
-                   <TouchableOpacity>
-                      <PieChart
-                        chart_wh={150}
-                        series={series}
-                        sliceColor={sliceColor}
-                      />
-                    </TouchableOpacity>
-
-                 </CardItem>
-                </Card>
           </Content>
           <Fab
             active={this.state.active}

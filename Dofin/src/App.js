@@ -23,6 +23,7 @@ import Drawer from './components/HeaderDrawer'
 import CredentialCheck from './components/CredentialCheck'
 import DetailProfile from './components/DetailProfile'
 import LoginAnimation from './components/login/app'
+import Chart from './components/Chart'
 
 const App = StackNavigator({
   Main            : {screen: LoginAnimation},
@@ -42,6 +43,7 @@ const App = StackNavigator({
   EditDream       : {screen: EditDream},
   SingleCategory  : {screen: SingleCategory},
   DetailProfile   : {screen: DetailProfile},
-  Transaction     : {screen: Transactions}
+  Transaction     : {screen: Transactions},
+  Chart           : {screen: Chart}
 },{ headerMode: 'screen' })
 export default App

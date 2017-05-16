@@ -73,7 +73,7 @@ class DetailDreams extends Component {
     const DESTRUCTIVE_INDEX = 3;
     const CANCEL_INDEX = 2;
     return (
-      <Container>
+      <Container style={{backgroundColor: '#fff'}}>
 
           <Header style={{backgroundColor: "#2196F3"}}>
               <Left>
