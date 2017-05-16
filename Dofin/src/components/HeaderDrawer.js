@@ -19,10 +19,10 @@ import {
 import {
   TouchableOpacity
 } from 'react-native';
-
+import {connect} from 'react-redux';
 import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
+import {logout} from '../actions';
 
-const ACCESS_TOKEN = "access_token";
 const USER_PROFILES = "user_profiles";
 
 class DrawerContent extends Component {
@@ -35,20 +35,27 @@ class DrawerContent extends Component {
   }
 
   _logout(){
-    AsyncStorage.removeItem(ACCESS_TOKEN);
     AsyncStorage.removeItem(USER_PROFILES);
+    this.props.logout()
     this.props.navigation.navigate("Main")
   }
 
   componentWillMount(){
-    let self = this
-    AsyncStorage.getItem(USER_PROFILES).then((value) => {
-      let data
-      if (value !== null) {
-          data = JSON.parse(value)
-      }
-        self.setState({name: data.name, picture: data.picture.data.url})
-    }).done();
+    try {
+      let self = this
+      AsyncStorage.getItem(USER_PROFILES).then((value) => {
+        let data
+        if (value !== null) {
+            data = JSON.parse(value)
+            self.setState({name: data.name, picture: data.picture.data.url})
+        }else {
+          self.setState({name: "admin", picture: ""})
+        }
+      }).done();
+    } catch (e) {
+
+    }
+
   }
 
   render() {
@@ -140,4 +147,11 @@ const styles = {
     color: '#fff'
   }
 };
-export default DrawerContent;
+
+const mapsDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+
+export default connect(null, mapsDispatchToProps)(DrawerContent)

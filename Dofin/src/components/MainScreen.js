@@ -38,7 +38,11 @@ import {
 import HeaderDrawer from './HeaderDrawer';
 
 const ACCESS_TOKEN = "access_token";
+const USER_PROFILES = "user_profiles";
 
+import IconBadge from 'react-native-icon-badge';
+import PushController from './PushController';
+import PushNotifications from './PushNotifications';
 
 class MainScreen extends Component {
   constructor(props) {
@@ -70,7 +74,7 @@ class MainScreen extends Component {
     // this.props.getExpenseTotalByMonthRequest();
     this.props.getExpenseRequestById();
     // this.props.getTotalAmountByCategoryThisYearById();
-    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
+    AsyncStorage.getItem(USER_PROFILES).then((value) => {
       if (value === null) {
         this.props.navigation.navigate("Main")
       }else {
@@ -162,9 +166,36 @@ class MainScreen extends Component {
                   <Title>Dashboard</Title>
               </Body>
               <Right>
-                  <Button transparent>
+              {(this.state.notifications.length !== 0) && (
+              <IconBadge
+                MainElement={
+                  <Button
+                    transparent
+                    onPress={ () => navigate('PushNotifications', {notifications: this.state.notifications})}
+                  >
                     <Icon name="md-notifications"/>
                   </Button>
+                }
+                BadgeElement={
+                  <Text style={{color:'#FFFFFF'}}>{this.state.notifications.length}</Text>
+                }
+
+                IconBadgeStyle={
+                  {width:15,
+                  height:15,
+                  backgroundColor: '#b71c1c'}
+                }
+              />
+            )}
+            {(this.state.notifications.length === 0) && (
+              <Button
+                transparent
+                onPress={ () => navigate('PushNotifications', {notifications: this.state.notifications})}
+              >
+                <Icon name="md-notifications"/>
+              </Button>
+            )}
+              <PushController />
               </Right>
           </Header>
           <Content>

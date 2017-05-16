@@ -22,9 +22,10 @@ import Transactions from './components/Transactions'
 import Drawer from './components/HeaderDrawer'
 import CredentialCheck from './components/CredentialCheck'
 import DetailProfile from './components/DetailProfile'
+import LoginAnimation from './components/login/app'
 
 const App = StackNavigator({
-  Main            : {screen: SignIn},
+  Main            : {screen: LoginAnimation},
   MainScreen      : {screen: MainScreen},
   Income          : {screen: FormIncome},
   Dream           : {screen: FormDream},

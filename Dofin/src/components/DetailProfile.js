@@ -52,8 +52,11 @@ class DetailProfile extends Component {
       let data
       if (value !== null) {
           data = JSON.parse(value)
+          self.setState({name: data.name, picture: data.picture.data.url, email: data.email})
+      }else {
+        self.setState({name: "admin", picture: '', email: "admin@mail.com"})
+
       }
-        self.setState({name: data.name, picture: data.picture.data.url, email: data.email})
     }).done();
   }
 
