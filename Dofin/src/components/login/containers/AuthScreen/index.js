@@ -8,7 +8,6 @@ import metrics from '../../config/metrics'
 import Opening from './Opening'
 import SignupForm from './SignupForm'
 import LoginForm from './LoginForm'
-const ACCESS_TOKEN = "access_token";
 const USER_PROFILES = "user_profiles";
 
 const IMAGE_WIDTH = metrics.DEVICE_WIDTH * 0.8
@@ -44,8 +43,8 @@ export default class AuthScreen extends Component {
   }
 
   render () {
-    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
-      if (value === "RERtukj67456") {
+    AsyncStorage.getItem(USER_PROFILES).then((value) => {
+      if (value !== null) {
         this.props.navigate.navigate("MainScreen")
       }else {
         return false

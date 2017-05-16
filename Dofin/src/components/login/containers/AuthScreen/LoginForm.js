@@ -37,9 +37,8 @@ class LoginForm extends Component {
   _localSignInAndSetStorage(){
     this.props.signInRequest(this.state)
   }
-
-  componentDidMount() {
-
+  _nextAuth(){
+    this.props.navigate.navigate("MainScreen")
   }
 
   _fbAuth() {
@@ -56,6 +55,7 @@ class LoginForm extends Component {
                 console.log(error)
               } else {
                 AsyncStorage.setItem(USER_PROFILES, JSON.stringify(result));
+                self._nextAuth()
               }
             }
 
@@ -104,13 +104,7 @@ class LoginForm extends Component {
         AsyncStorage.setItem(USER_PROFILES, JSON.stringify(data));
         this.props.navigate.navigate("MainScreen")
     }
-    AsyncStorage.getItem(USER_PROFILES).then((value) => {
-      if (value !== null) {
-        this.props.navigate.navigate("MainScreen")
-      }else {
-        return false
-      }
-    }).done();
+
     const { email, password } = this.state
     const { isLoading, onSignupLinkPress, onLoginPress } = this.props
     const isValid = email !== '' && password !== ''
