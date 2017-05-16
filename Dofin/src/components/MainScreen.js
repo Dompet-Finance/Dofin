@@ -62,14 +62,7 @@ class MainScreen extends Component {
     this.props.getIncomeRequest();
     this.props.getDreamRequest();
     this.props.getExpenseRequestById();
-    AsyncStorage.getItem(ACCESS_TOKEN).then((value) => {
-      if (value === null) {
-        this.props.navigation.navigate("Main")
-      }else {
-        console.log(value);
-        return false
-      }
-    }).done();
+
   }
   componentDidMount(){
     this.props.getIncomeRequest();
@@ -81,7 +74,6 @@ class MainScreen extends Component {
       if (value === null) {
         this.props.navigation.navigate("Main")
       }else {
-        console.log(value);
         return false
       }
     }).done();
@@ -176,6 +168,7 @@ class MainScreen extends Component {
               </Right>
           </Header>
           <Content>
+          {(dreamParse !== undefined) ? (
             <TouchableOpacity onPress={()=> navigate('DetailDreams')}>
               <Card>
                 <CardItem header itemDivider >
@@ -190,6 +183,8 @@ class MainScreen extends Component {
                 </CardItem>
               </Card>
             </TouchableOpacity>
+          ) : <Text>No Dream Available</Text>}
+
             <Card>
               <CardItem header>
                 <Icon active name="ios-calculator" style={{color:"#2196F3"}}/>

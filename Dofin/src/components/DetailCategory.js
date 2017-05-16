@@ -16,6 +16,9 @@ import {
   Card,
   Spinner
 } from 'native-base';
+import {
+  Alert
+} from 'react-native';
 import {connect} from 'react-redux';
 import {getRequestCategory, deleteRequestCategory} from '../actions';
 import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -32,9 +35,9 @@ class DetailDreams extends Component {
   static navigationOptions = {
     header: null
   }
-  componentWillMount(){
-    this.props.getRequestCategory()
-  }
+  // componentWillMount(){
+  //   this.props.getRequestCategory()
+  // }
   componentDidMount(){
     this.props.getRequestCategory()
   }
@@ -49,14 +52,17 @@ class DetailDreams extends Component {
     }else if (actions === "Edit") {
       this.props.navigation.navigate("EditCategory", {data: data, user_id: this.props.getCategory.category._id})
     }else if (actions === "Delete") {
-      this.props.deleteRequestCategory(dataToDelete)
-      this.props.navigation.navigate("Main")
-      // let conf = confirm("Are you sure?")
-      // if (conf) {
-      //   this.props.deleteDreamRequest(data)
-      // }else {
-      //   return false;
-      // }
+      Alert.alert(
+        'Are you sure?',
+        '',
+        [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
+          {text: 'OK', onPress: () => {
+            this.props.deleteRequestCategory(dataToDelete)
+            this.props.navigation.navigate("DetailCategory")
+          }},
+        ]
+      )
     }
     this.setState({ actions: actions });
   }
@@ -74,7 +80,7 @@ class DetailDreams extends Component {
                 <Button transparent
                   onPress={() => this.props.navigation.navigate("MainScreen")}
                 >
-                    <Icon name='arrow-back' />
+                    <Icon name='ios-arrow-back-outline' />
                 </Button>
               </Left>
               <Body>

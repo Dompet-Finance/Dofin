@@ -42,8 +42,8 @@ class FormDream extends Component {
     this.setState({
       loading: !this.state.visible
     });
-    this.props.updateDreamRequest(this.state)
     this.props.navigation.navigate("DetailDreams")
+    this.props.updateDreamRequest(this.state)
   }
   _onChangeInputDream(event){
     this.setState({dream: event.nativeEvent.text})
@@ -60,7 +60,7 @@ class FormDream extends Component {
     }
     this.setState({
       dream       : this.props.navigation.state.params.data.dream,
-      description : "",
+      description : this.props.navigation.state.params.data.description,
       _id         : this.props.navigation.state.params.data._id,
       record_by   : this.props.navigation.state.params.data._id
     });
@@ -75,7 +75,7 @@ class FormDream extends Component {
               <Button transparent
                 onPress={() => this.props.navigation.navigate("DetailDreams")}
               >
-                  <Icon name='arrow-back' />
+                  <Icon name='ios-arrow-back-outline' />
               </Button>
             </Left>
             <Body>

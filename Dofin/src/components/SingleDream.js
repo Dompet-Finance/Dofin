@@ -52,7 +52,7 @@ class SingleDream extends Component {
               <Button transparent
                 onPress={() => this.props.navigation.navigate("DetailDreams")}
               >
-                  <Icon name='arrow-back' />
+                  <Icon name='ios-arrow-back-outline' />
               </Button>
             </Left>
             <Body>
