@@ -5,6 +5,7 @@ import categoryReducer from './categoryReducer';
 import expenseReducer from './expenseReducer';
 import cameraReducer from './cameraReducer';
 import userReducer from './userReducer';
+import placesReducers from './placesReducers';
 
 const rootReducer = combineReducers({
   income  : incomeReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   category: categoryReducer,
   expense : expenseReducer,
   camera  : cameraReducer,
-  user    : userReducer
+  user    : userReducer,
+  places  : placesReducers,
 })
 
 export default rootReducer;

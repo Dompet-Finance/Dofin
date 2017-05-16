@@ -3363,9 +3363,17 @@ react-native-action-button@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/react-native-action-button/-/react-native-action-button-2.6.9.tgz#f9609d65ac40aac0ae1c2bd05dc7a8811395d62b"
 
+react-native-animatable@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.2.0.tgz#fd279c6ee4b49161c6cc3b951ed7765b35a73467"
+
 "react-native-camera@https://github.com/lwansbrough/react-native-camera.git":
   version "0.8.0"
   resolved "https://github.com/lwansbrough/react-native-camera.git#8878954e08b6043a079dacc5505889aee44f1312"
+
+react-native-dialog@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/react-native-dialog/-/react-native-dialog-1.0.7.tgz#5be6b84c47e1f7843555b9c6f0b516a89f5b06e2"
 
 react-native-dialogs@0.0.19:
   version "0.0.19"
@@ -3403,6 +3411,10 @@ react-native-fbsdk@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-0.5.0.tgz#3ccd67d189755df11d366b8de9acb91ea2300e6e"
 
+react-native-icon-badge@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-icon-badge/-/react-native-icon-badge-1.1.1.tgz#d820fb1b2cd00f4187e26253accff8c35860d9e5"
+
 react-native-image-picker@^0.26.3:
   version "0.26.3"
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.3.tgz#0ad2eede49501a7046d8046a73813696539c3dcd"
@@ -3428,6 +3440,10 @@ react-native-maps@^0.15.0:
 react-native-pie-chart@^1.0.11:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/react-native-pie-chart/-/react-native-pie-chart-1.0.11.tgz#ea83af56740ce305af222521cf8466c166fd72ee"
+
+react-native-push-notification@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.0.0.tgz#00282ea656443e89df6057f14b10500e7b89551f"
 
 react-native-scrollable-tab-view@^0.7.1:
   version "0.7.4"
