@@ -46,7 +46,7 @@ class SingleDream extends Component {
     const { goBack } = this.props.navigation;
     const {dream, description} = this.props.navigation.state.params.data
     return (
-      <Container>
+      <Container style={{backgroundColor: '#fff'}}>
           <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent

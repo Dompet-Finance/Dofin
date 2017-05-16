@@ -75,7 +75,7 @@ class DrawerContent extends Component {
             <List>
               <ListItem icon onPress={() => navigate('Transaction')}>
                 <Left>
-                    <IconCustom name="logo-usd" size={25} style={{color: "#2196F3"}}/>
+                    <IconCustom name="grid" size={25} style={{color: "#2196F3"}}/>
                 </Left>
                 <Body>
                   <Text>Transactions</Text>
@@ -112,6 +112,17 @@ class DrawerContent extends Component {
                 </Left>
                 <Body>
                   <Text>Category</Text>
+                </Body>
+                <Right>
+                  <Icon name="ios-arrow-forward-outline" />
+                </Right>
+              </ListItem>
+              <ListItem icon onPress={() => navigate('Chart')}>
+                <Left>
+                    <IconCustom name="chart-arc" size={25} style={{color: "#2196F3"}}/>
+                </Left>
+                <Body>
+                  <Text>Chart</Text>
                 </Body>
                 <Right>
                   <Icon name="ios-arrow-forward-outline" />

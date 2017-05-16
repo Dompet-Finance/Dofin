@@ -63,7 +63,7 @@ class DetailProfile extends Component {
   render(){
     const { goBack } = this.props.navigation;
     return (
-      <Container>
+      <Container style={{backgroundColor: '#fff'}}>
           <Header style={{backgroundColor: "#2196F3"}}>
             <Left>
               <Button transparent
