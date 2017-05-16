@@ -1,5 +1,6 @@
 import * as ActionTypes from './constants';
 import axios from 'axios'
+const host = 'http://dofin-backend-dev.us-west-2.elasticbeanstalk.com'
 
 export const postUser = data => ({
   type: ActionTypes.NEW_USER,
@@ -19,7 +20,7 @@ export const logout = () => ({
 
 export const signUpRequest = data => {
   return dispatch =>
-    axios.post('http://192.168.0.209:8080/users/signup', {
+    axios.post(host+'/users/signup', {
       name: data.name,
       email: data.email,
       password: data.password,
@@ -30,7 +31,7 @@ export const signUpRequest = data => {
 
 export const signInRequest = data => {
   return dispatch =>
-    axios.post('http://192.168.0.209:8080/users/signin', {
+    axios.post(host+'/users/signin', {
       email: data.email,
       password: data.password
     })

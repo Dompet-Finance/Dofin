@@ -73,6 +73,17 @@ class DrawerContent extends Component {
       </TouchableOpacity>
           <Content>
             <List>
+              <ListItem icon onPress={() => navigate('Transaction')}>
+                <Left>
+                    <IconCustom name="logo-usd" size={25} style={{color: "#2196F3"}}/>
+                </Left>
+                <Body>
+                  <Text>Transactions</Text>
+                </Body>
+                <Right>
+                  <Icon name="ios-arrow-forward-outline" />
+                </Right>
+              </ListItem>
               <ListItem icon onPress={() => navigate('Struk')}>
                 <Left>
                     <IconCustom name="cash-usd" size={25} style={{color: "#2196F3"}}/>
