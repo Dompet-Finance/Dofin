@@ -26,7 +26,9 @@ import {
   TouchableOpacity,
   DrawerLayoutAndroid,
   AsyncStorage,
-  StatusBar
+  StatusBar,
+  AppState,
+  Platform
 } from "react-native";
 import PieChart from 'react-native-pie-chart';
 import {connect} from 'react-redux';
@@ -36,8 +38,13 @@ import {
   getExpenseTotalByMonthRequest,
   getTotalAmountByCategoryThisYearById
 } from '../actions';
+import PushNotification from 'react-native-push-notification';
+
 import HeaderDrawer from './HeaderDrawer';
 import moment from 'moment';
+
+import PushController from './PushController';
+import PushNotifications from './PushNotifications';
 
 const ACCESS_TOKEN = "access_token";
 const USER_PROFILES = "user_profiles";
@@ -48,7 +55,10 @@ class MainScreen extends Component {
     this.state = {
         active: false,
         showToast: false,
-        income: ''
+        income: '',
+        notifications: [],
+        seconds: 5,
+        appState: AppState.currentState,
     };
   }
   static navigationOptions = {
@@ -76,6 +86,21 @@ class MainScreen extends Component {
         return false
       }
     }).done();
+    if (this.state.appState === 'active') {
+      let date = new Date(Date.now() + (this.state.seconds * 1000));
+      let message = "It seems you have a lot of expenses lately"
+
+      if (Platform.OS === 'ios') {
+        date = date.toISOString();
+      }
+
+      PushNotification.localNotificationSchedule({
+        message,
+        date,
+        foreground: true,
+      });
+      this.setState({notifications: message})
+    }
   }
 
   render(){
@@ -145,12 +170,13 @@ class MainScreen extends Component {
                   <Title>Dashboard</Title>
               </Body>
               <Right>
-              <Button
-                transparent
-                onPress={ () => navigate('PushNotifications', {notifications: this.state.notifications})}
-              >
-                <Icon name="md-notifications"/>
-              </Button>
+                <Button
+                  transparent
+                  onPress={ () => navigate('PushNotifications', {notifications: this.state.notifications})}
+                >
+                  <Icon name="md-notifications"/>
+                </Button>
+                <PushController />
               </Right>
           </Header>
           <Content>

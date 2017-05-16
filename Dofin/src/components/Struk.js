@@ -2,18 +2,18 @@ import React, {Component} from 'react';
 import {
   Container, Content, Text, Header, Icon, View, Left, Button,
   Body, Title, Right, Form, Item, Label, Input, Segment, ActionSheet,
-  Thumbnail, Spinner, Picker,
+  Thumbnail, Spinner, Picker, Badge
 } from 'native-base';
 import {
   ListView, CameraRoll, Image, Dimensions, Modal, ScrollView,
   TouchableHighlight, Alert, DatePickerAndroid, TouchableWithoutFeedback,
-  TextInput, Keyboard,
+  TextInput, Keyboard, TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 
 import FadeInView from './FadeInView'
 
-import { expenseRequest } from '../actions';
+import { expenseRequest, placesRequest } from '../actions';
 import {
   resetErrorMessage, resetSuccessMessage
 } from '../actions/expenseAction';
@@ -22,6 +22,14 @@ import {
 } from '../actions/cameraAction';
 import Camera from './Camera'
 import IconC from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const { width, height } = Dimensions.get('window')
+
+const SCREEN_HEIGHT = height
+const SCREEN_WIDTH = width
+const ASPECT_RATIO = width / height
+const LATITUDE_DELTA = 0.0922
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
 class FormStruk extends Component {
   constructor(props){
@@ -36,7 +44,7 @@ class FormStruk extends Component {
       category: 'category1',
       categoryIcon: 'album',
       categoryColor: 'grey',
-      location: 'location',
+      location: '',
       photos: '',
       images: [],
       modalVisible: false,
@@ -46,15 +54,35 @@ class FormStruk extends Component {
         {category: 'Album', icon: 'album', color: 'red'},
         {category: 'Car', icon: 'car', color: 'green'},
         {category: 'Cat', icon: 'cat', color: 'orange'},
-      ]
+      ],
+      initialPosition: 'unknown',
+      lastPosition: 'unknown',
     }
   }
+
+  watchID: ?number = null;
+
   static navigationOptions = {
     header: null
   }
 
   componentDidMount() {
-    // console.log(this.props.camera);
+    navigator.geolocation.getCurrentPosition(
+     (position) => {
+       var initialPosition = JSON.stringify(position);
+       this.setState({initialPosition});
+     },
+     (error) => alert(JSON.stringify(error)),
+       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+     );
+     this.watchID = navigator.geolocation.watchPosition((position) => {
+       var lastPosition = JSON.stringify(position);
+       this.setState({lastPosition});
+       this.props.placesRequest(JSON.parse(this.state.lastPosition))
+     });
+  }
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   _onChangeInputAmount(amount){
@@ -398,7 +426,15 @@ class FormStruk extends Component {
     const { width } = Dimensions.get('window')
     // console.log(this.props.camera);
     const { categoryMedia } = styles
-
+    const { places } = this.props
+    let placesData = []
+    if (this.props.places !== 0) {
+      places.map((place) => {
+        placesData.push(place.placeName);
+      })
+    }
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    const dataSource = ds.cloneWithRows(placesData)
     return (
 
       <Container style={{backgroundColor: '#fff'}}>
@@ -472,7 +508,27 @@ class FormStruk extends Component {
                 </Item>
 
                 {this.renderItems()}
-
+                <Item>
+                  <Icon name='pin' style={{color:"#2979FF"}} />
+                  <Input
+                    name="location"
+                    value={this.state.location}
+                    placeholder="Location"
+                  />
+                </Item>
+                <Item>
+                  <ListView
+                    horizontal={true}
+                    dataSource = {dataSource}
+                    renderRow = {(data, i) =>
+                      <TouchableOpacity onPress={() => this.setState({location: data})}>
+                        <Badge style={styles.location} >
+                          <Text>{data}</Text>
+                        </Badge>
+                      </TouchableOpacity>
+                    }
+                  />
+                </Item>
                 <View
                   style={{
                     paddingLeft: 0,
@@ -626,6 +682,11 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  location: {
+    backgroundColor: '#4FC3F7',
+    marginBottom: 10,
+    marginLeft: 5,
+  }
 };
 
 const mapDispatchToProps = dispatch => {
@@ -634,6 +695,7 @@ const mapDispatchToProps = dispatch => {
     resetErrorMessage: () => dispatch(resetErrorMessage()),
     resetSuccessMessage: () => dispatch(resetSuccessMessage()),
     resetItems: () => dispatch(resetItems()),
+    placesRequest: position => dispatch(placesRequest(position))
   }
 }
 
@@ -641,6 +703,7 @@ const mapStateToProps = state => {
   return {
     camera: state.camera,
     expense: state.expense,
+    places: state.places
   }
 }
 
