@@ -1,5 +1,6 @@
 import * as ActionTypes from './constants';
 import axios from 'axios'
+const host = 'http://dofin-backend-dev.us-west-2.elasticbeanstalk.com'
 
 export const postDream = data => ({
   type: ActionTypes.NEW_DREAM,
@@ -24,7 +25,7 @@ export const deleteDream = data => ({
 
 export const dreamRequest = data => {
   return dispatch =>
-    axios.post('http://192.168.0.209:8080/dreams', {
+    axios.post(host+'/dreams', {
       record_by: "59158e804412792833f91138",
       dream: data.dream,
       description: data.description,
@@ -35,14 +36,14 @@ export const dreamRequest = data => {
 
 export const getDreamRequest = () => {
   return dispatch =>
-    axios.get('http://192.168.0.209:8080/dreams/59158e804412792833f91138')
+    axios.get(host+'/dreams/59158e804412792833f91138')
     .then(response => dispatch(getDream(response.data)))
     .catch(err => console.log(err.message))
 };
 
 export const updateDreamRequest = data => {
   return dispatch =>
-    axios.put('http://192.168.0.209:8080/dreams/59158e804412792833f91138', {
+    axios.put(host+'/dreams/59158e804412792833f91138', {
       record_by: "59158e804412792833f91138",
       dream: data.dream,
       description: data.description,
@@ -54,7 +55,7 @@ export const updateDreamRequest = data => {
 
 export const deleteDreamRequest = data => {
   return dispatch =>
-    axios.delete('http://192.168.0.209:8080/dreams/'+data._id)
+    axios.delete(host+'/dreams/'+data._id)
     .then(response => dispatch(deleteDream(response.data)))
     .catch(err => console.log(err.message))
 };
