@@ -7,15 +7,25 @@ export const postImage = data => ({
   payload: data,
 });
 
+export const setLoading = data => ({
+  type: 'SET_LOADING',
+  payload: data,
+});
+
+export const resetItems = data => ({
+  type: 'RESET_ITEMS',
+  payload: [],
+});
+
 export const imgPostRequest = newImage => {
   return dispatch => {
-    console.log(newImage)
+    // console.log(newImage)
     return axios.post(host + '/expenses/photo', {blob: {
           type: newImage.type,
           data: newImage.data
         }})
           .then(res => {
-            console.log(res)
+            dispatch(setLoading(false))
             return dispatch(postImage([
               { item: 'MUFFIN, REGULAR, BLUEBERRY 1 x', price: 27000 },
               { item: 'MUFFIN, REGULAR, BLUEBERRY 1 x', price: 27000 },

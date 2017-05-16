@@ -6,7 +6,8 @@ import {
 } from 'native-base';
 import {
   ListView, CameraRoll, Image, Dimensions, Modal, ScrollView,
-  TouchableHighlight, Alert,
+  TouchableHighlight, Alert, DatePickerAndroid, TouchableWithoutFeedback,
+  TextInput, Keyboard,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -16,24 +17,36 @@ import { expenseRequest } from '../actions';
 import {
   resetErrorMessage, resetSuccessMessage
 } from '../actions/expenseAction';
+import {
+  resetItems
+} from '../actions/cameraAction';
 import Camera from './Camera'
+import IconC from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class FormStruk extends Component {
   constructor(props){
     super(props)
     this.state = {
-      page: 'Struk',
-      active: '',
       amount: '',
-      category: 'category1',
-      items: [],
+      date: '',
+      dateText: '',
       description: '',
+      items: [{item: '', price: ''}],
+      itemSlot: [0],
+      category: 'category1',
+      categoryIcon: 'album',
+      categoryColor: 'grey',
       location: 'location',
       photos: '',
       images: [],
       modalVisible: false,
       loading: false,
       isButtonDisabled: false,
+      categories: [
+        {category: 'Album', icon: 'album', color: 'red'},
+        {category: 'Car', icon: 'car', color: 'green'},
+        {category: 'Cat', icon: 'cat', color: 'orange'},
+      ]
     }
   }
   static navigationOptions = {
@@ -41,21 +54,11 @@ class FormStruk extends Component {
   }
 
   componentDidMount() {
-    // console.log(this.props.expense);
-  }
-
-  activePageNonStruk(){
-    this.setState({page: "nonStruk"})
-    this.setState({active: "active"})
-  }
-
-  activePageStruk(){
-    this.setState({page: "Struk"})
-    this.setState({active: "active"})
+    // console.log(this.props.camera);
   }
 
   _onChangeInputAmount(amount){
-    this.setState({ amount: Number(amount) })
+    this.setState({ amount })
   }
 
   _onChangeInputCategory(category){
@@ -79,10 +82,24 @@ class FormStruk extends Component {
   }
 
   _sendData() {
+    const { amount, date, description } = this.state
+
+    if (!amount.length) {
+      return alert('Amount field is required')
+    }
+    if (!date.length) {
+      return alert('Date field is required')
+    }
+    if (!description.length) {
+      return alert('Description field is required')
+    }
+    // check items
+
+
     this.setState({loading: true, isButtonDisabled: true})
     this.props.expenseRequest({
       record_by   : '59169da29a208a785ad2e99c',
-      amount      : +this.state.amount || 0,
+      amount      : +amount || 0,
       description : this.state.description,
       items       : this.state.items,
       category    : this.state.category,
@@ -117,7 +134,20 @@ class FormStruk extends Component {
         this.props.expense.successMessage,
         [
           {text: 'OK', onPress: () => {
-            this.setState({loading: false, isButtonDisabled: false})
+            this.setState({
+              amount: '',
+              date: '',
+              dateText: '',
+              description: '',
+              items: [{item: '', price: ''}],
+              itemSlot: [0],
+              category: 'category1',
+              categoryIcon: 'album',
+              categoryColor: 'grey',
+              location: 'location',
+              loading: false,
+              isButtonDisabled: false
+            })
           }},
         ]
       )
@@ -135,12 +165,219 @@ class FormStruk extends Component {
         ]
       )
     }
-    // if (this.state.items.length == 0) {
-    //   this.setState({items: this.props.camera[0]})
-    // } else {
-    //   console.log('stop the update');
-    // }
-    // console.log(this.state.items);
+
+    if (this.props.camera.getItems.length) {
+      let items = this.props.camera.getItems.slice()
+      let itemSlot = Array(items.length).fill(0)
+      let amount = items.reduce((total, unit) => total + unit.price, 0)
+      this.props.resetItems()
+      this.setState({amount, items, itemSlot})
+    }
+  }
+
+  showDatePicker(stateKey, options) {
+    const showPicker = async (stateKey, options) => {
+      try {
+        var newState = {};
+        const {action, year, month, day} = await DatePickerAndroid.open(options);
+        if (action === DatePickerAndroid.dismissedAction) {
+          newState[stateKey + 'Text'] = 'dismissed';
+        } else {
+          var date = new Date(year, month, day);
+          newState['dateText'] = `${day}/${month+1}/${year}`
+          newState['date'] = date;
+        }
+        this.setState(newState);
+      } catch ({code, message}) {
+        console.warn(`Error in example '${stateKey}': `, message);
+      }
+    };
+    showPicker(stateKey, options)
+  }
+
+  renderItems() {
+    if (this.props.camera.loading)
+      return (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingRight: 2,
+            marginBottom: 15,
+          }}
+          >
+            <Spinner color={'#2979FF'} />
+            <Text
+              style={{
+                color: '#666'
+              }}
+              >
+              Please wait a moment..
+            </Text>
+        </View>
+      )
+
+    let inputContainer = {
+      flexDirection: 'row',
+      paddingLeft: 16,
+    }
+    let inputItem = {
+      borderBottomWidth: 1,
+      borderColor: '#ddd',
+      marginRight: 10,
+    }
+    let inputPrice = {
+      width: 120,
+      borderBottomWidth: 1,
+      borderColor: '#ddd',
+      marginRight: 5,
+    }
+
+    const { itemSlot } = this.state
+    return (
+      <View style={{
+          borderTopWidth: 3,
+          borderBottomWidth: 3,
+          borderColor: '#eee',
+          paddingTop: 10,
+          marginTop: 10,
+          marginBottom: 10,
+          marginLeft: 16,
+        }}>
+        {itemSlot.map((val, index) => {
+          return (
+            <View style={inputContainer} key={index} >
+              <Input
+                style={inputItem}
+                name="item1"
+                placeholder="Item Name"
+                value={this.state.items[index].item}
+                onChangeText={text => {
+                  let items = this.state.items.map((item, indexState) => {
+                      if (indexState === index)
+                        return {item: text, price: item.price}
+                      return item
+                    })
+                  this.setState({items})
+                }}
+              />
+              <Item style={inputPrice}>
+                <Icon name="calculator" style={{color:"grey"}} />
+                <Input
+                  name="item1"
+                  placeholder="Price"
+                  keyboardType = 'numeric'
+                  value={this.state.items[index].price.toString()}
+                  onChangeText={text => {
+                    // must number in string
+                    text = /^\d+/.test(''+text) ? ''+text : ''
+                    let items = this.state.items.map((item, indexState) => {
+                        if (indexState === index)
+                          return {item: item.item, price: text}
+                        return item
+                      })
+                    this.setState({items})
+                  }}
+                />
+              </Item>
+              <View style={{marginTop: 15, marginRight: 5}}>
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    let itemName = this.state.items[index].item
+                    Alert.alert(
+                      `Delete item '${itemName}'`,
+                      'Are you sure?',
+                      [
+                        {text: 'Yes', onPress: () => {
+                          let items = this.state.items.filter((item, indexState) =>
+                            indexState !== index)
+                          let itemSlot = this.state.itemSlot.slice()
+                          itemSlot.pop()
+                          this.setState({items, itemSlot})
+                        }},
+                        {text: 'No'}
+                      ],
+                      {
+                        cancelable: false
+                      }
+                    )
+
+                  }}
+                  >
+                <IconC name="close" size={20} style={{color:"red"}} />
+                </TouchableWithoutFeedback>
+              </View>
+
+            </View>
+          )
+        })}
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            paddingTop: 10,
+            paddingBottom: 10,
+          }}>
+          <Button
+            light
+            style={{width: 100, justifyContent: 'center'}}
+            onPress={() => {
+              let items = [...this.state.items, {item: '', price: ''}]
+              this.setState({items, itemSlot: [...itemSlot, 0]})
+            }}
+            >
+              <Icon name="add-circle" style={{color:"#2979FF"}} />
+          </Button>
+          <Button
+            success
+            style={{width: 100, justifyContent: 'center'}}
+            onPress={() => {
+              let amount = this.state.items.reduce((total, unit) => total + (unit.price === '' ? 0: +unit.price), 0).toString()
+              this.setState({amount})
+            }}
+            >
+              <Icon name="calculator" style={{color:"#fff"}} />
+          </Button>
+          <Button
+            warning
+            style={{width: 100, justifyContent: 'center'}}
+            onPress={() => {
+              Alert.alert(
+                `Delete all`,
+                'All items will be deleted, continue?',
+                [
+                  {text: 'Yes', onPress: () => {
+                    this.setState({
+                      items: [{item: '', price: ''}],
+                      itemSlot: [0],
+                    })
+                  }},
+                  {text: 'No'}
+                ],
+                {
+                  cancelable: false
+                }
+              )
+            }}
+            >
+              <Icon name="trash" style={{color:"#fff"}} />
+          </Button>
+        </View>
+
+      </View>
+    )
+  }
+
+  renderBadge(category) {
+    const { badge } = styles
+    return (
+      <View style={{padding: 5}}>
+        <View style={{...badge, backgroundColor: category.color}}>
+          <IconC name={category.icon} size={15} color={'#fff'} />
+        </View>
+      </View>
+    )
   }
 
   render(){
@@ -158,110 +395,210 @@ class FormStruk extends Component {
     ];
     const { width } = Dimensions.get('window')
     // console.log(this.props.camera);
+    const { categoryMedia } = styles
 
     return (
-      <FadeInView style={{width: '100%', height: '100%'}}>
-        <Container style={{backgroundColor: '#fff'}}>
-            <Header>
-              <Left>
-                <Button transparent
-                  onPress={() => goBack()}
+
+      <Container style={{backgroundColor: '#fff'}}>
+          <Header>
+            <Left >
+              <Button transparent style={{width: 40}}
+                onPress={() => {
+                  Alert.alert(
+                    `Cancel`,
+                    'Do you really want to cancel?',
+                    [
+                      {text: 'Yes', onPress: () => {
+                        goBack()
+                      }},
+                      {text: 'No'}
+                    ],
+                    {
+                      cancelable: false
+                    }
+                  )
+
+                }}
+                >
+                  <Icon name='arrow-back' />
+              </Button>
+            </Left>
+            <Body>
+              <Title>
+                New Expense
+              </Title>
+            </Body>
+            <Right>
+            </Right>
+          </Header>
+
+
+          <Content style={{display: 'flex'}} padder>
+            <View>
+              <Form>
+                <Item inlineLabel>
+                  <Icon name="ios-cash" style={{color:"#2979FF"}} />
+                  <Input
+                    name="amount"
+                    value={this.state.amount.toString()}
+                    onChangeText={text => this._onChangeInputAmount(text)}
+                    placeholder="Amount"
+                    keyboardType = 'numeric'
+                  />
+                </Item>
+
+                <Item>
+                  <Icon name='calendar' style={{color:"#2979FF"}} />
+                  <Input
+                    value={this.state.dateText}
+                    onFocus={() => {
+                      Keyboard.dismiss()
+                      this.showDatePicker('simple',
+                        {date: new Date()}
+                      )}
+                    }
+                    placeholder="Date"/>
+                </Item>
+
+                <Item>
+                  <Icon name='create' style={{color:"#2979FF"}} />
+                  <Input
+                    name="description"
+                    value={this.state.description}
+                    onChangeText={text => this._onChangeInputDescription(text)}
+                    placeholder="Description"
+                  />
+                </Item>
+
+                <Item>
+                  <Icon name='cart' style={{color:"#2979FF"}} />
+                  <Input
+                    name="item"
+                    disabled
+                    onChangeText={text => this._onChangeInputItems(text)}
+                    placeholder="Items:"
+                  />
+                  <View>
+                    <Camera />
+                  </View>
+                </Item>
+
+                {this.renderItems()}
+
+                <View
+                  style={{
+                    paddingLeft: 0,
+                  }}>
+                  <TouchableWithoutFeedback
+                    onPress={() => this.setState({modalVisible: true})}
+                    >
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <View style={categoryMedia}>
+                        {this.renderBadge({
+                          icon: this.state.categoryIcon,
+                          color: this.state.categoryColor})
+                        }
+                        <View style={{paddingLeft: 5, justifyContent: 'center'}}>
+                          <Text
+                            style={{
+                              fontSize: 17,
+                              color: '#333'}}
+                            >
+                            {this.state.category}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={{justifyContent: 'center', marginRight: 10}}>
+                        <IconC
+                          name='chevron-down'
+                          size={20}
+                          style={{
+                            color:"#2979FF"
+                          }}
+                          />
+                    </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+
+                <Modal
+                  animationType={'fade'}
+                  transparent={true}
+                  visible={this.state.modalVisible}
+                  onRequestClose={() => this.setState({modalVisible: false})}
                   >
-                    <Icon name='arrow-back' />
-                </Button>
-              </Left>
-              <Body>
-                <Title>
-                  New Expense
-                </Title>
-              </Body>
-            </Header>
 
-            <Content style={{display: 'flex'}} padder>
-            {(this.state.page === 'Struk') && (
-              <View>
-                <Form>
-                  <Item inlineLabel>
-                    <Icon name="ios-cash" style={{color:"#2979FF"}} />
-                    <Input
-                      name="amount"
-                      value={this.state.amount.toString()}
-                      onChangeText={text => this._onChangeInputAmount(text)}
-                      placeholder="Amount"
-                      keyboardType = 'numeric'
-                    />
+                  <TouchableWithoutFeedback
+                    onPress={() => this.setState({modalVisible: false})}
+                    >
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        height: '100%'
+                      }}
+                      onPress={() => this.setState({modalVisible: false})}>
 
-                  </Item>
-                  <Item>
-                    <Icon name='cart' style={{color:"#2979FF"}} />
-                    <Input
-                      name="item"
-                      onChangeText={text => this._onChangeInputItems(text)}
-                      placeholder="Item"
-                    />
-                  </Item>
-                  <Item>
-                    <Icon name='create' style={{color:"#2979FF"}} />
-                    <Input
-                      name="description"
-                      value={this.state.description}
-                      onChangeText={text => this._onChangeInputDescription(text)}
-                      placeholder="Description"
-                    />
-                  </Item>
-                  <Item>
-                    <Icon name='cube' style={{color:"#2979FF"}}/>
+                      <View
+                        style={{
+                          width: '85%',
+                          backgroundColor: 'white',
+                          borderRadius: 2,
+                          elevation: 10,
+                          display: 'flex',
+                          paddingRight: 5,
+                          paddingBottom: 5,
+                      }}>
 
+                        {this.state.categories.map((category, index) => (
+                          <TouchableWithoutFeedback
+                            key={index}
+                            onPress={() => {
+                              this.setState({
+                                modalVisible: false,
+                                category: category.category,
+                                categoryIcon: category.icon,
+                                categoryColor: category.color,
+                              })
+                            }}>
+                            <View style={categoryMedia}>
+                              {this.renderBadge({
+                                icon: category.icon,
+                                color: category.color,
+                              })}
+                              <View style={{paddingLeft: 5, justifyContent: 'center'}}>
+                                <Text>{category.category}</Text>
+                              </View>
+                            </View>
+                          </TouchableWithoutFeedback>
+                        ))}
 
-                  </Item>
-                  <Item>
-                    <Icon name='pin' style={{color:"#2979FF"}} />
-                    <Input
-                      name="location"
-                      onChangeText={text => this._onChangeInputLocation(text)}
-                      placeholder="Location"/>
-                  </Item>
-                  <Item>
-                    <Icon name='calendar' style={{color:"#2979FF"}} />
-                    <Input placeholder="Date"/>
-                  </Item>
-                  <Button
-                    full success
-                    disabled={this.state.isButtonDisabled}
-                    onPress={() => this._sendData()}>
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+
+                </Modal>
+
+                <Button
+                  style={{marginTop: 30, marginBottom: 30}}
+                  full success
+                  disabled={this.state.isButtonDisabled}
+                  onPress={() => this._sendData()}
+                  >
                     {this.state.loading && <Spinner color={'#fff'} />}
-                    {!this.state.loading && <Text> Add Transaction </Text>}
-                  </Button>
-                </Form>
+                    {!this.state.loading && <Text style={{fontSize: 17}}>Add</Text>}
+                </Button>
+              </Form>
+            </View>
+          </Content>
 
-                <Picker
-                  style={{color: '#000'}}
-                  selectedValue={'1'}
-                  onValueChange={value => this.onValueChange(value)}
-                  mode="dialog">
-                  <Item label="Januari" value="1" ><Text> Add Transaction </Text>
-                  </Item>
-                  <Item label="Februari" value="2" />
-                  <Item label="Maret" value="3" />
-                  <Item label="April" value="4" />
-                  <Item label="Mei" value="5" />
-                  <Item label="Juni" value="6" />
-                  <Item label="Juli" value="7" />
-                  <Item label="Agustus" value="8" />
-                  <Item label="September" value="9" />
-                  <Item label="Oktober" value="10" />
-                  <Item label="November" value="11" />
-                  <Item label="Desember" value="12" />
-                </Picker>
-              </View>
-            )}
+      </Container>
 
-            </Content>
-            {(this.state.page === 'Struk') && (
-              <Camera />
-            )}
-        </Container>
-      </FadeInView>
     )
   }
 }
@@ -288,13 +625,27 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center'
   },
+  categoryMedia: {
+    flexDirection: 'row',
+    marginLeft: 5,
+    paddingTop: 3,
+  },
+  badge: {
+    width: 34,
+    height: 34,
+    backgroundColor: 'grey',
+    borderRadius: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     expenseRequest: newExpense => dispatch(expenseRequest(newExpense)),
     resetErrorMessage: () => dispatch(resetErrorMessage()),
-    resetSuccessMessage: () => dispatch(resetSuccessMessage())
+    resetSuccessMessage: () => dispatch(resetSuccessMessage()),
+    resetItems: () => dispatch(resetItems()),
   }
 }
 
