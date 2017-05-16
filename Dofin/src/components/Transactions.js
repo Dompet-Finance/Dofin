@@ -1,17 +1,19 @@
 import React from 'react'
-// import { connect } from 'react-redux'
-// import { expenseAllRequest } from '../action'
+import { connect } from 'react-redux'
+import {
+  expenseRequestTotalByCategory, assignExpenseType
+} from '../actions/expenseAction'
 
 import {
   Button, Container, Content, Header, View,
   Left, Right, Body, Title, Text, Footer, FooterTab,
-  Badge, Picker, Item,
+  Badge, Picker, Item, Input,
 } from 'native-base'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import FadeInView from './FadeInView'
 import {
-  Animated, Easing, Alert
+  Animated, Easing, Alert, Modal, TouchableWithoutFeedback
 } from 'react-native';
 
 function numberWithCommas(x) {
@@ -19,84 +21,18 @@ function numberWithCommas(x) {
 }
 
 class Transactions extends React.Component {
+  static navigationOptions = {
+    header: null
+  }
+
   constructor(props) {
     super(props)
     this.state = {
-      month: new Date().getMonth()+1,
-      transactions: [
-        {
-          "_id": {
-            "month": 5
-          },
-          "total_amount_income": 100000,
-          "total_amount_expense": 33333,
-          "categories": [
-            {
-              "category": "Food",
-              "total_amount": 11111,
-              "type": "expense"
-            },
-            {
-              "category": "Clothing",
-              "total_amount": 22222,
-              "type": "expense"
-            },
-            {
-              "category": "Salary",
-              "total_amount": 100000,
-              "type": "income"
-            },
-          ]
-        },
-        {
-          "_id": {
-            "month": 6
-          },
-          "total_amount_income": 100000,
-          "total_amount_expense": 11111,
-          "categories": [
-            {
-              "category": "Food",
-              "total_amount": 11111,
-              "type": "expense"
-            },
-            {
-              "category": "Salary",
-              "total_amount": 100000,
-              "type": "income"
-            },
-          ]
-        },
-        {
-          "_id": {
-            "month": 7
-          },
-          "total_amount_income": 100000,
-          "total_amount_expense": 99999,
-          "categories": [
-            {
-              "category": "Food",
-              "total_amount": 33333,
-              "type": "expense"
-            },
-            {
-              "category": "Food",
-              "total_amount": 33333,
-              "type": "expense"
-            },
-            {
-              "category": "Food",
-              "total_amount": 33333,
-              "type": "expense"
-            },
-            {
-              "category": "Salary",
-              "total_amount": 100000,
-              "type": "income"
-            },
-          ]
-        }
-      ],
+      month: new Date().getMonth()+6,
+      year: new Date().getFullYear(),
+      modalVisible: false,
+      child: 1,
+      first: true,
       categories: [{
         category: 'Food',
         icon: 'silverware-variant',
@@ -106,7 +42,15 @@ class Transactions extends React.Component {
         icon: 'tshirt-crew',
         color: 'green',
       },{
+        category: 'Cloth',
+        icon: 'tshirt-crew',
+        color: 'brown',
+      },{
         category: 'Salary',
+        icon: 'cash',
+        color: 'teal',
+      },{
+        category: 'New',
         icon: 'cash',
         color: 'teal',
       }],
@@ -115,51 +59,80 @@ class Transactions extends React.Component {
   }
 
   componentWillMount() {
-    const { transactions, month } = this.state
-    const index = transactions.findIndex(
-      val => val._id.month === month)
-    const anims = transactions[index].categories.map(() => {
-      return {
-        left: new Animated.Value(100),
-        opacity: new Animated.Value(0),
-      }
+    this.props.expenseRequestTotalByCategory({
+      id: '59169da29a208a785ad2e99c'
     })
-    this.setState({
-      anims
-    })
+    // const { transactions, month } = this.state
+    // const index = transactions.findIndex(
+    //   val => val._id.month === month)
+    // const anims = transactions[index].categories.map(() => {
+    //   return {
+    //     left: new Animated.Value(100),
+    //     opacity: new Animated.Value(0),
+    //   }
+    // })
+    // this.setState({
+    //   anims
+    // })
   }
 
   componentDidMount() {
-    Animated.stagger(200,
-      this.state.anims.map(anim => {
-        return Animated.parallel([
-          Animated.timing(
-              anim.left, {toValue: 0, duration: 500}
-            ),
-          Animated.timing(
-              anim.opacity, {toValue: 1, duration: 500,
-                easing: Easing.inOut(Easing.quad),}
-            )
-        ])
-      })
-    ).start()
+    // Animated.stagger(200,
+    //   this.state.anims.map(anim => {
+    //     return Animated.parallel([
+    //       Animated.timing(
+    //           anim.left, {toValue: 0, duration: 500}
+    //         ),
+    //       Animated.timing(
+    //           anim.opacity, {toValue: 1, duration: 500,
+    //             easing: Easing.inOut(Easing.quad)}
+    //         )
+    //     ])
+    //   })
+    // ).start()
+  }
+
+  componentDidUpdate() {
+    // if (this.props.expense.data.totalByCategoryThisYear.length &&
+    //   this.state.first) {
+    //   this.setState({first: false}, () => {
+    //     // const { transactions, month } = this.state
+    //     const { month } = this.state
+    //     const { totalByCategoryThisYear } = this.props.expense.data
+    //     const transactions = assignExpenseType(totalByCategoryThisYear)
+    //     const index = transactions.findIndex(
+    //       val => val._id.month === month)
+    //     const anims = transactions[index].categories.map(() => {
+    //       return {
+    //         left: new Animated.Value(100),
+    //         opacity: new Animated.Value(0),
+    //       }
+    //     })
+    //     this.setState({
+    //       anims
+    //     })
+    //   })
+    // }
   }
 
   onValueChange(value) {
-    Animated.parallel(
-      this.state.anims.map(anim => {
-        return Animated.parallel([
-          Animated.timing(
-              anim.left, {toValue: -100, duration: 200}
-            ),
-          Animated.timing(
-              anim.opacity, {toValue: 0, duration: 200}
-            )
-        ])
-      })
-    ).start()
+    // Animated.parallel(
+    //   this.state.anims.map(anim => {
+    //     return Animated.parallel([
+    //       Animated.timing(
+    //           anim.left, {toValue: -100, duration: 200}
+    //         ),
+    //       Animated.timing(
+    //           anim.opacity, {toValue: 0, duration: 200}
+    //         )
+    //     ])
+    //   })
+    // ).start()
 
-    const { transactions, month } = this.state
+    // const { transactions, month } = this.state
+    const { month } = this.state
+    const { totalByCategoryThisYear } = this.props.expense.data
+    const transactions = assignExpenseType(totalByCategoryThisYear)
     const index = transactions.findIndex(
       val => val._id.month === +value) // tricky
     const anims = index === -1 ? [] : transactions[index].categories.map(() => {
@@ -169,26 +142,26 @@ class Transactions extends React.Component {
       }
     })
 
-    setTimeout(() => {
+    // setTimeout(() => {
       this.setState({
         month: +value,
         anims
       }, () => {
-        Animated.stagger(200,
-          this.state.anims.map(anim => {
-            return Animated.parallel([
-              Animated.timing(
-                  anim.left, {toValue: 0, duration: 500}
-                ),
-              Animated.timing(
-                  anim.opacity, {toValue: 1, duration: 500,
-                    easing: Easing.inOut(Easing.quad),}
-                )
-            ])
-          })
-        ).start()
+        // Animated.stagger(200,
+        //   this.state.anims.map(anim => {
+        //     return Animated.parallel([
+        //       Animated.timing(
+        //           anim.left, {toValue: 0, duration: 500}
+        //         ),
+        //       Animated.timing(
+        //           anim.opacity, {toValue: 1, duration: 500,
+        //             easing: Easing.inOut(Easing.quad),}
+        //         )
+        //     ])
+        //   })
+        // ).start()
       })
-    }, 200)
+    // }, 200)
 
   }
 
@@ -197,7 +170,8 @@ class Transactions extends React.Component {
     const { categories } = this.state
     const index = categories.findIndex(
       val => val.category === category)
-    const categorySet = categories[index]
+    const categorySet = index === -1 ?
+      {color: 'grey', icon: 'dots-horizontal'} : categories[index]
     return (
       <View style={{padding: 5}}>
         <View style={{...badge, backgroundColor: categorySet.color}}>
@@ -209,44 +183,61 @@ class Transactions extends React.Component {
 
   renderContent() {
     const { categoryMedia } = styles
-    const { transactions, month } = this.state
+    // const { transactions, month } = this.state
+    const { month } = this.state
+    const { totalByCategoryThisYear } = this.props.expense.data
+    const transactions = assignExpenseType(totalByCategoryThisYear)
     const index = transactions.findIndex(
       val => val._id.month === month)
     const categories = index === -1 ? [] : transactions[index].categories
 
-    return categories.map((category, index) => (
-      <Animated.View
-        style={{
-          left: this.state.anims[index].left,
-          opacity: this.state.anims[index].opacity,
-        }}
-        key={index}
-        >
-        <View style={categoryMedia}>
+    // return categories.map((category, index) => (
+    //   <Animated.View
+    //     style={{
+    //       left: this.state.anims[index].left,
+    //       opacity: this.state.anims[index].opacity,
+    //     }}
+    //     key={index}
+    //     >
+    //     <View style={categoryMedia}>
+    //       {this.renderBadge(category.category)}
+    //       <View style={{paddingLeft: 5}}>
+    //         <Text>{category.category}</Text>
+    //         <Text>Rp {numberWithCommas(category.total_amount)}</Text>
+    //       </View>
+    //     </View>
+    //   </Animated.View>
+    // ))
+
+      return categories.map((category, index) => (
+        <View style={categoryMedia} key={index}>
           {this.renderBadge(category.category)}
           <View style={{paddingLeft: 5}}>
             <Text>{category.category}</Text>
             <Text>Rp {numberWithCommas(category.total_amount)}</Text>
           </View>
         </View>
-      </Animated.View>
-    ))
+      ))
+
   }
 
   renderTotalIncome() {
-    const { transactions, month } = this.state
-    const index = transactions.findIndex(
-      val => val._id.month === month)
-    const totalAmount = index === -1 ? 0 : transactions[index].total_amount_income
+    // const { transactions, month } = this.state
+    // const index = transactions.findIndex(
+    //   val => val._id.month === month)
+    // const totalAmount = index === -1 ? 0 : transactions[index].total_amount_income
     return (
       <Text style={{marginRight: 10}}>
-        Rp {numberWithCommas(totalAmount)}
+        Rp {numberWithCommas(0)}
       </Text>
     )
   }
 
   renderTotalExpenses() {
-    const { transactions, month } = this.state
+    // const { transactions, month } = this.state
+    const { month } = this.state
+    const { totalByCategoryThisYear } = this.props.expense.data
+    const transactions = assignExpenseType(totalByCategoryThisYear)
     const index = transactions.findIndex(
       val => val._id.month === month)
     const totalAmount = index === -1 ? 0 : transactions[index].total_amount_expense
@@ -258,7 +249,10 @@ class Transactions extends React.Component {
   }
 
   renderTotalBalance() {
-    const { transactions, month } = this.state
+    // const { transactions, month } = this.state
+    const { month } = this.state
+    const { totalByCategoryThisYear } = this.props.expense.data
+    const transactions = assignExpenseType(totalByCategoryThisYear)
     const index = transactions.findIndex(
       val => val._id.month === month)
     let balance = 0
@@ -285,53 +279,175 @@ class Transactions extends React.Component {
 
     return (
       <FadeInView style={{width: '100%', height: '100%'}}>
-        <Container>
+        <Container style={{backgroundColor: '#fff'}}>
           <Header>
             <Left>
               <Button
                 transparent>
-                  <Icon name="menu" size={30} color="#fff" />
+                  <Icon name="menu" size={25} color="#fff" />
               </Button>
             </Left>
             <Body>
-              <Title>Transactions</Title>
+              <Title>
+                Transactions
+              </Title>
             </Body>
             <Right>
               <Button
                 transparent
-                onPress={() => Alert.alert(
-                  'Alert Title',
-                  'alertMessage',
-                  [
-                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
-                    {text: 'OK', onPress: () => console.log('OK Pressed!')},
-                  ]
-                )}
+                onPress={() => {
+                  this.setState({modalVisible: true})
+                }}
                 >
-                <Icon name="filter-variant" size={30} color="#fff" />
+                <Icon name="filter-variant" size={25} color="#fff" />
               </Button>
             </Right>
           </Header>
 
-          <View style={{backgroundColor: '#3F51B5'}}>
-            <Picker
-              style={{color: 'white'}}
-              selectedValue={this.state.month.toString()}
-              onValueChange={value => this.onValueChange(value)}
-              mode="dialog">
-              <Item label="Januari" value="1" />
-              <Item label="Februari" value="2" />
-              <Item label="Maret" value="3" />
-              <Item label="April" value="4" />
-              <Item label="Mei" value="5" />
-              <Item label="Juni" value="6" />
-              <Item label="Juli" value="7" />
-              <Item label="Agustus" value="8" />
-              <Item label="September" value="9" />
-              <Item label="Oktober" value="10" />
-              <Item label="November" value="11" />
-              <Item label="Desember" value="12" />
-            </Picker>
+          <Modal
+            animationType={'fade'}
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => this.setState({modalVisible: false})}
+            >
+
+            <TouchableWithoutFeedback
+              onPress={() => this.setState({modalVisible: false})}
+              >
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0,0,0,0.7)',
+                  height: '100%'
+                }}
+                onPress={() => this.setState({modalVisible: false})}>
+
+                <TouchableWithoutFeedback>
+                  <View
+                    style={{
+                      width: '85%',
+                      backgroundColor: 'white',
+                      borderRadius: 2,
+                      elevation: 10,
+                      display: 'flex',
+                      padding: 15,
+                      paddingTop: 0,
+                    }}>
+
+                      <View
+                        style={{
+                          height: 80,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-around',
+                        }}>
+
+                          <TouchableWithoutFeedback
+                            onPress={() => {
+                              this.setState({
+                                year: this.state.year-1
+                              })
+                            }}>
+                              <Icon name='chevron-left' size={30} style={{color:"#2979FF"}} />
+                          </TouchableWithoutFeedback>
+                          <Text
+                            style={{
+                              fontSize: 20,
+                            }}>
+                            {this.state.year}
+                          </Text>
+                          <TouchableWithoutFeedback
+                            onPress={() => {
+                              this.setState({
+                                year: this.state.year+1
+                              })
+                            }}>
+                              <Icon name='chevron-right' size={30} style={{color:"#2979FF"}} />
+                          </TouchableWithoutFeedback>
+                      </View>
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                      }}>
+                      {Array(12).fill().map((n, index) => (
+                        <TouchableWithoutFeedback
+                          key={index}
+                          onPress={() => {
+                            this.setState({
+                              month: index+1,
+                              modalVisible: false,
+                            })
+                          }}>
+                          <View
+                            style={{
+                              width: '46%',
+                              height: 45,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              margin: 5,
+                              borderWidth: 1,
+                              borderColor: '#eee',
+                              borderRadius: 4,
+                              elevation: 2,
+                              backgroundColor: '#2979FF'
+                            }}>
+                            <Text
+                              style={{
+                                fontSize: 20,
+                                color: '#fff',
+                              }}>
+                              {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Agt', 'Sep', 'Oct', 'Nov', 'Dec'][index]}
+                            </Text>
+                          </View>
+                        </TouchableWithoutFeedback>
+                      ))}
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+            </TouchableWithoutFeedback>
+
+          </Modal>
+
+          <View
+            style={{
+              height: 50,
+              backgroundColor: '#eee',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              elevation: 4,
+            }}>
+            <Text
+              onPress={() => {
+                this.setState({child: 0})
+              }}
+              style={{
+                color: this.state.child === 0 ? '#3F51B5' : '#666'
+              }}>
+              Recent
+            </Text>
+            <Text
+              onPress={() => {
+                this.setState({child: 1})
+              }}
+              style={{
+                color: this.state.child === 1 ? '#3F51B5' : '#666'
+              }}>
+              Categories
+            </Text>
+            <Text
+              onPress={() => {
+                this.setState({child: 2})
+              }}
+              style={{
+                color: this.state.child === 2 ? '#3F51B5' : '#666'
+              }}>
+              Detail
+            </Text>
 
           </View>
 
@@ -369,6 +485,7 @@ const styles = {
     borderColor: '#eee',
     alignItems: 'center',
     backgroundColor: '#fff',
+    elevation: 15,
   },
   footerView: {
     flex: 1,
@@ -398,15 +515,14 @@ const styles = {
   }
 }
 
-// const mapStateToProps = state => ({
-//   expenses: state.expenses,
-//   income: state.income,
-// })
+const mapStateToProps = state => ({
+  expense: state.expense,
+  income: state.income,
+})
 
-// const mapDispatchToProps = dispatch => ({
-//   expenseGet: dispatch(expenseGet()),
-//   incomeGet: dispatch(incomeGet()),
-// })
+const mapDispatchToProps = dispatch => ({
+  expenseRequestTotalByCategory: data => dispatch(expenseRequestTotalByCategory(data))
+})
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Transactions)
-export default Transactions
+export default connect(mapStateToProps, mapDispatchToProps)(Transactions)
+// export default Transactions
