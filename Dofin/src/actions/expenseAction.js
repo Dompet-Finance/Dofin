@@ -69,6 +69,37 @@ export const expenseRequest = data => {
     })
 };
 
+export const expenseRequestTotalByCategorySuccess = data => ({
+  type: 'GET_EXPENSE_AMOUNT_BY_CATEGORY_THIS_YEAR',
+  payload: data,
+});
+
+export const assignExpenseType = data => {
+  return data.map(item => {
+    let newItem = {
+      ...item,
+      total_amount: 0,
+      total_amount_expense: item.total_amount,
+    }
+    return newItem
+  })
+}
+
+export const expenseRequestTotalByCategory = data => {
+  return dispatch =>
+    axios.get(host + `/expenses/${data.id}/total_amount_by_category`, { timeout: 7000 })
+    .then(response => {
+      // console.log(response.data)
+      return isError(response.data) ?
+        dispatch(expenseRequestFail(err)) :
+        dispatch(expenseRequestTotalByCategorySuccess(response.data))
+    })
+    .catch(err => {
+      // console.log(err)
+      return dispatch(expenseRequestFail(err))
+    })
+};
+
 export const getExpenseTotalByMonthRequest = () => {
   return {
     type: 'RESET_ERROR_MESSAGE',

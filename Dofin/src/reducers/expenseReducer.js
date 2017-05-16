@@ -61,6 +61,17 @@ const resetSuccessMessage = (state, payload) => {
   return newState
 }
 
+const getTotalByCategoryThisYear = (state, payload) => {
+  let newState = {
+    ...state,
+    data: {
+      ...state.data,
+      totalByCategoryThisYear: payload
+    }
+  }
+  return newState
+}
+
 const expenseReducer = (state = initialState, { type, payload }) => {
   switch(type) {
     case ActionTypes.ADD_EXPENSE: return addExpense(state, payload)
@@ -68,6 +79,7 @@ const expenseReducer = (state = initialState, { type, payload }) => {
     case 'ADD_EXPENSE_FAIL': return addExpenseFail(state, payload)
     case 'RESET_ERROR_MESSAGE': return resetErrorMessage(state, payload)
     case 'RESET_SUCCESS_MESSAGE': return resetSuccessMessage(state, payload)
+    case 'GET_EXPENSE_AMOUNT_BY_CATEGORY_THIS_YEAR': return getTotalByCategoryThisYear(state, payload)
     case ActionTypes.GET_EXPENSE_AMOUNT_BY_MOUNT: return payload
     case ActionTypes.GET_EXPENSE_BY_ID: return getExpensesById(state, payload)
     case ActionTypes.GET_EXPENSE: return (state, payload)
