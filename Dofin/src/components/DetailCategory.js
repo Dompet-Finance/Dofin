@@ -44,9 +44,10 @@ class DetailDreams extends Component {
       id: _id,
       category: data.category
     }
-    if (actions === "Detail") {
-      this.props.navigation.navigate("SingleCategory", {data: data})
-    }else if (actions === "Edit") {
+    // if (actions === "Detail") {
+    //   this.props.navigation.navigate("SingleCategory", {data: data})
+    // }else
+    if (actions === "Edit") {
       this.props.navigation.navigate("EditCategory", {data: data, user_id: this.props.getCategory.category._id})
     }else if (actions === "Delete") {
       Alert.alert(
@@ -67,7 +68,7 @@ class DetailDreams extends Component {
     console.log(this.props.getCategory.category);
     const {category} = this.props.getCategory
     const { goBack } = this.props.navigation;
-    const BUTTONS = ["Detail", "Edit", "Delete"];
+    const BUTTONS = ["Edit", "Delete"];
     const DESTRUCTIVE_INDEX = 3;
     const CANCEL_INDEX = 2;
     return (
@@ -96,8 +97,8 @@ class DetailDreams extends Component {
                 <Card key={cat._id}>
                   <ListItem icon>
                     <Left>
-                    <Button iconLeft style={{borderRadius: 120, backgroundColor: "#2196F3"}}>
-                        <Icon name="ios-bulb" style={{fontSize: 20, marginLeft: 8}}/>
+                    <Button iconLeft style={{ backgroundColor: "#2196F3"}}>
+                        <Icon name={cat.icon} style={{fontSize: 18, marginLeft: 8}}/>
                     </Button>
                     </Left>
                     <Body>

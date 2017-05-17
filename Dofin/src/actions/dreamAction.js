@@ -26,7 +26,7 @@ export const deleteDream = data => ({
 
 export const dreamRequest = data => {
   return dispatch =>
-    axios.post(localHost+'/dreams', {
+    axios.post(host+'/dreams', {
       record_by: "59158e804412792833f91138",
       dream: data.dream,
       description: data.description,
@@ -38,14 +38,14 @@ export const dreamRequest = data => {
 
 export const getDreamRequest = () => {
   return dispatch =>
-    axios.get(localHost+'/dreams/59158e804412792833f91138')
+    axios.get(host+'/dreams/59158e804412792833f91138')
     .then(response => dispatch(getDream(response.data)))
     .catch(err => console.log(err.message))
 };
 
 export const updateDreamRequest = data => {
   return dispatch =>
-    axios.put(localHost+'/dreams/59158e804412792833f91138', {
+    axios.put(host+'/dreams/59158e804412792833f91138', {
       record_by: "59158e804412792833f91138",
       dream: data.dream,
       description: data.description,
@@ -58,7 +58,7 @@ export const updateDreamRequest = data => {
 
 export const deleteDreamRequest = data => {
   return dispatch =>
-    axios.delete(localHost+'/dreams/'+data._id)
+    axios.delete(host+'/dreams/'+data._id)
     .then(response => dispatch(deleteDream(response.data)))
     .catch(err => console.log(err.message))
 };

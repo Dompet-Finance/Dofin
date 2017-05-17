@@ -15,7 +15,7 @@ export const getIncome = data => ({
 
 export const incomeRequest = data => {
   return dispatch =>
-    axios.post(localHost+'/income', {
+    axios.post(host+'/income', {
       record_by   : "59158e804412792833f91138",
       amount      : data.amount,
       description : data.description,
@@ -28,7 +28,7 @@ export const incomeRequest = data => {
 
 export const getIncomeRequest = () => {
   return dispatch =>
-    axios.get(localHost+'/income/59158e804412792833f91138/total_amount')
+    axios.get(host+'/income/59158e804412792833f91138/total_amount')
     .then(response => dispatch(getIncome(response.data)))
     .catch(err => console.log(err.message))
 };

@@ -15,14 +15,14 @@ export const getNotif = data => ({
 
 export const notifRequest = notification => {
   return dispatch =>
-    axios.post(localHost+'/notification', {notification})
+    axios.post(host+'/notification', {notification})
     .then(response => dispatch(postNotif(response.data)))
     .catch(err => console.log(err.message))
 };
 
 export const getNotifRequest = () => {
   return dispatch =>
-    axios.get(localHost+'/notification/59158e804412792833f91138')
+    axios.get(host+'/notification/59158e804412792833f91138')
     .then(response => dispatch(getNotif(response.data)))
     .catch(err => console.log(err.message))
 };
