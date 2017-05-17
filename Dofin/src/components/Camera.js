@@ -99,7 +99,7 @@ class CameraScan extends React.Component {
         transparent
         onPress={this.selectPhotoTapped.bind(this)}
         >
-        <Icon name='camera' style={{color: '#2979FF'}}/>
+        <Icon name='camera' style={{color: '#2196F3'}}/>
       </Button>
     )
   }

@@ -11,6 +11,16 @@ import {connect} from 'react-redux';
 import {getRequestCategory, deleteRequestCategory} from '../actions';
 import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
 
+function sortByCategory(a, b) {
+  if (a.category.toLowerCase() < b.category.toLowerCase()) {
+    return -1;
+  }
+  if (a.category.toLowerCase() > b.category.toLowerCase()) {
+    return 1;
+  }
+  return 0;
+}
+
 class DetailDreams extends Component {
   constructor(props){
     super(props)
@@ -46,7 +56,7 @@ class DetailDreams extends Component {
           {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
           {text: 'OK', onPress: () => {
             this.props.deleteRequestCategory(dataToDelete)
-            this.props.navigation.navigate("DetailCategory")
+            // this.props.navigation.navigate("DetailCategory")
           }},
         ]
       )
@@ -79,7 +89,7 @@ class DetailDreams extends Component {
     const CANCEL_INDEX = 2;
 
     if (category.categories !== undefined) {
-      return category.categories.map((cat) => {
+      return category.categories.sort(sortByCategory).map((cat) => {
         return (
           <Card key={cat._id}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>

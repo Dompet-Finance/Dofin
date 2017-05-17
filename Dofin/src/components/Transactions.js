@@ -32,6 +32,19 @@ function dateLocal(date) {
   let y = newDate.getFullYear()
   return `${d}/${m}/${y}`
 }
+function compare(a, b) {
+  if (a.category.toLowerCase() < b.category.toLowerCase()) {
+    return -1;
+  }
+  if (a.category.toLowerCase() > b.category.toLowerCase()) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}
+function compareDate(a, b) {
+  return new Date(b.date) - new Date(a.date);
+}
 
 class Transactions extends React.Component {
   static navigationOptions = {
@@ -79,72 +92,17 @@ class Transactions extends React.Component {
     this.props.incomeRequestTotalByCategory({
       id: '59169da29a208a785ad2e99c'
     })
-    // const { transactions, month } = this.state
-    // const index = transactions.findIndex(
-    //   val => val._id.month === month)
-    // const anims = transactions[index].categories.map(() => {
-    //   return {
-    //     left: new Animated.Value(100),
-    //     opacity: new Animated.Value(0),
-    //   }
-    // })
-    // this.setState({
-    //   anims
-    // })
   }
 
   componentDidMount() {
-    // Animated.stagger(200,
-    //   this.state.anims.map(anim => {
-    //     return Animated.parallel([
-    //       Animated.timing(
-    //           anim.left, {toValue: 0, duration: 500}
-    //         ),
-    //       Animated.timing(
-    //           anim.opacity, {toValue: 1, duration: 500,
-    //             easing: Easing.inOut(Easing.quad)}
-    //         )
-    //     ])
-    //   })
-    // ).start()
+
   }
 
   componentDidUpdate() {
-    // if (this.props.expense.data.totalByCategoryThisYear.length &&
-    //   this.state.first) {
-    //   this.setState({first: false}, () => {
-    //     // const { transactions, month } = this.state
-    //     const { month } = this.state
-    //     const { totalByCategoryThisYear } = this.props.expense.data
-    //     const transactions = assignExpenseType(totalByCategoryThisYear)
-    //     const index = transactions.findIndex(
-    //       val => val._id.month === month)
-    //     const anims = transactions[index].categories.map(() => {
-    //       return {
-    //         left: new Animated.Value(100),
-    //         opacity: new Animated.Value(0),
-    //       }
-    //     })
-    //     this.setState({
-    //       anims
-    //     })
-    //   })
-    // }
+
   }
 
   onValueChange(value) {
-    // Animated.parallel(
-    //   this.state.anims.map(anim => {
-    //     return Animated.parallel([
-    //       Animated.timing(
-    //           anim.left, {toValue: -100, duration: 200}
-    //         ),
-    //       Animated.timing(
-    //           anim.opacity, {toValue: 0, duration: 200}
-    //         )
-    //     ])
-    //   })
-    // ).start()
 
     // const { transactions, month } = this.state
     const { month } = this.state
@@ -164,21 +122,8 @@ class Transactions extends React.Component {
         month: +value,
         anims
       }, () => {
-        // Animated.stagger(200,
-        //   this.state.anims.map(anim => {
-        //     return Animated.parallel([
-        //       Animated.timing(
-        //           anim.left, {toValue: 0, duration: 500}
-        //         ),
-        //       Animated.timing(
-        //           anim.opacity, {toValue: 1, duration: 500,
-        //             easing: Easing.inOut(Easing.quad),}
-        //         )
-        //     ])
-        //   })
-        // ).start()
+
       })
-    // }, 200)
 
   }
 
@@ -210,26 +155,8 @@ class Transactions extends React.Component {
 
     const recent = this.props.incomeExpensesDetail
 
-    // return categories.map((category, index) => (
-    //   <Animated.View
-    //     style={{
-    //       left: this.state.anims[index].left,
-    //       opacity: this.state.anims[index].opacity,
-    //     }}
-    //     key={index}
-    //     >
-    //     <View style={categoryMedia}>
-    //       {this.renderBadge(category.category)}
-    //       <View style={{paddingLeft: 5}}>
-    //         <Text>{category.category}</Text>
-    //         <Text>Rp {numberWithCommas(category.total_amount)}</Text>
-    //       </View>
-    //     </View>
-    //   </Animated.View>
-    // ))
-
     if (this.state.child === 1)
-      return categories.map((category, index) => (
+      return categories.sort(compare).map((category, index) => (
         <Card style={{justifyContent: 'space-between', flexDirection: 'row'}}>
           <View style={categoryMedia} key={index}>
             {this.renderBadge(category.category)}
@@ -245,13 +172,13 @@ class Transactions extends React.Component {
             </View>
           </View>
           <View style={{justifyContent: 'center', marginRight: 5}}>
-            <Icon name='chevron-right' size={20} style={{color:"#ccc"}} />
+            <Icon name='chevron-right' size={20} style={{color:"#fff"}} />
           </View>
         </Card>
       ))
 
     if (this.state.child === 0)
-      return recent.map((data, index) => (
+      return recent.sort(compareDate).map((data, index) => (
         <Card
           style={{
             justifyContent: 'space-between',
@@ -269,7 +196,7 @@ class Transactions extends React.Component {
                 <Text>Rp {numberWithCommas(data.amount)}</Text>
               </View>
             </View>
-            <View style={{justifyContent: 'center', marginRight: 5}}>
+            <View style={{justifyContent: 'flex-start', marginRight: 5}}>
               <TouchableWithoutFeedback
                 onPress={() => {
                   alert()
@@ -277,8 +204,8 @@ class Transactions extends React.Component {
                 >
                   <View
                     style={{
-                      height: 40,
-                      width: 40,
+                      height: 0,
+                      width: 0,
                       alignItems: 'center',
                       justifyContent: 'center',
                       margin: 5,
@@ -293,7 +220,8 @@ class Transactions extends React.Component {
                     `Delete ${data.type}`,
                     `Data ${data.description} ${dateLocal(data.date)} ${data.amount} will be deleted, are you sure?`,
                     [
-                      {text: 'Yes', onPress: () => {
+                      {text: 'Cancel'},
+                      {text: 'OK', onPress: () => {
                         if (data.type === 'expense') {
                           this.props.deleteExpenseById({id: data._id})
                           this.props.expenseRequestTotalByCategory({
@@ -307,7 +235,7 @@ class Transactions extends React.Component {
                           })
                         }
                       }},
-                      {text: 'No'}
+
                     ],
                     {
                       cancelable: false
@@ -317,14 +245,14 @@ class Transactions extends React.Component {
                 >
                   <View
                     style={{
-                      height: 40,
-                      width: 40,
+                      height: 20,
+                      width: 20,
                       alignItems: 'center',
                       justifyContent: 'center',
                       margin: 5,
                     }}
                     >
-                      <Icon name='delete' size={20} style={{color:"red"}} />
+                      <Icon name='delete' size={20} style={{color:"#ccc"}} />
                   </View>
 
               </TouchableWithoutFeedback>
@@ -568,22 +496,6 @@ class Transactions extends React.Component {
                         color: this.state.child === 1 ? '#3F51B5' : '#666'
                       }}>
                       Categories
-                    </Text>
-                  </View>
-              </TouchableWithoutFeedback>
-
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  this.setState({child: 2})
-
-                }}
-                >
-                  <View style={{padding: 10}}>
-                    <Text
-                      style={{
-                        color: this.state.child === 2 ? '#3F51B5' : '#666'
-                      }}>
-                      Detail
                     </Text>
                   </View>
               </TouchableWithoutFeedback>
