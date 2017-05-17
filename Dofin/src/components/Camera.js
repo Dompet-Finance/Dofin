@@ -7,7 +7,6 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
-import ActionButton from 'react-native-action-button';
 
 import { imgPostRequest } from '../actions';
 import { setLoading } from '../actions/cameraAction';
