@@ -56,7 +56,7 @@ class MainScreen extends Component {
         active: false,
         showToast: false,
         income: '',
-        notifications: [],
+        pushNotif: false,
         seconds: 5,
         appState: AppState.currentState,
     };
@@ -102,6 +102,7 @@ class MainScreen extends Component {
     let dataCalculate   = []
     let color = []
     let uniqueCategory
+    console.log('first check', this.props.getExpense.length !== 0 && this.props.getIncome !== 0);
     if (this.props.getExpense.length !== 0 && this.props.getIncome !== 0) {
       let data = []
       let cat = []
@@ -113,17 +114,8 @@ class MainScreen extends Component {
         obj.amount = expenses.amount
         cat.push(obj)
       })
-      uniqueCategory = [...new Set(data.map(item => item.category))];
-      cat.map((calculateAmount, index) => {
-        dataCalculate.push(calculateAmount)
-      })
-
-      for (var i = 0; i < uniqueCategory.length; i++) {
-        let objColor = {}
-        objColor.category = uniqueCategory[i]
-        objColor.color = sliceColor[i]
-        color.push(objColor)
-      }
+      console.log('second check', totalExpenses >= (this.props.getIncome * 0.4));
+      console.log(this.state.pushNotif == false);
       if (this.state.appState === 'active' && totalExpenses >= (this.props.getIncome * 0.4)) {
         let date = new Date(Date.now() + (this.state.seconds * 1000));
         let message = "It seems you have a lot of expenses lately"
@@ -196,7 +188,7 @@ class MainScreen extends Component {
               <Right>
                 <Button
                   transparent
-                  onPress={ () => navigate('PushNotifications', {notifications: this.state.notifications})}
+                  onPress={ () => {}}
                 >
                   <Icon name="md-notifications"/>
                 </Button>
@@ -294,7 +286,7 @@ class MainScreen extends Component {
           </Fab>
       </Container>
       </DrawerLayoutAndroid>
-    )
+    )}
   }
 }
 // navigate to detail chart
