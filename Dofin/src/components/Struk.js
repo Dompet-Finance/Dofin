@@ -404,7 +404,7 @@ class FormStruk extends Component {
     return (
       <View style={{padding: 5}}>
         <View style={{...badge, backgroundColor: category.color}}>
-          <IconC name={category.icon} size={15} color={'#fff'} />
+          <IconC name={category.icon} size={20} color={'#fff'} />
         </View>
       </View>
     )

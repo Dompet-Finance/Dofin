@@ -1,19 +1,7 @@
 import React, {Component} from 'react';
 import {
-  Text,
-  View,
-  Container,
-  Header,
-  Left,
-  Button,
-  Body,
-  Title,
-  Right,
-  Content,
-  Icon,
-  ActionSheet,
-  ListItem,
-  Card,
+  Text, View, Container, Header, Left, Button, Body,
+  Title, Right, Content, Icon, ActionSheet, ListItem, Card,
   Spinner
 } from 'native-base';
 import {
@@ -38,7 +26,8 @@ class DetailDreams extends Component {
   componentDidMount(){
     this.props.getRequestCategory()
   }
-  actions(actions, data){
+
+  actions(actions, data) {
     let _id = this.props.getCategory.category._id
     let dataToDelete = {
       id: _id,
@@ -64,70 +53,105 @@ class DetailDreams extends Component {
     }
     this.setState({ actions: actions });
   }
-  render(){
-    const {category} = this.props.getCategory
-    const { goBack } = this.props.navigation;
+
+  renderBadge(category) {
+    const badge = {
+      width: 34,
+      height: 34,
+      backgroundColor: 'grey',
+      borderRadius: 17,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+    return (
+      <View style={{padding: 5}}>
+        <View style={{...badge, backgroundColor: category.color}}>
+          <IconCustom name={category.icon} size={20} color={'#fff'} />
+        </View>
+      </View>
+    )
+  }
+
+  renderList() {
+    const { category } = this.props.getCategory
     const BUTTONS = ["Edit", "Delete"];
     const DESTRUCTIVE_INDEX = 3;
     const CANCEL_INDEX = 2;
+
+    if (category.categories !== undefined) {
+      return category.categories.map((cat) => {
+        return (
+          <Card key={cat._id}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  margin: 5,
+                }}
+                >
+                  {this.renderBadge({
+                    icon: cat.icon,
+                    color: cat.color,
+                  })}
+                  <View style={{paddingLeft: 5, justifyContent: 'center'}}>
+                    <Text>{cat.category}</Text>
+                  </View>
+              </View>
+              <View style={{justifyContent: 'center', marginRight: 15}}>
+                <Icon
+                  name="ios-apps"
+                  style={{color: '#ccc'}}
+                  onPress={()=> ActionSheet.show(
+                    {
+                      options: BUTTONS,
+                      cancelButtonIndex: CANCEL_INDEX,
+                      destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                      title: 'Actions'
+                    },
+                    (buttonIndex) => {
+                      this.actions(actions=BUTTONS[buttonIndex], data=cat)
+                    }
+                  )}/>
+              </View>
+            </View>
+          </Card>
+        )
+      })
+    } else {
+      return (<Spinner color='#68A57B' />)
+    }
+  }
+
+  render() {
     return (
       <Container style={{backgroundColor: '#fff'}}>
-
-          <Header style={{backgroundColor: "#2196F3"}}>
-              <Left>
-                <Button transparent
-                  onPress={() => this.props.navigation.navigate("MainScreen")}
-                >
-                    <Icon name='ios-arrow-back-outline' />
-                </Button>
-              </Left>
-              <Body>
-                  <Title>List Category</Title>
-              </Body>
-              <Right>
-                  <Button transparent onPress={()=>this.props.navigation.navigate("Category")}>
-                    <IconCustom name="border-color" size={25} style={{color: "#FFF"}}/>
-                  </Button>
-              </Right>
-          </Header>
-          <Content>
-            {(category.categories !== undefined) ? category.categories.map((cat) => {
-              return (
-                <Card key={cat._id}>
-                  <ListItem icon>
-                    <Left>
-                    <Button iconLeft style={{ backgroundColor: "#2196F3"}}>
-                        <Icon name={cat.icon} style={{fontSize: 18, marginLeft: 8}}/>
-                    </Button>
-                    </Left>
-                    <Body>
-                       <Text>{cat.category}</Text>
-                       <Text note>{cat.color}</Text>
-                    </Body>
-                    <Right>
-                      <Icon name="ios-apps" onPress={()=> ActionSheet.show(
-                          {
-                            options: BUTTONS,
-                            cancelButtonIndex: CANCEL_INDEX,
-                            destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                            title: 'Actions'
-                          },
-                          (buttonIndex) => {
-                            this.actions(actions=BUTTONS[buttonIndex], data=cat)
-                          }
-                        )}/>
-                    </Right>
-                  </ListItem>
-                </Card>
-              )
-            })
-            : <Spinner color='#68A57B' />}
-
-          </Content>
+        <Header style={{backgroundColor: "#2196F3"}}>
+          <Left>
+            <Button transparent
+              style={{width: 30, justifyContent: 'center'}}
+              onPress={() => this.props.navigation.navigate("MainScreen")}
+              >
+                <Icon name='ios-arrow-back-outline' />
+            </Button>
+          </Left>
+          <Body><Title>List Category</Title></Body>
+          <Right>
+            <Button transparent
+              style={{marginTop: 5}}
+              onPress={()=>this.props.navigation.navigate("Category")}
+              >
+                <IconCustom name="border-color" size={25} style={{color: "#FFF"}}/>
+            </Button>
+          </Right>
+        </Header>
+        <Content style={{padding: 5}}>
+          {this.renderList()}
+        </Content>
       </Container>
     )
   }
 }
+
 const mapsStateToProps = state => {
   return {
     getCategory: state

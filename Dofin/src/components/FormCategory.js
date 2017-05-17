@@ -1,29 +1,14 @@
 import React, {Component} from 'react';
 import {
-  Container,
-  Content,
-  Text,
-  Header,
-  Icon,
-  View,
-  Left,
-  Button,
-  Body,
-  Title,
-  Right,
-  ActionSheet,
-  Form,
-  Item,
-  Label,
-  Input,
-  Picker,
-  Spinner,
-  Card,
-  CardItem
+  Container, Content, Text, Header,  Icon, View, Left, Button,
+  Body, Title, Right, ActionSheet, Form, Item, Label, Input,
+  Picker, Spinner, Card, CardItem
 } from 'native-base';
-import {Modal, TouchableHighlight, Alert} from 'react-native';
+import {
+  Modal, TouchableHighlight, Alert, Keyboard, TouchableWithoutFeedback
+} from 'react-native';
 
-import {postRequestCategory} from '../actions';
+import { postRequestCategory } from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -33,8 +18,8 @@ class Category extends Component {
     super(props);
     this.state = {
       category: '',
-      icon: '',
-      color: '',
+      icon: 'account',
+      color: 'grey',
       icon_name: '',
       loading: false,
       selectedColor: '',
@@ -53,7 +38,10 @@ class Category extends Component {
         'hotel', 'information', 'itunes', 'laptop-windows', 'lightbulb-on',
         'phone', 'printer', 'rocket', 'school', 'silverware-variant', 'soccer',
         'sofa', 'star', 'trophy', 'tshirt-crew'
-      ]
+      ],
+      colors: [
+        '#EC407A', '#AB47BC', '#5C6BC0', '#42A5F5', '#26C6DA', '#66BB6A', '#D4E157', '#FFA726', '#8D6E63', '#BDBDBD', '#D50000', '#AA00FF', '#304FFE', '#00BFA5', '#64DD17', '#FFD600', '#FF3D00', '#212121'
+      ],
     }
   }
   static navigationOptions = {
@@ -103,6 +91,7 @@ class Category extends Component {
       });
     }
   }
+
   render(){
     const { container, box } = styles
     const { params } = this.props.navigation.state;
@@ -119,43 +108,118 @@ class Category extends Component {
     }
     return (
       <Container style={{backgroundColor: '#fff'}}>
-          <Header style={{backgroundColor: "#2196F3"}}>
-            <Left>
-              <Button transparent
-                onPress={() => navigate("DetailCategory")}
+        <Header style={{backgroundColor: "#2196F3"}}>
+          <Left>
+            <Button transparent
+              onPress={() => navigate("DetailCategory")}
               >
-                  <Icon name='ios-arrow-back-outline' />
-              </Button>
-            </Left>
-            <Body>
-              <Title>Category</Title>
-            </Body>
-            <Right>
-              <Button transparent>
-              </Button>
-            </Right>
-          </Header>
+                <Icon name='ios-arrow-back-outline' />
+            </Button>
+          </Left>
+          <Body><Title>New Category</Title></Body>
+          <Right>
+          </Right>
+        </Header>
+
           <Content style={{display: 'flex'}} padder>
             <Form onSubmit={()=>this.handleSubmit()}>
-                <Item>
-                  <Icon name='ios-list' style={{color:"#2979FF"}}/>
-                  <Input
-                    ref="category"
-                    name="category"
-                    placeholder="Category"
-                    onChange={(event) => { this._onChangeInputCategory(event) }}
-                  />
-                </Item>
-                <Item>
-                  <Icon name='ios-color-palette' onPress={()=> this.openModalColor()} style={{color:"#2979FF"}}/>
-                  <Input value={this.state.color} placeholder="Color" disabled/>
-                </Item>
-                <Item>
-                  <Icon name='ios-color-filter-outline' onPress={()=> this.openModalIcon()} style={{color:"#2979FF"}}/>
-                  <Input value={this.state.icon_name} placeholder="Icon" disabled/>
-                </Item>
-              <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
-              { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
+              <Item inlineLabel>
+                <View style={{width: 30}}>
+                  <IconCustom name="apps" size={22} style={{color:"#2196F3"}} />
+                </View>
+                <Input
+                  ref="category"
+                  name="category"
+                  placeholder="Category"
+                  value={this.state.category}
+                  onChange={(event) => { this._onChangeInputCategory(event) }}
+                />
+              </Item>
+              <Item>
+                <TouchableWithoutFeedback
+                  style={{
+                    padding: 0
+                  }}
+                  onPress={() => this.openModalColor()}
+                  >
+                  <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <TouchableWithoutFeedback>
+                      <View
+                        style={{
+                          width: 30,
+                          justifyContent: 'center',
+                        }}
+                        >
+                        <IconCustom name="palette" size={22} style={{color:"#2196F3"}} />
+                      </View>
+                    </TouchableWithoutFeedback>
+                    <Input disabled
+                      style={{width: '60%'}}
+                      placeholder="Color"
+                      />
+                    <View style={{justifyContent: 'center'}}>
+                      <View
+                        style={{
+                          height: 22,
+                          width: 22,
+                          backgroundColor: this.state.color,
+                          borderRadius: 11,
+                          marginRight: 10,
+                        }}>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              </Item>
+              <Item>
+                <TouchableWithoutFeedback
+                  style={{
+                    padding: 0
+                  }}
+                  onPress={() => this.openModalIcon()}
+                  >
+                  <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <TouchableWithoutFeedback>
+                      <View
+                        style={{
+                          width: 30,
+                          marginLeft: 1,
+                          justifyContent: 'center',
+                        }}
+                        >
+                          <IconCustom name="pencil-circle-outline" size={22} style={{color:"#2196F3"}} />
+                      </View>
+                    </TouchableWithoutFeedback>
+
+                    <Input disabled
+                      placeholder="Icon"
+                      />
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        paddingRight: 10,
+                      }}
+                      >
+                        <IconCustom name={this.state.icon} size={22} style={{color:"#2196F3"}} />
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              </Item>
+              <Button
+                type="submit"
+                block
+                style={{
+                  marginTop: 40,
+                  backgroundColor: "#2196F3"
+                }}
+                onPress={() => { this._sendData() }}
+                >
+                  {(this.state.loading)?(<Spinner color='#FFF' />):
+                  (
+                    <Text style={{fontSize: 17}}>
+                      Save
+                    </Text>
+                  )}
               </Button>
             </Form>
 
@@ -164,51 +228,42 @@ class Category extends Component {
             animationType={"slide"}
             transparent={false}
             visible={this.state.modalColorVisible}
-            onRequestClose={() => {alert("Modal has been closed.")}}
+            onRequestClose={() => this.setState({modalColorVisible: false})}
             >
             <Container>
-                <Content>
-                    <Card>
-                      <CardItem>
-                       <Icon active name="ios-color-palette" style={{fontSize: 30,color:"red"}}/>
-                       <Text>Red</Text>
-                       <Right>
-                        <Button bordered success onPress={()=>this.chooseColorPicker("red")}>
-                            <Text>Choose</Text>
-                        </Button>
-                       </Right>
-                     </CardItem>
-                   </Card>
-                   <Card>
-                     <CardItem>
-                      <Icon active name="ios-color-palette" style={{fontSize: 30,color:"green"}}/>
-                      <Text>Green</Text>
-                      <Right>
-                       <Button bordered success onPress={()=>this.chooseColorPicker("green")}>
-                           <Text>Choose</Text>
-                       </Button>
-                      </Right>
-                    </CardItem>
-                  </Card>
-                  <Card>
-                    <CardItem>
-                     <Icon active name="ios-color-palette" style={{fontSize: 30,color:"blue"}}/>
-                     <Text>Blue</Text>
-                     <Right>
-                      <Button bordered success onPress={()=>this.chooseColorPicker("blue")}>
-                          <Text>Choose</Text>
-                      </Button>
-                     </Right>
-                   </CardItem>
-                 </Card>
-                </Content>
+              <Content style={{padding: 20}}>
+                <View style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                  }}>
+                  {this.state.colors.map(color => (
+                    <TouchableWithoutFeedback
+                      onPress={() => {
+                        this.setState({
+                          color,
+                          modalColorVisible: false,
+                        })
+                      }}>
+                        <View
+                          style={{
+                            height: 44,
+                            width: 44,
+                            backgroundColor: color,
+                            borderRadius: 22,
+                            margin: 10,
+                          }}>
+                        </View>
+                    </TouchableWithoutFeedback>
+                  ))}
+                </View>
+              </Content>
             </Container>
           </Modal>
           <Modal
             animationType={"slide"}
             transparent={false}
             visible={this.state.modalIconVisible}
-            onRequestClose={() => goBack()}
+            onRequestClose={() => this.setState({modalIconVisible: false})}
             >
             <Container>
                 <Content>
