@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/actions/expenseAction.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">src/actions</a> expenseAction.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">36.17% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>17/47</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/29</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">44.74% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>17/38</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as ActionTypes from './constants';
+import axios from 'axios'
+const host = 'http://dofin-backend-dev.us-west-2.elasticbeanstalk.com'
+const localHost = 'http://192.168.0.19:8080'
+&nbsp;
+function <span class="fstat-no" title="function not covered" >isError(</span>data) {
+<span class="cstat-no" title="statement not covered" >  return data.hasOwnProperty('errors') ? true : false</span>
+}
+&nbsp;
+export const postExpense = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+  type: ActionTypes.ADD_EXPENSE,
+  payload: data,
+});
+&nbsp;
+export const getTotalExpenseAmountByMonth = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+  type: ActionTypes.GET_EXPENSE_AMOUNT_BY_MOUNT,
+  payload: data,
+});
+&nbsp;
+export const getExpenseById = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+  type: ActionTypes.GET_EXPENSE_BY_ID,
+  payload: data,
+});
+&nbsp;
+&nbsp;
+export const expenseRequestFail = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+  type: 'ADD_EXPENSE_FAIL',
+  payload: data,
+});
+&nbsp;
+export const expenseRequestSuccess = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+  type: 'ADD_EXPENSE_SUCCESS',
+  payload: data,
+});
+&nbsp;
+export const resetErrorMessage = <span class="fstat-no" title="function not covered" >()</span> =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+  type: 'RESET_ERROR_MESSAGE',
+  payload: '',
+});
+&nbsp;
+export const resetSuccessMessage = <span class="fstat-no" title="function not covered" >()</span> =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+  type: 'RESET_SUCCESS_MESSAGE',
+  payload: '',
+});
+export const getTotalAmountByCategoryThisYear = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+  type: ActionTypes.GET_TOTAL_AMOUNT_YEAR_BY_ID,
+  payload: data,
+});
+&nbsp;
+export const expenseRequest = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; {
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >di</span>spatch =&gt;</span>
+<span class="cstat-no" title="statement not covered" >    axios.post(host + '/expenses', {</span>
+      record_by   : data.record_by,
+      amount      : data.amount,
+      description : data.description,
+      items       : data.items,
+      category    : data.category,
+      date        : data.date,
+      location    : data.location,
+    }, { timeout: 7000 })
+    .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; {
+      // console.log(response.data)
+<span class="cstat-no" title="statement not covered" >      return isError(response.data) ?</span>
+        dispatch(expenseRequestFail(err)) :
+        dispatch(expenseRequestSuccess(response.data))
+    })
+    .catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {
+      // console.log(err)
+<span class="cstat-no" title="statement not covered" >      return dispatch(expenseRequestFail(err))</span>
+    })
+};
+&nbsp;
+export const expenseRequestTotalByCategorySuccess = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+  type: 'GET_EXPENSE_AMOUNT_BY_CATEGORY_THIS_YEAR',
+  payload: data,
+});
+&nbsp;
+export const assignExpenseType = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; {
+<span class="cstat-no" title="statement not covered" >  return data.map(<span class="fstat-no" title="function not covered" >it</span>em =&gt; {</span>
+    let newItem = <span class="cstat-no" title="statement not covered" >{</span>
+      ...item,
+      total_amount: 0,
+      total_amount_expense: item.total_amount,
+    }
+<span class="cstat-no" title="statement not covered" >    return newItem</span>
+  })
+}
+&nbsp;
+export const expenseRequestTotalByCategory = <span class="fstat-no" title="function not covered" >da</span>ta =&gt; {
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >di</span>spatch =&gt;</span>
+<span class="cstat-no" title="statement not covered" >    axios.get(host + `/expenses/${data.id}/total_amount_by_category`, { timeout: 7000 })</span>
+    .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; {
+      // console.log(response.data)
+<span class="cstat-no" title="statement not covered" >      return isError(response.data) ?</span>
+        dispatch(expenseRequestFail(err)) :
+        dispatch(expenseRequestTotalByCategorySuccess(response.data))
+    })
+    .catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {
+      // console.log(err)
+<span class="cstat-no" title="statement not covered" >      return dispatch(expenseRequestFail(err))</span>
+    })
+};
+&nbsp;
+export const getExpenseTotalByMonthRequest = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    type: 'RESET_ERROR_MESSAGE',
+    payload: '',
+  }
+  // return dispatch =&gt;
+  //   axios.get('http://192.168.0.209:8080/expenses/59169da29a208a785ad2e99c/total_amount_by_month')
+  //   .then(response =&gt; dispatch(getTotalExpenseAmountByMonth(response.data)))
+  //   .catch(err =&gt; console.log(err.message))
+};
+&nbsp;
+export const getExpenseRequestById = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >di</span>spatch =&gt;</span>
+<span class="cstat-no" title="statement not covered" >    axios.get(host+'/expenses/59169da29a208a785ad2e99c')</span>
+    .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; <span class="cstat-no" title="statement not covered" >dispatch(getExpenseById(response.data)))</span>
+    .catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; <span class="cstat-no" title="statement not covered" >console.log(err.message))</span>
+};
+&nbsp;
+export const getTotalAmountByCategoryThisYearById = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >di</span>spatch =&gt;</span>
+<span class="cstat-no" title="statement not covered" >    axios.get(host+'/expenses/59169da29a208a785ad2e99c/total_amount_by_category')</span>
+    .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; <span class="cstat-no" title="statement not covered" >dispatch(getTotalAmountByCategoryThisYear(response.data)))</span>
+    .catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; <span class="cstat-no" title="statement not covered" >console.log(err.message))</span>
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed May 17 2017 21:39:17 GMT+0700 (WIB)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
