@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1494994757610" clover="3.2.0">
+  <project timestamp="1494994757611" name="All files">
+    <metrics statements="33" coveredstatements="32" conditionals="2" coveredconditionals="2" methods="28" coveredmethods="27" elements="63" coveredelements="61" complexity="0" loc="33" ncloc="33" packages="1" files="7" classes="7">
+      <file name="Dashboard.js" path="/home/primayudha/Documents/Hacktiv8/Dofin/Dofin/src/components/Dashboard.js">
+        <metrics statements="8" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="6"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="67" count="6" type="stmt"/>
+        <line num="71" count="6" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+      </file>
+      <file name="FormInputDreams.js" path="/home/primayudha/Documents/Hacktiv8/Dofin/Dofin/src/components/FormInputDreams.js">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+      </file>
+      <file name="IncomeForm.js" path="/home/primayudha/Documents/Hacktiv8/Dofin/Dofin/src/components/IncomeForm.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+      </file>
+      <file name="NonReceiptForm.js" path="/home/primayudha/Documents/Hacktiv8/Dofin/Dofin/src/components/NonReceiptForm.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+      </file>
+      <file name="Notifications.js" path="/home/primayudha/Documents/Hacktiv8/Dofin/Dofin/src/components/Notifications.js">
+        <metrics statements="6" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="37" count="7" type="stmt"/>
+        <line num="38" count="7" type="stmt"/>
+        <line num="45" count="8" type="stmt"/>
+        <line num="60" count="2" type="stmt"/>
+      </file>
+      <file name="Settings.js" path="/home/primayudha/Documents/Hacktiv8/Dofin/Dofin/src/components/Settings.js">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="40" count="5" type="stmt"/>
+        <line num="44" count="5" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+      </file>
+      <file name="SignUpForm.js" path="/home/primayudha/Documents/Hacktiv8/Dofin/Dofin/src/components/SignUpForm.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+      </file>
+    </metrics>
+  </project>
+</coverage>

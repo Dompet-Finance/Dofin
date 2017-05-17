@@ -41,9 +41,10 @@ class DetailDreams extends Component {
   }
 
   actions(actions, data){
-    if (actions === "Detail") {
-      this.props.navigation.navigate("SingleDream", {data: data})
-    }else if (actions === "Edit") {
+    // if (actions === "Detail") {
+    //   this.props.navigation.navigate("SingleDream", {data: data})
+    // }else
+    if (actions === "Edit") {
       this.props.navigation.navigate("EditDream", {data: data})
     }else if (actions === "Delete") {
       Alert.alert(
@@ -63,7 +64,7 @@ class DetailDreams extends Component {
   render(){
     const {dream} = this.props.getDream
     const { goBack } = this.props.navigation;
-    const BUTTONS = ["Detail", "Edit", "Delete"];
+    const BUTTONS = ["Edit", "Delete"];
     const DESTRUCTIVE_INDEX = 3;
     const CANCEL_INDEX = 2;
     return (

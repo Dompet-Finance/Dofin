@@ -103,32 +103,31 @@ class FormDream extends Component {
               </Button>
             </Right>
           </Header>
-          <Content style={{display: 'flex'}}>
+          <Content style={{display: 'flex'}} padder>
             <Form onSubmit={()=>this.handleSubmit()}>
-              <Card>
                 <Item >
-                  <Icon active name='ios-moon-outline' style={{marginRight: 13}}/>
+                  <Icon name='ios-moon-outline' style={{color:"#2979FF"}}/>
                   <Input
                     ref="dream"
                     name="dream"
-                    placeholder="dream"
+                    placeholder="Dream"
                     value={this.state.dream}
                     onChange={(event) => { this._onChangeInputDream(event) }}
                   />
 
                 </Item>
                 <Item >
-                  <Icon active name='md-create' style={{marginRight: 13}}/>
+                  <Icon name='md-create' style={{color:"#2979FF"}}/>
                   <Input
                     ref="description"
                     name="description"
-                    placeholder="description"
+                    placeholder="Description"
                     value={this.state.description}
                     onChange={(event) => { this._onChangeInputDescription(event) }}
                   />
                 </Item>
                 <Item >
-                  <Icon active name='logo-usd' style={{marginRight: 13}}/>
+                  <Icon name='logo-usd' style={{color:"#2979FF"}}/>
                   <Input
                     ref="target_value"
                     name="target_value"
@@ -138,7 +137,6 @@ class FormDream extends Component {
                     onChange={(event) => { this._onChangeInputTargetValue(event) }}
                   />
                 </Item>
-              </Card>
 
               <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
                 { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
