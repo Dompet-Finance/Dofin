@@ -8,9 +8,10 @@ const getDreamsByUserId = (req, res) => {
 } // getDreamsByUserId
 
 const updateDreamsByUserId = (req, res) => {
-  Dream.update(
-    { _id: req.body._id },
-    { $set: {record_by: req.body.record_by, dream: req.body.dream, description: req.body.description, target_value: req.body.target_value }}, { new: true })
+  Dream.findByIdAndUpdate(
+    req.body._id,
+    { $set: {record_by: req.body.record_by, dream: req.body.dream, description: req.body.description, target_value: req.body.target_value }},
+    { new: true })
     .exec((err, rec) => {
       if (err) res.send(err)
       else res.json(rec)

@@ -53,7 +53,7 @@ class FormDream extends Component {
             loading: !self.state.visible
           });
           self.props.updateDreamRequest(this.state)
-          self.props.navigation.navigate("MainScreen")
+          self.props.navigation.goBack()
         }},
       ]
     )
@@ -78,7 +78,7 @@ class FormDream extends Component {
       dream       : this.props.navigation.state.params.data.dream,
       description : this.props.navigation.state.params.data.description,
       _id         : this.props.navigation.state.params.data._id,
-      record_by   : this.props.navigation.state.params.data._id,
+      record_by   : this.props.navigation.state.params.data.record_by,
       target_value: this.props.navigation.state.params.data.target_value
     });
   }
@@ -150,7 +150,7 @@ class FormDream extends Component {
 
 const mapsDispatchToProps = dispatch => {
   return {
-    updateDreamRequest : data => dispatch(updateDreamRequest(data))
+    updateDreamRequest : data => dispatch(updateDreamRequest(data)),
   }
 }
 

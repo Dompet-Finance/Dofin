@@ -86,6 +86,10 @@ class MainScreen extends Component {
     });
   }
 
+  componentWillMount(){
+    this.props.getDreamRequest();
+  }
+
   componentDidMount(){
     this.props.getIncomeRequestById({id: "59169da29a208a785ad2e99c"});
     this.props.getDreamRequest();
@@ -99,11 +103,12 @@ class MainScreen extends Component {
     }).done();
   }
 
+
+
   render(){
     const { navigate }  = this.props.navigation;
     //const totalIncome   = this.props.getIncome
     const {dream}       = this.props.getDream
-    console.log(this.props.getIncome);
     let totalExpenses   = 0
     let dateFormat
     if (this.props.getExpense !== 0) {
@@ -127,7 +132,7 @@ class MainScreen extends Component {
         cat.push(obj)
       })
 
-      if (this.state.appState === 'active' && totalExpenses <= (this.props.getIncome * 0.4) && this.state.pushNotif === false) {
+      if (this.state.appState === 'active' && totalExpenses >= (this.props.getIncome * 0.4) && this.state.pushNotif === false) {
         this.setState({ pushNotif: true})
       }
     }

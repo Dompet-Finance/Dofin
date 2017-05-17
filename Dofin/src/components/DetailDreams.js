@@ -20,7 +20,7 @@ import {
   Alert
 } from 'react-native';
 import {connect} from 'react-redux';
-import {getDreamRequest, deleteDreamRequest} from '../actions';
+import {getDreamRequest, deleteDreamRequest, deleteDream} from '../actions';
 import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class DetailDreams extends Component {
@@ -28,6 +28,7 @@ class DetailDreams extends Component {
     super(props)
     this.state={
       actions:"",
+      trigger: false,
       show: false
     }
 
@@ -36,18 +37,12 @@ class DetailDreams extends Component {
     header: null
   }
 
-  componentDidMount(){
-    this.props.getDreamRequest()
-  }
-
-  componentDidUpdate(){
+  componentWillMount(){
     this.props.getDreamRequest()
   }
 
   actions(actions, data){
-    // if (actions === "Detail") {
-    //   this.props.navigation.navigate("SingleDream", {data: data})
-    // }else
+
     if (actions === "Edit") {
       this.props.navigation.navigate("EditDream", {data: data})
     }else if (actions === "Delete") {
@@ -58,14 +53,15 @@ class DetailDreams extends Component {
           {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
           {text: 'OK', onPress: () => {
             this.props.deleteDreamRequest(data)
-            this.props.getDreamRequest()
+            this.props.deleteDream(data)
           }},
         ]
       )
+
     }
-    this.setState({ actions: actions });
   }
   render(){
+
     const {dream} = this.props.getDream
     const { goBack } = this.props.navigation;
     const BUTTONS = ["Edit", "Delete"];
@@ -76,7 +72,7 @@ class DetailDreams extends Component {
           <Header style={{backgroundColor: "#2196F3"}}>
               <Left>
                 <Button transparent
-                  onPress={() => this.props.navigation.navigate("MainScreen")}
+                  onPress={() => this.props.navigation.navigate('MainScreen')}
                 >
                     <Icon name='ios-arrow-back-outline' />
                 </Button>
@@ -91,9 +87,9 @@ class DetailDreams extends Component {
               </Right>
           </Header>
           <Content>
-            {(dream !== "") ? dream.map((myDream) => {
+            {(dream !== []) ? dream.map((myDream) => {
               return (
-                <Card key={myDream.dream}>
+                <Card key={myDream._id}>
                   <ListItem icon>
                     <Left>
                       <Button iconLeft style={{borderRadius: 120, backgroundColor: "#2196F3"}}>
@@ -137,7 +133,8 @@ const mapsStateToProps = state => {
 const mapsDispatchToProps = dispatch => {
   return {
     getDreamRequest   : () => dispatch(getDreamRequest()),
-    deleteDreamRequest: (data) => dispatch(deleteDreamRequest(data))
+    deleteDreamRequest: (data) => dispatch(deleteDreamRequest(data)),
+    deleteDream: (data) => dispatch(deleteDream(data))
   }
 }
 

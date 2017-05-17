@@ -22,7 +22,7 @@ import {
 import {
   Alert
 } from 'react-native';
-import {dreamRequest} from '../actions';
+import {dreamRequest, postDream} from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
@@ -51,11 +51,8 @@ class FormDream extends Component {
           if ((dream === "") || (description === "") || (target_value === "")) {
             return alert('All field is required!')
           }else {
-            self.setState({
-              loading: !self.state.visible
-            });
-            self.props.navigation.navigate("DetailDreams")
             self.props.dreamRequest(self.state)
+            self.props.navigation.goBack()
           }
         }},
       ]
@@ -72,14 +69,6 @@ class FormDream extends Component {
     this.setState({target_value: event.nativeEvent.text})
   }
 
-  componentDidMount(){
-    if (this.props.postIncome !== null) {
-      this.setState({
-        loading: false
-      });
-    }
-
-  }
   render(){
 
     const { goBack } = this.props.navigation;
@@ -135,7 +124,7 @@ class FormDream extends Component {
                 </Item>
 
               <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
-                { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
+                <Text> Save </Text>
               </Button>
             </Form>
           </Content>
@@ -146,13 +135,13 @@ class FormDream extends Component {
 
 const mapsDispatchToProps = dispatch => {
   return {
-    dreamRequest : data => dispatch(dreamRequest(data))
+    dreamRequest : data => dispatch(dreamRequest(data)),
+    postDream   : (data) => dispatch(postDream(data)),
   }
 }
 
 const mapsStateToProps = state => {
   return {
-    postDream: state
   }
 }
 
