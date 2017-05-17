@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { StyleSheet, AsyncStorage } from 'react-native'
+import { StyleSheet, AsyncStorage, StatusBar } from 'react-native'
 import { Text, View } from 'react-native-animatable'
 import { connect } from 'react-redux';
 
@@ -52,6 +52,10 @@ class SignupForm extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.form} ref={(ref) => this.formRef = ref}>
+          <StatusBar
+            backgroundColor="#2196F3"
+            barStyle="light-content"
+          />
           <CustomTextInput
             ref={(ref) => this.usernameInputRef = ref}
             placeholder={'Name'}
@@ -93,7 +97,7 @@ class SignupForm extends Component {
               isLoading={isLoading}
               buttonStyle={styles.createAccountButton}
               textStyle={styles.createAccountButtonText}
-              text={'Create Account'}
+              text={'CREATE ACCOUNT'}
             />
           </View>
           <Text
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   createAccountButtonText: {
-    color: '#3E464D',
+    color: '#2196F3',
     fontWeight: 'bold'
   },
   loginLink: {

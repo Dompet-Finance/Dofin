@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { KeyboardAvoidingView, LayoutAnimation, Platform, UIManager, AsyncStorage } from 'react-native'
+import { KeyboardAvoidingView, LayoutAnimation, Platform, UIManager, AsyncStorage, StatusBar } from 'react-native'
 import { Image, View } from 'react-native-animatable'
 
 import imgLogo from '../../images/wallet.png'
@@ -56,6 +56,10 @@ export default class AuthScreen extends Component {
     const formStyle = (!visibleForm) ? { height: 0 } : { marginTop: 40 }
     return (
       <View style={styles.container}>
+        <StatusBar
+          backgroundColor="#2196F3"
+          barStyle="light-content"
+        />
         <Image
           animation={'bounceIn'}
           duration={1200}

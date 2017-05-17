@@ -11,7 +11,7 @@ export default class Opening extends Component {
       <View style={styles.container}>
         <View animation={'zoomIn'} delay={600} duration={400}>
           <CustomButton
-            text={'Create Account'}
+            text={'CREATE ACCOUNT'}
             onPress={this.props.onCreateAccountPress}
             buttonStyle={styles.createAccountButton}
             textStyle={styles.createAccountButtonText}
@@ -24,7 +24,7 @@ export default class Opening extends Component {
         </View>
         <View animation={'zoomIn'} delay={800} duration={400}>
           <CustomButton
-            text={'Sign In'}
+            text={'SIGN IN'}
             onPress={this.props.onSignInPress}
             buttonStyle={styles.signInButton}
             textStyle={styles.signInButtonText}
@@ -63,7 +63,7 @@ const styles = {
     marginHorizontal: 8
   },
   signInButton: {
-    backgroundColor: '#1976D2'
+    backgroundColor: '#2196F3'
   },
   signInButtonText: {
     color: 'white'

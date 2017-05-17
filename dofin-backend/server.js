@@ -21,6 +21,6 @@ app.use("/expenses", expense);
 app.use("/users", user);
 app.use("/notification", notification);
 
-app.listen(8081 || process.env.PORT, () => {
+app.listen(8080 || process.env.PORT, () => {
   console.log(`Server running!`);
 })
