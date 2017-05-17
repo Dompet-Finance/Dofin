@@ -139,28 +139,26 @@ class EditCategory extends Component {
               </Button>
             </Right>
           </Header>
-          <Content style={{display: 'flex'}}>
+          <Content style={{display: 'flex'}} padder>
             <Form onSubmit={()=>this.handleSubmit()}>
-              <Card>
                 <Item>
-                  <Icon active name='ios-list' style={{fontSize: 32}}/>
+                  <Icon name='ios-list' style={{color:"#2979FF"}}/>
                   <Input
                     ref="category"
                     name="category"
-                    placeholder="category"
+                    placeholder="Category"
                     value={this.state.category}
                     onChange={(event) => { this._onChangeInputCategory(event) }}
                   />
                 </Item>
                 <Item>
-                  <Icon active name='ios-color-palette' onPress={()=> this.openModalColor()}/>
-                  <Input value={this.state.color} placeholder="color" disabled/>
+                  <Icon name='ios-color-palette' onPress={()=> this.openModalColor()} style={{color:"#2979FF"}}/>
+                  <Input value={this.state.color} placeholder="Color" disabled/>
                 </Item>
                 <Item>
-                  <Icon active name='ios-color-filter-outline' onPress={()=> this.openModalIcon()}/>
-                  <Input value={this.state.icon} placeholder="icon" disabled/>
+                  <Icon name='ios-color-filter-outline' onPress={()=> this.openModalIcon()} style={{color:"#2979FF"}}/>
+                  <Input value={this.state.icon} placeholder="Icon" disabled/>
                 </Item>
-              </Card>
               <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
               { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
               </Button>

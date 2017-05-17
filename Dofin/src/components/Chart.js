@@ -110,7 +110,7 @@ class DetailCharts extends Component {
           <Content>
             <Card>
             <CardItem header>
-              <Text style={{fontSize: 20, fontWeight: '400'}}>Expenses chart</Text>
+              <Text style={{fontSize: 20, fontWeight: '400', fontFamily: "Roboto"}}>Expenses chart</Text>
               <Right>
                  <Text>All Category</Text>
               </Right>
