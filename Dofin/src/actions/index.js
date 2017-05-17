@@ -1,4 +1,4 @@
-import { incomeRequest, getIncomeRequest } from './incomeAction';
+import { incomeRequest, getIncomeRequest, getIncomeRequestById } from './incomeAction';
 import { dreamRequest, getDreamRequest, updateDreamRequest, deleteDreamRequest } from './dreamAction';
 import { postRequestCategory, getRequestCategory, updateRequestCategory, deleteRequestCategory } from './categoryAction';
 import { expenseRequest, getExpenseRequestById, getExpenseRequest, getExpenseTotalByMonthRequest, getTotalAmountByCategoryThisYearById } from './expenseAction';
@@ -30,4 +30,5 @@ export{
   getNotifRequest,
   notifRequest,
   placesRequest,
+  getIncomeRequestById
 }
