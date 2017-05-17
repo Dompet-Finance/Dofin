@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 
 import FadeInView from './FadeInView'
 
-import { expenseRequest, placesRequest } from '../actions';
+import { expenseRequest, placesRequest, getRequestCategory } from '../actions';
 import {
   resetErrorMessage, resetSuccessMessage
 } from '../actions/expenseAction';
@@ -41,8 +41,8 @@ class FormStruk extends Component {
       description: '',
       items: [{item: '', price: ''}],
       itemSlot: [0],
-      category: 'category1',
-      categoryIcon: 'album',
+      category: 'Personal Expense',
+      categoryIcon: 'account',
       categoryColor: 'grey',
       location: '',
       photos: '',
@@ -51,9 +51,7 @@ class FormStruk extends Component {
       loading: false,
       isButtonDisabled: false,
       categories: [
-        {category: 'Album', icon: 'album', color: 'red'},
-        {category: 'Car', icon: 'car', color: 'green'},
-        {category: 'Cat', icon: 'cat', color: 'orange'},
+        {category: 'Personal Expense', icon: 'account', color: 'grey'},
       ],
       initialPosition: 'unknown',
       lastPosition: 'unknown',
@@ -66,23 +64,27 @@ class FormStruk extends Component {
     header: null
   }
 
+  componenWillMount() {
+    this.props.getRequestCategory()
+  }
+
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-     (position) => {
-       var initialPosition = JSON.stringify(position);
-       this.setState({initialPosition});
-     },
-     (error) => alert(JSON.stringify(error)),
-       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-     );
-     this.watchID = navigator.geolocation.watchPosition((position) => {
-       var lastPosition = JSON.stringify(position);
-       this.setState({lastPosition});
-       this.props.placesRequest(JSON.parse(this.state.lastPosition))
-     });
+    // navigator.geolocation.getCurrentPosition(
+    //  (position) => {
+    //    var initialPosition = JSON.stringify(position);
+    //    this.setState({initialPosition});
+    //  },
+    //  (error) => alert(JSON.stringify(error)),
+    //    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    //  );
+    //  this.watchID = navigator.geolocation.watchPosition((position) => {
+    //    var lastPosition = JSON.stringify(position);
+    //    this.setState({lastPosition});
+    //    this.props.placesRequest(JSON.parse(this.state.lastPosition))
+    //  });
   }
   componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchID);
+    // navigator.geolocation.clearWatch(this.watchID);
   }
 
   _onChangeInputAmount(amount){
@@ -357,7 +359,7 @@ class FormStruk extends Component {
               this.setState({items, itemSlot: [...itemSlot, 0]})
             }}
             >
-              <Icon name="add-circle" style={{color:"#2979FF"}} />
+              <Icon name="add-circle" style={{color:"#2196F3"}} />
           </Button>
           <Button
             success
@@ -365,6 +367,7 @@ class FormStruk extends Component {
             onPress={() => {
               let amount = this.state.items.reduce((total, unit) => total + (unit.price === '' ? 0: +unit.price), 0).toString()
               this.setState({amount})
+              alert(JSON.stringify(this.props.categories))
             }}
             >
               <Icon name="calculator" style={{color:"#fff"}} />
@@ -461,7 +464,7 @@ class FormStruk extends Component {
             <View>
               <Form>
                 <Item inlineLabel>
-                  <Icon name="ios-cash" style={{color:"#2979FF"}} />
+                  <Icon name="ios-cash" style={{color:"#2196F3"}} />
                   <Input
                     name="amount"
                     value={this.state.amount.toString()}
@@ -472,7 +475,7 @@ class FormStruk extends Component {
                 </Item>
 
                 <Item>
-                  <Icon name='calendar' style={{color:"#2979FF"}} />
+                  <Icon name='calendar' style={{color:"#2196F3"}} />
                   <Input
                     value={this.state.dateText}
                     onFocus={() => {
@@ -485,7 +488,7 @@ class FormStruk extends Component {
                 </Item>
 
                 <Item>
-                  <Icon name='create' style={{color:"#2979FF"}} />
+                  <Icon name='create' style={{color:"#2196F3"}} />
                   <Input
                     name="description"
                     value={this.state.description}
@@ -495,7 +498,7 @@ class FormStruk extends Component {
                 </Item>
 
                 <Item>
-                  <Icon name='cart' style={{color:"#2979FF"}} />
+                  <Icon name='cart' style={{color:"#2196F3"}} />
                   <Input
                     name="item"
                     disabled
@@ -508,27 +511,7 @@ class FormStruk extends Component {
                 </Item>
 
                 {this.renderItems()}
-                <Item>
-                  <Icon name='pin' style={{color:"#2979FF"}} />
-                  <Input
-                    name="location"
-                    value={this.state.location}
-                    placeholder="Location"
-                  />
-                </Item>
-                <Item>
-                  <ListView
-                    horizontal={true}
-                    dataSource = {dataSource}
-                    renderRow = {(data, i) =>
-                      <TouchableOpacity onPress={() => this.setState({location: data})}>
-                        <Badge style={styles.location} >
-                          <Text>{data}</Text>
-                        </Badge>
-                      </TouchableOpacity>
-                    }
-                  />
-                </Item>
+
                 <View
                   style={{
                     paddingLeft: 0,
@@ -561,7 +544,7 @@ class FormStruk extends Component {
                           name='chevron-down'
                           size={20}
                           style={{
-                            color:"#2979FF"
+                            color:"#2196F3"
                           }}
                           />
                     </View>
@@ -635,7 +618,7 @@ class FormStruk extends Component {
                   onPress={() => this._sendData()}
                   >
                     {this.state.loading && <Spinner color={'#fff'} />}
-                    {!this.state.loading && <Text style={{fontSize: 17}}>Add</Text>}
+                    {!this.state.loading && <Text style={{fontSize: 17}}>Save</Text>}
                 </Button>
               </Form>
             </View>
@@ -695,7 +678,8 @@ const mapDispatchToProps = dispatch => {
     resetErrorMessage: () => dispatch(resetErrorMessage()),
     resetSuccessMessage: () => dispatch(resetSuccessMessage()),
     resetItems: () => dispatch(resetItems()),
-    placesRequest: position => dispatch(placesRequest(position))
+    placesRequest: position => dispatch(placesRequest(position)),
+    getRequestCategory: () => dispatch(getRequestCategory()),
   }
 }
 
@@ -703,7 +687,8 @@ const mapStateToProps = state => {
   return {
     camera: state.camera,
     expense: state.expense,
-    places: state.places
+    places: state.places,
+    categories: state.category.categories,
   }
 }
 
