@@ -65,10 +65,10 @@ class FormStruk extends Component {
   }
 
   componenWillMount() {
-    this.props.getRequestCategory()
   }
 
   componentDidMount() {
+    this.props.getRequestCategory()
     // navigator.geolocation.getCurrentPosition(
     //  (position) => {
     //    var initialPosition = JSON.stringify(position);
@@ -173,8 +173,8 @@ class FormStruk extends Component {
               description: '',
               items: [{item: '', price: ''}],
               itemSlot: [0],
-              category: 'category1',
-              categoryIcon: 'album',
+              category: 'Personal Expense',
+              categoryIcon: 'account',
               categoryColor: 'grey',
               location: 'location',
               loading: false,
@@ -582,7 +582,27 @@ class FormStruk extends Component {
                           paddingBottom: 5,
                       }}>
 
-                        {this.state.categories.map((category, index) => (
+                        {this.props.categories === undefined ? (
+                          <TouchableWithoutFeedback
+                            onPress={() => {
+                              this.setState({
+                                modalVisible: false,
+                                category: 'Personal Expense',
+                                categoryIcon: 'account',
+                                categoryColor: 'grey',
+                              })
+                            }}>
+                            <View style={categoryMedia}>
+                              {this.renderBadge({
+                                icon: 'account',
+                                color: 'grey',
+                              })}
+                              <View style={{paddingLeft: 5, justifyContent: 'center'}}>
+                                <Text>Personal Expense</Text>
+                              </View>
+                            </View>
+                          </TouchableWithoutFeedback>
+                        ) : this.props.categories.map((category, index) => (
                           <TouchableWithoutFeedback
                             key={index}
                             onPress={() => {

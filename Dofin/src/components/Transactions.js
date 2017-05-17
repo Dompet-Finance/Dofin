@@ -9,7 +9,7 @@ import {
 import {
   joinByCategory, joinDetail
 } from '../actions/transactionAction'
-
+import {getRequestCategory} from '../actions';
 import {
   Button, Container, Content, Header, View,
   Left, Right, Body, Title, Text, Footer, FooterTab,
@@ -92,6 +92,7 @@ class Transactions extends React.Component {
     this.props.incomeRequestTotalByCategory({
       id: '59169da29a208a785ad2e99c'
     })
+    this.props.getRequestCategory()
   }
 
   componentDidMount() {
@@ -129,7 +130,7 @@ class Transactions extends React.Component {
 
   renderBadge(category) {
     const { badge } = styles
-    const { categories } = this.state
+    const { categories } = this.props
     const index = categories.findIndex(
       val => val.category === category)
     const categorySet = index === -1 ?
@@ -572,6 +573,7 @@ const mapStateToProps = state => ({
   income: state.income,
   incomeExpensesDetail: joinDetail(state.income, state.expense),
   incomeExpenses: joinByCategory(state.income, state.expense),
+  categories: state.category.categories,
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -579,6 +581,7 @@ const mapDispatchToProps = dispatch => ({
   incomeRequestTotalByCategory: data => dispatch(incomeRequestTotalByCategory(data)),
   deleteExpenseById: data => dispatch(deleteExpenseById(data)),
   deleteIncomeById: data => dispatch(deleteIncomeById(data)),
+  getRequestCategory: () => dispatch(getRequestCategory()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transactions)
