@@ -84,12 +84,11 @@ class MainScreen extends Component {
       foreground: true,
     });
   }
-  // componentWillMount(){
-  //   this.props.getIncomeRequest();
-  //   this.props.getDreamRequest();
-  //   this.props.getExpenseRequestById();
-  //
-  // }
+  componentWillMount(){
+    this.props.getIncomeRequest();
+    this.props.getDreamRequest();
+    this.props.getExpenseRequestById();
+  }
   componentDidMount(){
     this.props.getIncomeRequest();
     this.props.getDreamRequest();
@@ -213,7 +212,7 @@ class MainScreen extends Component {
               </Right>
           </Header>
           <Content >
-          {(dreamParse !== undefined) ? (
+          {(dreamParse !== "") ? (
               <Card>
                 <CardItem header itemDivider>
                   {(dreamParse === "") ? (

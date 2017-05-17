@@ -40,6 +40,10 @@ class DetailDreams extends Component {
     this.props.getDreamRequest()
   }
 
+  componentDidUpdate(){
+    this.props.getDreamRequest()
+  }
+
   actions(actions, data){
     // if (actions === "Detail") {
     //   this.props.navigation.navigate("SingleDream", {data: data})
@@ -87,7 +91,7 @@ class DetailDreams extends Component {
               </Right>
           </Header>
           <Content>
-            {(dream !== undefined) ? dream.map((myDream) => {
+            {(dream !== "") ? dream.map((myDream) => {
               return (
                 <Card key={myDream.dream}>
                   <ListItem icon>

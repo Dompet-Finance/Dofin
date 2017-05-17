@@ -54,7 +54,7 @@ class FormDream extends Component {
             self.setState({
               loading: !self.state.visible
             });
-            self.props.navigation.navigate("MainScreen")
+            self.props.navigation.navigate("DetailDreams")
             self.props.dreamRequest(self.state)
           }
         }},
