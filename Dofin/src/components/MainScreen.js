@@ -35,6 +35,9 @@ import {
   getExpenseTotalByMonthRequest,
   getTotalAmountByCategoryThisYearById
 } from '../actions';
+import {
+  getIncomeRequestById
+} from '../actions/incomeAction'
 import HeaderDrawer from './HeaderDrawer';
 
 const ACCESS_TOKEN = "access_token";
@@ -59,13 +62,14 @@ class MainScreen extends Component {
     this.drawer._root.open()
   };
   componentWillMount(){
-    this.props.getIncomeRequest();
+    // this.props.getIncomeRequest();
+    this.props.getIncomeRequestById({id: '59169da29a208a785ad2e99c'});
     this.props.getDreamRequest();
     this.props.getExpenseRequestById();
 
   }
   componentDidMount(){
-    this.props.getIncomeRequest();
+    // this.props.getIncomeRequest();
     this.props.getDreamRequest();
     // this.props.getExpenseTotalByMonthRequest();
     this.props.getExpenseRequestById();
@@ -106,9 +110,12 @@ class MainScreen extends Component {
       })
     }
     const { navigate }  = this.props.navigation;
-    const totalIncome   = this.props.getIncome
+    const totalIncome   = this.props.getIncome.reduce((total, value) => {
+      return total + value.amount
+    }, 0)
+    
     const {dream}       = this.props.getDream
-    const totalBalance  = this.props.getIncome - totalExpenses;
+    const totalBalance  = totalIncome - totalExpenses;
     let dreamParse;
     let dreamParseDescription;
     try {
@@ -231,9 +238,9 @@ class MainScreen extends Component {
 const mapsStateToProps = state => {
   return {
     postIncome: state,
-    getIncome : state.income,
+    getIncome : state.income.data.incomeById,
     getDream  : state,
-    getExpense: state.expense.data.expensesById
+    getExpense: state.expense.data.expensesById,
   }
 }
 
@@ -242,6 +249,7 @@ const mapsDispatchToProps = dispatch => {
     getIncomeRequest                    : () => dispatch(getIncomeRequest()),
     getDreamRequest                     : () => dispatch(getDreamRequest()),
     getExpenseRequestById               : () => dispatch(getExpenseRequestById()),
+    getIncomeRequestById               : (data) => dispatch(getIncomeRequestById(data)),
     getExpenseTotalByMonthRequest       : () => dispatch(getExpenseTotalByMonthRequest()),
     getTotalAmountByCategoryThisYearById: () => dispatch(getTotalAmountByCategoryThisYearById())
   }

@@ -1,13 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  expenseRequestTotalByCategory, assignExpenseType
+  expenseRequestTotalByCategory, assignExpenseType, deleteExpenseById
 } from '../actions/expenseAction'
+import {
+  incomeRequestTotalByCategory, assignIncomeType, deleteIncomeById
+} from '../actions/incomeAction'
+import {
+  joinByCategory, joinDetail
+} from '../actions/transactionAction'
 
 import {
   Button, Container, Content, Header, View,
   Left, Right, Body, Title, Text, Footer, FooterTab,
-  Badge, Picker, Item, Input,
+  Badge, Picker, Item, Input, Icon as IconN, Card
 } from 'native-base'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -17,7 +23,14 @@ import {
 } from 'react-native';
 
 function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',00'
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',00'
+}
+function dateLocal(date) {
+  let newDate = new Date(date)
+  let d = ('0'+newDate.getDate()).slice(1)
+  let m = ('0'+(newDate.getMonth()+1)).slice(1)
+  let y = newDate.getFullYear()
+  return `${d}/${m}/${y}`
 }
 
 class Transactions extends React.Component {
@@ -28,9 +41,10 @@ class Transactions extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      month: new Date().getMonth()+6,
+      month: new Date().getMonth()+1,
       year: new Date().getFullYear(),
       modalVisible: false,
+      modalVisibleDelete: false,
       child: 1,
       first: true,
       categories: [{
@@ -60,6 +74,9 @@ class Transactions extends React.Component {
 
   componentWillMount() {
     this.props.expenseRequestTotalByCategory({
+      id: '59169da29a208a785ad2e99c'
+    })
+    this.props.incomeRequestTotalByCategory({
       id: '59169da29a208a785ad2e99c'
     })
     // const { transactions, month } = this.state
@@ -185,11 +202,13 @@ class Transactions extends React.Component {
     const { categoryMedia } = styles
     // const { transactions, month } = this.state
     const { month } = this.state
-    const { totalByCategoryThisYear } = this.props.expense.data
-    const transactions = assignExpenseType(totalByCategoryThisYear)
+    // const { totalByCategoryThisYear } = this.props.expense.data
+    const transactions = this.props.incomeExpenses
     const index = transactions.findIndex(
       val => val._id.month === month)
     const categories = index === -1 ? [] : transactions[index].categories
+
+    const recent = this.props.incomeExpensesDetail
 
     // return categories.map((category, index) => (
     //   <Animated.View
@@ -209,26 +228,123 @@ class Transactions extends React.Component {
     //   </Animated.View>
     // ))
 
+    if (this.state.child === 1)
       return categories.map((category, index) => (
-        <View style={categoryMedia} key={index}>
-          {this.renderBadge(category.category)}
-          <View style={{paddingLeft: 5}}>
-            <Text>{category.category}</Text>
-            <Text>Rp {numberWithCommas(category.total_amount)}</Text>
+        <Card style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+          <View style={categoryMedia} key={index}>
+            {this.renderBadge(category.category)}
+            <View style={{paddingLeft: 5}}>
+              <Text>{category.category}</Text>
+              <Text
+                style={{
+                  color: category.type === 'income' ? 'green':'red'
+                }}
+                >
+                Rp {numberWithCommas(category.total_amount)}
+              </Text>
+            </View>
           </View>
-        </View>
+          <View style={{justifyContent: 'center', marginRight: 5}}>
+            <Icon name='chevron-right' size={20} style={{color:"#ccc"}} />
+          </View>
+        </Card>
+      ))
+
+    if (this.state.child === 0)
+      return recent.map((data, index) => (
+        <Card
+          style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            marginBottom: index === recent.length-1 ? 17:5,
+          }}
+          >
+            <View style={categoryMedia} key={index}>
+              {this.renderBadge(data.category)}
+              <View style={{paddingLeft: 5}}>
+                <Text>Category: {data.category}</Text>
+                <Text>{dateLocal(data.date)}</Text>
+                <Text>{data.description}</Text>
+                <Text>Total Item: {data.totalItem === 0 ? 'none': data.totalItem}</Text>
+                <Text>Rp {numberWithCommas(data.amount)}</Text>
+              </View>
+            </View>
+            <View style={{justifyContent: 'center', marginRight: 5}}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  alert()
+                }}
+                >
+                  <View
+                    style={{
+                      height: 40,
+                      width: 40,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: 5,
+                    }}
+                    >
+                      <Icon name='border-color' size={20} style={{color:"#2196F3"}} />
+                  </View>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  Alert.alert(
+                    `Delete ${data.type}`,
+                    `Data ${data.description} ${dateLocal(data.date)} ${data.amount} will be deleted, are you sure?`,
+                    [
+                      {text: 'Yes', onPress: () => {
+                        if (data.type === 'expense') {
+                          this.props.deleteExpenseById({id: data._id})
+                          this.props.expenseRequestTotalByCategory({
+                            id: '59169da29a208a785ad2e99c'
+                          })
+                        }
+                        if (data.type === 'income') {
+                          this.props.deleteIncomeById({id: data._id})
+                          this.props.incomeRequestTotalByCategory({
+                            id: '59169da29a208a785ad2e99c'
+                          })
+                        }
+                      }},
+                      {text: 'No'}
+                    ],
+                    {
+                      cancelable: false
+                    }
+                  )
+                }}
+                >
+                  <View
+                    style={{
+                      height: 40,
+                      width: 40,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: 5,
+                    }}
+                    >
+                      <Icon name='delete' size={20} style={{color:"red"}} />
+                  </View>
+
+              </TouchableWithoutFeedback>
+
+            </View>
+        </Card>
       ))
 
   }
 
   renderTotalIncome() {
     // const { transactions, month } = this.state
-    // const index = transactions.findIndex(
-    //   val => val._id.month === month)
-    // const totalAmount = index === -1 ? 0 : transactions[index].total_amount_income
+    const { month } = this.state
+    const transactions = this.props.incomeExpenses
+    const index = transactions.findIndex(
+      val => val._id.month === month)
+    const totalAmount = index === -1 ? 0 : transactions[index].total_amount_income
     return (
-      <Text style={{marginRight: 10}}>
-        Rp {numberWithCommas(0)}
+      <Text style={{marginRight: 10, color: 'green'}}>
+        Rp {numberWithCommas(totalAmount)}
       </Text>
     )
   }
@@ -236,13 +352,13 @@ class Transactions extends React.Component {
   renderTotalExpenses() {
     // const { transactions, month } = this.state
     const { month } = this.state
-    const { totalByCategoryThisYear } = this.props.expense.data
-    const transactions = assignExpenseType(totalByCategoryThisYear)
+    // const { totalByCategoryThisYear } = this.props.expense.data
+    const transactions = this.props.incomeExpenses
     const index = transactions.findIndex(
       val => val._id.month === month)
     const totalAmount = index === -1 ? 0 : transactions[index].total_amount_expense
     return (
-      <Text style={{marginRight: 10}}>
+      <Text style={{marginRight: 10, color: 'red'}}>
         Rp -{numberWithCommas(totalAmount)}
       </Text>
     )
@@ -251,8 +367,8 @@ class Transactions extends React.Component {
   renderTotalBalance() {
     // const { transactions, month } = this.state
     const { month } = this.state
-    const { totalByCategoryThisYear } = this.props.expense.data
-    const transactions = assignExpenseType(totalByCategoryThisYear)
+    // const { totalByCategoryThisYear } = this.props.expense.data
+    const transactions = this.props.incomeExpenses
     const index = transactions.findIndex(
       val => val._id.month === month)
     let balance = 0
@@ -287,7 +403,7 @@ class Transactions extends React.Component {
                 onPress={() => goBack()}
                 >
 
-                  <Icon name="chevron-left" size={25} color="#fff" />
+                  <IconN name='ios-arrow-back-outline' />
               </Button>
             </Left>
             <Body>
@@ -352,7 +468,7 @@ class Transactions extends React.Component {
                                 year: this.state.year-1
                               })
                             }}>
-                              <Icon name='chevron-left' size={30} style={{color:"#2979FF"}} />
+                              <Icon name='chevron-left' size={30} style={{color:"#2196F3"}} />
                           </TouchableWithoutFeedback>
                           <Text
                             style={{
@@ -366,7 +482,7 @@ class Transactions extends React.Component {
                                 year: this.state.year+1
                               })
                             }}>
-                              <Icon name='chevron-right' size={30} style={{color:"#2979FF"}} />
+                              <Icon name='chevron-right' size={30} style={{color:"#2196F3"}} />
                           </TouchableWithoutFeedback>
                       </View>
 
@@ -395,7 +511,7 @@ class Transactions extends React.Component {
                               borderColor: '#eee',
                               borderRadius: 4,
                               elevation: 2,
-                              backgroundColor: '#2979FF'
+                              backgroundColor: '#2196F3'
                             }}>
                             <Text
                               style={{
@@ -422,39 +538,60 @@ class Transactions extends React.Component {
               flexDirection: 'row',
               justifyContent: 'space-around',
               alignItems: 'center',
-              elevation: 4,
-            }}>
-            <Text
-              onPress={() => {
-                this.setState({child: 0})
-              }}
-              style={{
-                color: this.state.child === 0 ? '#3F51B5' : '#666'
-              }}>
-              Recent
-            </Text>
-            <Text
-              onPress={() => {
-                this.setState({child: 1})
-              }}
-              style={{
-                color: this.state.child === 1 ? '#3F51B5' : '#666'
-              }}>
-              Categories
-            </Text>
-            <Text
-              onPress={() => {
-                this.setState({child: 2})
-              }}
-              style={{
-                color: this.state.child === 2 ? '#3F51B5' : '#666'
-              }}>
-              Detail
-            </Text>
+              elevation: 3,
+            }}
+            >
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.setState({child: 0})
+
+                }}
+                >
+                  <View style={{padding: 10}}>
+                    <Text
+                      style={{
+                        color: this.state.child === 0 ? '#3F51B5' : '#666'
+                      }}>
+                      Recent
+                    </Text>
+                  </View>
+              </TouchableWithoutFeedback>
+
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.setState({child: 1})
+
+                }}
+                >
+                  <View style={{padding: 10}}>
+                    <Text
+                      style={{
+                        color: this.state.child === 1 ? '#3F51B5' : '#666'
+                      }}>
+                      Categories
+                    </Text>
+                  </View>
+              </TouchableWithoutFeedback>
+
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.setState({child: 2})
+
+                }}
+                >
+                  <View style={{padding: 10}}>
+                    <Text
+                      style={{
+                        color: this.state.child === 2 ? '#3F51B5' : '#666'
+                      }}>
+                      Detail
+                    </Text>
+                  </View>
+              </TouchableWithoutFeedback>
 
           </View>
 
-          <Content>
+          <Content style={{padding: 5, marginBottom: 0}}>
             {this.renderContent()}
           </Content>
 
@@ -511,20 +648,26 @@ const styles = {
   categoryMedia: {
     flex: 1,
     flexDirection: 'row',
-    margin: 10,
-    marginLeft: 5,
+    margin: 5,
+    marginTop: 0,
     marginBottom: 0,
     padding: 5,
+    paddingLeft: 0,
   }
 }
 
 const mapStateToProps = state => ({
   expense: state.expense,
   income: state.income,
+  incomeExpensesDetail: joinDetail(state.income, state.expense),
+  incomeExpenses: joinByCategory(state.income, state.expense),
 })
 
 const mapDispatchToProps = dispatch => ({
-  expenseRequestTotalByCategory: data => dispatch(expenseRequestTotalByCategory(data))
+  expenseRequestTotalByCategory: data => dispatch(expenseRequestTotalByCategory(data)),
+  incomeRequestTotalByCategory: data => dispatch(incomeRequestTotalByCategory(data)),
+  deleteExpenseById: data => dispatch(deleteExpenseById(data)),
+  deleteIncomeById: data => dispatch(deleteIncomeById(data)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transactions)
