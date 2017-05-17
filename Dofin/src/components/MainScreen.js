@@ -38,6 +38,7 @@ import {
   getExpenseTotalByMonthRequest,
   getTotalAmountByCategoryThisYearById
 } from '../actions';
+
 import PushNotification from 'react-native-push-notification';
 
 import HeaderDrawer from './HeaderDrawer';
@@ -105,7 +106,7 @@ class MainScreen extends Component {
 
   render(){
     const { navigate }  = this.props.navigation;
-    const totalIncome   = this.props.getIncome
+    //const totalIncome   = this.props.getIncome
     const {dream}       = this.props.getDream
 
     let totalExpenses   = 0
@@ -135,7 +136,12 @@ class MainScreen extends Component {
         this.setState({ pushNotif: true})
       }
     }
-    const totalBalance  = this.props.getIncome - totalExpenses;
+
+    const totalIncome   = this.props.getIncome.reduce((total, value) => {
+      return total + value.amount
+    }, 0)
+    const totalBalance  = totalIncome - totalExpenses;
+
     let dreamParse;
     let dreamParseDescription;
     let dreamParseTarget;
@@ -312,9 +318,9 @@ class MainScreen extends Component {
 const mapsStateToProps = state => {
   return {
     postIncome: state,
-    getIncome : state.income,
+    getIncome : state.income.data.incomeById,
     getDream  : state,
-    getExpense: state.expense.data.expensesById
+    getExpense: state.expense.data.expensesById,
   }
 }
 
@@ -323,6 +329,7 @@ const mapsDispatchToProps = dispatch => {
     getIncomeRequest                    : () => dispatch(getIncomeRequest()),
     getDreamRequest                     : () => dispatch(getDreamRequest()),
     getExpenseRequestById               : () => dispatch(getExpenseRequestById()),
+    getIncomeRequestById               : (data) => dispatch(getIncomeRequestById(data)),
     getExpenseTotalByMonthRequest       : () => dispatch(getExpenseTotalByMonthRequest()),
     getTotalAmountByCategoryThisYearById: () => dispatch(getTotalAmountByCategoryThisYearById())
   }
