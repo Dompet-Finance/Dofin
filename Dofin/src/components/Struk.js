@@ -173,8 +173,8 @@ class FormStruk extends Component {
               description: '',
               items: [{item: '', price: ''}],
               itemSlot: [0],
-              category: 'category1',
-              categoryIcon: 'album',
+              category: 'Personal Expense',
+              categoryIcon: 'account',
               categoryColor: 'grey',
               location: 'location',
               loading: false,
@@ -582,7 +582,7 @@ class FormStruk extends Component {
                           paddingBottom: 5,
                       }}>
 
-                        {this.state.categories.map((category, index) => (
+                        {this.props.categories.map((category, index) => (
                           <TouchableWithoutFeedback
                             key={index}
                             onPress={() => {
