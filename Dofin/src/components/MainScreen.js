@@ -248,7 +248,7 @@ class MainScreen extends Component {
                   </Right>
                 </CardItem>
                 <CardItem cardBody>
-                    <Image style={{height: 200, width: "100%"}} source={{uri: "https://cdn.tinybuddha.com/wp-content/uploads/2015/06/Boy-Reaching-for-Stars.png"}}/>
+                    <Image style={{height: 150, width: "100%"}} source={{uri: "https://cdn.tinybuddha.com/wp-content/uploads/2015/06/Boy-Reaching-for-Stars.png"}}/>
                 </CardItem>
                 <CardItem style={{justifyContent: "center", flex: 1, flexDirection: 'column'}}>
                   {(dreamParseDescription === "") ? (
