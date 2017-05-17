@@ -32,7 +32,7 @@ class FormDream extends Component {
     this.state = {
       dream: '',
       description: '',
-      target_value: 0,
+      target_value: '',
       _id: '',
       record_by: '',
       loading: false,
@@ -133,7 +133,7 @@ class FormDream extends Component {
                     name="target_value"
                     placeholder="Target Value"
                     keyboardType="numeric"
-                    value={this.state.target_value}
+                    value={this.state.target_value.toString()}
                     onChange={(event) => { this._onChangeInputTargetValue(event) }}
                   />
                 </Item>

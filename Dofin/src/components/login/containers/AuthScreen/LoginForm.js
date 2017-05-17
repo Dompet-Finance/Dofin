@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { StyleSheet, AsyncStorage } from 'react-native'
+import { StyleSheet, AsyncStorage, StatusBar } from 'react-native'
 import { Text, View } from 'react-native-animatable'
 
 import CustomButton from '../../components/CustomButton'
@@ -91,7 +91,6 @@ class LoginForm extends Component {
   }
 
   render () {
-    console.log(this.props.getUser);
     if (this.props.getUser !== 0) {
       let data = {
         email: this.props.getUser.email,
@@ -112,6 +111,10 @@ class LoginForm extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.form} ref={(ref) => { this.formRef = ref }}>
+          <StatusBar
+            backgroundColor="#2196F3"
+            barStyle="light-content"
+          />
           <CustomTextInput
             name={'email'}
             ref={(ref) => this.emailInputRef = ref}
@@ -144,7 +147,7 @@ class LoginForm extends Component {
               isLoading={isLoading}
               buttonStyle={styles.loginButton}
               textStyle={styles.loginButtonText}
-              text={'Sign In'}
+              text={'SIGN IN'}
             />
           </View>
           <Text
@@ -160,9 +163,9 @@ class LoginForm extends Component {
         </View>
         <Footer>
           <FooterTab>
-              <Button full onPress={() => this._fbAuth()}>
-                <Text style={{fontSize: 15, color: "#FFF", marginBottom: 5}}>SIGN IN WITH FACEBOOK</Text>
-                <Icon name="logo-facebook" style={{fontSize: 25, color: "#FFF"}}/>
+              <Button full onPress={() => this._fbAuth()} style={{backgroundColor: "#fff", borderRadius: 2}}>
+                <Text style={{fontSize: 15, color: "#2196F3", marginBottom: 5}}>SIGN IN WITH FACEBOOK</Text>
+                <Icon name="logo-facebook" style={{fontSize: 25, color: "#2196F3"}}/>
               </Button>
           </FooterTab>
         </Footer>
@@ -186,7 +189,7 @@ const styles = {
     backgroundColor: 'white'
   },
   loginButtonText: {
-    color: '#3E464D',
+    color: '#2196F3',
     fontWeight: 'bold'
   },
   signupLink: {

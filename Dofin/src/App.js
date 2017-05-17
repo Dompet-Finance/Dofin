@@ -24,6 +24,7 @@ import CredentialCheck from './components/CredentialCheck'
 import DetailProfile from './components/DetailProfile'
 import LoginAnimation from './components/login/app'
 import Chart from './components/Chart'
+import PushNotifications from './components/PushNotifications'
 
 const App = StackNavigator({
   Main            : {screen: LoginAnimation},
@@ -44,6 +45,7 @@ const App = StackNavigator({
   SingleCategory  : {screen: SingleCategory},
   DetailProfile   : {screen: DetailProfile},
   Transaction     : {screen: Transactions},
-  Chart           : {screen: Chart}
+  Chart           : {screen: Chart},
+  PushNotifications: {screen: PushNotifications}
 },{ headerMode: 'screen' })
 export default App

@@ -5,6 +5,7 @@ import { expenseRequest, getExpenseRequestById, getExpenseRequest, getExpenseTot
 import { imgPostRequest } from './cameraAction';
 import { signUpRequest, signInRequest, logout } from './userAction';
 import { getNotifRequest, notifRequest } from './notificationAction';
+import { placesRequest } from './placesAction';
 
 export{
   incomeRequest,
@@ -27,5 +28,6 @@ export{
   signInRequest,
   logout,
   getNotifRequest,
-  notifRequest
+  notifRequest,
+  placesRequest,
 }

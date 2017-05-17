@@ -49,7 +49,7 @@ export const updateDreamRequest = data => {
       record_by: "59158e804412792833f91138",
       dream: data.dream,
       description: data.description,
-      target_value: data.target_value,
+      target_value: Number(data.target_value),
       _id: data._id
     })
     .then(response => dispatch(updateDream(response.data)))

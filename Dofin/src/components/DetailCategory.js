@@ -65,7 +65,6 @@ class DetailDreams extends Component {
     this.setState({ actions: actions });
   }
   render(){
-    console.log(this.props.getCategory.category);
     const {category} = this.props.getCategory
     const { goBack } = this.props.navigation;
     const BUTTONS = ["Edit", "Delete"];
