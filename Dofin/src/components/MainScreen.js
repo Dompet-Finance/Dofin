@@ -113,7 +113,9 @@ class MainScreen extends Component {
         obj.amount = expenses.amount
         cat.push(obj)
       })
+
       if (this.state.appState === 'active' && totalExpenses >= (this.props.getIncome * 0.4) && this.state.pushNotif === false) {
+
         let date = new Date(Date.now() + (this.state.seconds * 1000));
         let message = "It seems you have a lot of expenses lately"
 
@@ -124,6 +126,7 @@ class MainScreen extends Component {
         PushNotification.localNotificationSchedule({
           message,
           date,
+          foreground: true,
         });
         this.setState({ pushNotif: true})
       }
