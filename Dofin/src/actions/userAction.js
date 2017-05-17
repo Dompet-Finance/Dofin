@@ -21,7 +21,7 @@ export const logout = () => ({
 
 export const signUpRequest = data => {
   return dispatch =>
-    axios.post(localHost+'/users/signup', {
+    axios.post(host+'/users/signup', {
       name: data.name,
       email: data.email,
       password: data.password,
@@ -32,7 +32,7 @@ export const signUpRequest = data => {
 
 export const signInRequest = data => {
   return dispatch =>
-    axios.post(localHost+'/users/signin', {
+    axios.post(host+'/users/signin', {
       email: data.email,
       password: data.password
     })

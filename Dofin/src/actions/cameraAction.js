@@ -21,7 +21,7 @@ export const resetItems = data => ({
 export const imgPostRequest = newImage => {
   return dispatch => {
     // console.log(newImage)
-    return axios.post(localHost + '/expenses/photo', {blob: {
+    return axios.post(host + '/expenses/photo', {blob: {
           type: newImage.type,
           data: newImage.data
         }})

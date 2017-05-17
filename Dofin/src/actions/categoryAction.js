@@ -25,7 +25,7 @@ export const deleteCategory = data => ({
 
 export const postRequestCategory = data => {
   return dispatch =>
-    axios.put(localHost+'/users/59169dd60de1b3789527f322/categories', {
+    axios.put(host+'/users/59169dd60de1b3789527f322/categories', {
       category: data.category,
       icon: data.icon_name,
       color: data.color
@@ -36,14 +36,14 @@ export const postRequestCategory = data => {
 
 export const getRequestCategory = data => {
   return dispatch =>
-    axios.get(localHost+'/users/59169dd60de1b3789527f322')
+    axios.get(host+'/users/59169dd60de1b3789527f322')
     .then(response => dispatch(getCategory(response.data)))
     .catch(err => console.log(err.message))
 };
 
 export const updateRequestCategory = data => {
   return dispatch =>
-    axios.patch(localHost+'/users/'+data.user_id+'/categories', {
+    axios.patch(host+'/users/'+data.user_id+'/categories', {
       new_category  : data.category,
       old_category  : data.old_category,
       new_icon      : data.icon,
@@ -55,7 +55,7 @@ export const updateRequestCategory = data => {
 
 export const deleteRequestCategory = data => {
   return dispatch =>
-    axios.put(localHost+'/users/'+data.id+'/categories/delete', {
+    axios.put(host+'/users/'+data.id+'/categories/delete', {
       category: data.category
     })
     .then(response => dispatch(deleteCategory(response.data)))
