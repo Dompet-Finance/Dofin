@@ -3441,14 +3441,6 @@ react-native-animatable@^1.2.0:
   version "0.8.0"
   resolved "https://github.com/lwansbrough/react-native-camera.git#8878954e08b6043a079dacc5505889aee44f1312"
 
-react-native-dialog@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/react-native-dialog/-/react-native-dialog-1.0.7.tgz#5be6b84c47e1f7843555b9c6f0b516a89f5b06e2"
-
-react-native-dialogs@0.0.19:
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/react-native-dialogs/-/react-native-dialogs-0.0.19.tgz#5fce60fa4f14779377598a10ab76ba274623f1f5"
-
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
