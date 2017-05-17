@@ -102,7 +102,6 @@ class MainScreen extends Component {
     let dataCalculate   = []
     let color = []
     let uniqueCategory
-    console.log('first check', this.props.getExpense.length !== 0 && this.props.getIncome !== 0);
     if (this.props.getExpense.length !== 0 && this.props.getIncome !== 0) {
       let data = []
       let cat = []
@@ -114,9 +113,7 @@ class MainScreen extends Component {
         obj.amount = expenses.amount
         cat.push(obj)
       })
-      console.log('second check', totalExpenses >= (this.props.getIncome * 0.4));
-      console.log(this.state.pushNotif == false);
-      if (this.state.appState === 'active' && totalExpenses >= (this.props.getIncome * 0.4)) {
+      if (this.state.appState === 'active' && totalExpenses >= (this.props.getIncome * 0.4) && this.state.pushNotif === false) {
         let date = new Date(Date.now() + (this.state.seconds * 1000));
         let message = "It seems you have a lot of expenses lately"
 
@@ -127,8 +124,8 @@ class MainScreen extends Component {
         PushNotification.localNotificationSchedule({
           message,
           date,
-          foreground: true,
         });
+        this.setState({ pushNotif: true})
       }
     }
 
