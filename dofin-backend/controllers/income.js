@@ -2,7 +2,7 @@ const Income = require('../models/income');
 const mongoose = require('mongoose')
 
 const getIncomeById = (req, res) => {
-  Income.find({record_by: req.body.record_by}, (err, recs) => {
+  Income.find({record_by: req.params.user_id}, (err, recs) => {
     if (err) res.send(err)
     else res.json(recs)
   })

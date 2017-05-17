@@ -199,7 +199,7 @@ class FormStruk extends Component {
     if (this.props.camera.getItems.length) {
       let items = this.props.camera.getItems.slice()
       let itemSlot = Array(items.length).fill(0)
-      let amount = items.reduce((total, unit) => total + unit.price, 0)
+      let amount = items.reduce((total, unit) => total + unit.price, 0).toString()
       this.props.resetItems()
       this.setState({amount, items, itemSlot})
     }
