@@ -72,6 +72,20 @@ const getTotalByCategoryThisYear = (state, payload) => {
   return newState
 }
 
+const deleteExpenseById = (state, payload) => {
+  let newPayload = state.data.expensesById.filter(val =>
+    val._id !== payload._id
+  )
+  let newState = {
+    ...state,
+    data: {
+      ...state.data,
+      expensesById: newPayload
+    }
+  }
+  return newState
+}
+
 const expenseReducer = (state = initialState, { type, payload }) => {
   switch(type) {
     case ActionTypes.ADD_EXPENSE: return addExpense(state, payload)
@@ -80,6 +94,7 @@ const expenseReducer = (state = initialState, { type, payload }) => {
     case 'RESET_ERROR_MESSAGE': return resetErrorMessage(state, payload)
     case 'RESET_SUCCESS_MESSAGE': return resetSuccessMessage(state, payload)
     case 'GET_EXPENSE_AMOUNT_BY_CATEGORY_THIS_YEAR': return getTotalByCategoryThisYear(state, payload)
+    case 'DELETE_EXPENSE_BY_ID': return deleteExpenseById(state, payload)
     case ActionTypes.GET_EXPENSE_AMOUNT_BY_MOUNT: return payload
     case ActionTypes.GET_EXPENSE_BY_ID: return getExpensesById(state, payload)
     case ActionTypes.GET_EXPENSE: return (state, payload)

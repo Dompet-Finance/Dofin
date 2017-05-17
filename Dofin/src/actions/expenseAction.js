@@ -112,16 +112,30 @@ export const getExpenseTotalByMonthRequest = () => {
   //   .catch(err => console.log(err.message))
 };
 
-export const getExpenseRequestById = () => {
+export const getExpenseRequestById = (data) => {
   return dispatch =>
-    axios.get(host+'/expenses/59169da29a208a785ad2e99c')
+    axios.get(host + '/expenses/59169da29a208a785ad2e99c')
     .then(response => dispatch(getExpenseById(response.data)))
     .catch(err => console.log(err.message))
 };
 
-export const getTotalAmountByCategoryThisYearById = () => {
+export const getTotalAmountByCategoryThisYearById = (data) => {
   return dispatch =>
     axios.get(host+'/expenses/59169da29a208a785ad2e99c/total_amount_by_category')
     .then(response => dispatch(getTotalAmountByCategoryThisYear(response.data)))
+    .catch(err => console.log(err.message))
+};
+
+export const deleteExpenseByIdSuccess = data => ({
+  type: 'DELETE_EXPENSE_BY_ID',
+  payload: data,
+})
+
+export const deleteExpenseById = (data) => {
+  return dispatch =>
+    axios.delete(host + `/expenses/${data.id}`)
+    .then(response => {
+      dispatch(deleteExpenseByIdSuccess(response.data))
+    })
     .catch(err => console.log(err.message))
 };
