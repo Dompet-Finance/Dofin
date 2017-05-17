@@ -27,7 +27,7 @@ export const postRequestCategory = data => {
   return dispatch =>
     axios.put(host+'/users/59169dd60de1b3789527f322/categories', {
       category: data.category,
-      icon: data.icon_name,
+      icon: data.icon,
       color: data.color
     })
     .then(response => dispatch(postCategory(response.data)))

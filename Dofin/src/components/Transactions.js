@@ -192,7 +192,7 @@ class Transactions extends React.Component {
     return (
       <View style={{padding: 5}}>
         <View style={{...badge, backgroundColor: categorySet.color}}>
-          <Icon name={categorySet.icon} size={15} color={'#fff'} />
+          <Icon name={categorySet.icon} size={20} color={'#fff'} />
         </View>
       </View>
     )
