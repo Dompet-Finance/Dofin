@@ -218,7 +218,7 @@ class MainScreen extends Component {
                 <PushController />
               </Right>
           </Header>
-          <Content >
+          <Content style={{padding: 5}}>
           {(dreamParse !== undefined) ? (
               <Card>
                 <CardItem header itemDivider>
@@ -236,11 +236,11 @@ class MainScreen extends Component {
                   {(dreamParseTarget === "") ? (
                     <Spinner color='#2196F3'/>
                   ) : (
-                    <View>
+                    <View style={{marginLeft: 15}}>
                     {(moneyBalancePerDay < 0) ? (
-                      <Text note> You spend more than you earn!</Text>
+                      <Text note>You spend more than you earn!</Text>
                     ) : (
-                      <Text note> you can get it in {TargetDays} days</Text>
+                      <Text note>You can get it in {TargetDays} days</Text>
                     )}
                     </View>
                   )}
@@ -295,7 +295,7 @@ class MainScreen extends Component {
               </CardItem>
              </Card>
 
-            <View style={{height: 100}}>
+            <View style={{height: 120}}>
             </View>
           </Content>
           <Fab

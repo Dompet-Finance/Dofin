@@ -124,7 +124,7 @@ class FormDream extends Component {
                 </Item>
 
               <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
-                <Text> Save </Text>
+                <Text style={{fontSize: 17}}> Save </Text>
               </Button>
             </Form>
           </Content>

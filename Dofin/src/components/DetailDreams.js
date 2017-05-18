@@ -60,6 +60,25 @@ class DetailDreams extends Component {
 
     }
   }
+
+  renderBadge() {
+    const badge = {
+      width: 34,
+      height: 34,
+      backgroundColor: 'grey',
+      borderRadius: 17,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+    return (
+      <View style={{padding: 5}}>
+        <View style={{...badge, backgroundColor: '#2196F3'}}>
+          <Icon name="ios-walk-outline" style={{fontSize: 25, color: 'white'}}/>
+        </View>
+      </View>
+    )
+  }
+
   render(){
 
     const {dream} = this.props.getDream
@@ -81,27 +100,34 @@ class DetailDreams extends Component {
                   <Title>My Dreams</Title>
               </Body>
               <Right>
-                  <Button transparent onPress={()=>this.props.navigation.navigate('Dream')}>
+                  <Button transparent style={{marginTop: 5}} onPress={()=>this.props.navigation.navigate('Dream')}>
                     <IconCustom name="border-color" size={25} style={{color: "#FFF"}}/>
                   </Button>
               </Right>
           </Header>
-          <Content>
+          <Content style={{padding: 5}}>
             {(dream !== []) ? dream.map((myDream) => {
               return (
                 <Card key={myDream._id}>
-                  <ListItem icon>
-                    <Left>
-                      <Button iconLeft style={{borderRadius: 120, backgroundColor: "#2196F3"}}>
-                          <Icon name="ios-walk-outline" style={{fontSize: 25, marginLeft: 9}}/>
-                      </Button>
-                    </Left>
-                    <Body>
-                        <Text>{myDream.dream}</Text>
-                        <Text note>{myDream.description}</Text>
-                    </Body>
-                    <Right>
-                      <Icon name="ios-apps" onPress={()=> ActionSheet.show(
+
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        margin: 5,
+                      }}
+                      >
+                        {this.renderBadge()}
+                        <View style={{paddingLeft: 5, justifyContent: 'center'}}>
+                          <Text>{myDream.dream}</Text>
+                          <Text note>{myDream.description}</Text>
+                        </View>
+                    </View>
+                    <View style={{justifyContent: 'center', marginRight: 15}}>
+                      <Icon
+                        name="ios-apps"
+                        style={{fontSize: 20, color: '#ccc'}}
+                        onPress={()=> ActionSheet.show(
                           {
                             options: BUTTONS,
                             cancelButtonIndex: CANCEL_INDEX,
@@ -112,8 +138,8 @@ class DetailDreams extends Component {
                             this.actions(actions=BUTTONS[buttonIndex], data=myDream)
                           }
                         )}/>
-                    </Right>
-                  </ListItem>
+                    </View>
+                  </View>
                 </Card>
               )
             })

@@ -330,14 +330,14 @@ class FormStruk extends Component {
                       `Delete item '${itemName}'`,
                       'Are you sure?',
                       [
-                        {text: 'Yes', onPress: () => {
+                        {text: 'Cancel'},
+                        {text: 'OK', onPress: () => {
                           let items = this.state.items.filter((item, indexState) =>
                             indexState !== index)
                           let itemSlot = this.state.itemSlot.slice()
                           itemSlot.pop()
                           this.setState({items, itemSlot})
-                        }},
-                        {text: 'No'}
+                        }}
                       ],
                       {
                         cancelable: false

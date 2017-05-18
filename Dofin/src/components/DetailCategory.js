@@ -110,7 +110,7 @@ class DetailDreams extends Component {
               <View style={{justifyContent: 'center', marginRight: 15}}>
                 <Icon
                   name="ios-apps"
-                  style={{color: '#ccc'}}
+                  style={{fontSize: 20, color: '#ccc'}}
                   onPress={()=> ActionSheet.show(
                     {
                       options: BUTTONS,
