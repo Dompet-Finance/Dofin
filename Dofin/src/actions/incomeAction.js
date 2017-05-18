@@ -14,7 +14,7 @@ export const postIncome = data => ({
 
 export const getIncome = data => ({
   type: ActionTypes.GET_INCOME,
-  payload: data[0].total_amount,
+  payload: data,
 });
 
 export const incomeRequest = data => {
@@ -24,7 +24,7 @@ export const incomeRequest = data => {
       amount      : data.amount,
       description : data.description,
       category    : data.category_income,
-      date        : new Date()
+      date        : data.date,
     })
     .then(response => dispatch(postIncome(response.data)))
     .catch(err => console.log(err.message))

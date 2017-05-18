@@ -156,7 +156,6 @@ class FormStruk extends Component {
   setIndex(index) {
     this.setState({ index })
   }
-
   componentDidUpdate() {
     // success
     if (this.props.expense.successMessage) {
@@ -183,6 +182,7 @@ class FormStruk extends Component {
           }},
         ]
       )
+      this.props.navigation.navigate('MainScreen')
     }
 
     if (this.props.expense.errorMessage) {
@@ -415,17 +415,6 @@ class FormStruk extends Component {
 
   render(){
     const { goBack } = this.props.navigation
-    const BUTTONS = [
-      'Food and Drink',
-      'Travel',
-      'Entertainment',
-      'Transportation',
-      'Healthcare',
-      'Clothing',
-      'Rent',
-      'Education',
-      'Cancel'
-    ];
     const { width } = Dimensions.get('window')
     // console.log(this.props.camera);
     const { categoryMedia } = styles
@@ -436,6 +425,14 @@ class FormStruk extends Component {
         placesData.push(place.placeName);
       })
     }
+    const {categories} = this.props.postCategory
+    let cat = []
+    if (categories !== undefined) {
+      categories.map((category) => {
+        cat.push({category: category.category, icon: category.icon, color: category.color})
+      })
+    }
+    console.log(cat);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     const dataSource = ds.cloneWithRows(placesData)
     return (
