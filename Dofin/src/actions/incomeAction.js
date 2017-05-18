@@ -20,10 +20,10 @@ export const getIncome = data => ({
 export const incomeRequest = data => {
   return dispatch =>
     axios.post(host+'/income', {
-      record_by   : "59158e804412792833f91138",
+      record_by   : "59169da29a208a785ad2e99c",
       amount      : data.amount,
       description : data.description,
-      category    : data.category_income,
+      category    : data.category,
       date        : data.date,
     })
     .then(response => dispatch(postIncome(response.data)))
@@ -32,7 +32,7 @@ export const incomeRequest = data => {
 
 export const getIncomeRequest = () => {
   return dispatch =>
-    axios.get(host+'/income/59158e804412792833f91138/total_amount')
+    axios.get(host+'/income/59169da29a208a785ad2e99c/total_amount')
     .then(response => dispatch(getIncome(response.data)))
     .catch(err => console.log(err.message))
 };
@@ -63,7 +63,7 @@ export const incomeRequestTotalByCategory = data => {
   return dispatch =>
     axios.get(host + `/income/${data.id}/total_amount_by_category`, { timeout: 7000 })
     .then(response => {
-      // console.log(response.data)
+      // alert(JSON.stringify(response.data))
       return isError(response.data) ?
         dispatch(incomeRequestFail(err)) :
         dispatch(incomeRequestTotalByCategorySuccess(response.data))

@@ -9,7 +9,7 @@ import {
 import {
   joinByCategory, joinDetail
 } from '../actions/transactionAction'
-import {getRequestCategory} from '../actions';
+import {getRequestCategory, getExpenseRequestById} from '../actions';
 import {
   Button, Container, Content, Header, View,
   Left, Right, Body, Title, Text, Footer, FooterTab,
@@ -93,6 +93,7 @@ class Transactions extends React.Component {
       id: '59169da29a208a785ad2e99c'
     })
     this.props.getRequestCategory()
+    this.props.getExpenseRequestById();
   }
 
   componentDidMount() {
@@ -155,7 +156,7 @@ class Transactions extends React.Component {
     const categories = index === -1 ? [] : transactions[index].categories
 
     const recent = this.props.incomeExpensesDetail
-
+    // alert(JSON.stringify(this.props.incomeExpensesDetail))
     if (this.state.child === 1)
       return categories.sort(compare).map((category, index) => (
         <Card style={{justifyContent: 'space-between', flexDirection: 'row'}}>
@@ -200,7 +201,7 @@ class Transactions extends React.Component {
             <View style={{justifyContent: 'flex-start', marginRight: 5}}>
               <TouchableWithoutFeedback
                 onPress={() => {
-                  alert()
+                  // alert()
                 }}
                 >
                   <View
@@ -582,6 +583,7 @@ const mapDispatchToProps = dispatch => ({
   deleteExpenseById: data => dispatch(deleteExpenseById(data)),
   deleteIncomeById: data => dispatch(deleteIncomeById(data)),
   getRequestCategory: () => dispatch(getRequestCategory()),
+  getExpenseRequestById: () => dispatch(getExpenseRequestById()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transactions)

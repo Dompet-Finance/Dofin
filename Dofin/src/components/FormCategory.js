@@ -57,7 +57,8 @@ class Category extends Component {
           this.setState({
             loading: !this.state.visible
           });
-          this.props.navigation.navigate("DetailCategory")
+          // this.props.navigation.navigate("DetailCategory")
+          this.props.navigation.goBack()
           this.props.postRequestCategory(this.state)
         }},
       ]

@@ -84,6 +84,19 @@ class DrawerContent extends Component {
                   <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
+
+              <ListItem icon onPress={() => navigate('Income')}>
+                <Left>
+                    <IconCustom name="human-handsup" size={25} style={{color: "#2196F3"}}/>
+                </Left>
+                <Body>
+                  <Text>Income</Text>
+                </Body>
+                <Right>
+                  <Icon name="ios-arrow-forward-outline" />
+                </Right>
+              </ListItem>
+
               <ListItem icon onPress={() => navigate('Struk')}>
                 <Left>
                     <IconCustom name="cash-usd" size={25} style={{color: "#2196F3"}}/>
@@ -95,6 +108,7 @@ class DrawerContent extends Component {
                   <Icon name="ios-arrow-forward-outline" />
                 </Right>
               </ListItem>
+
               <ListItem icon onPress={() => navigate('DetailDreams')}>
                 <Left>
                     <IconCustom name="run-fast" size={25} style={{color: "#2196F3"}}/>

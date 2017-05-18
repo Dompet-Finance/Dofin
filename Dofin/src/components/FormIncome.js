@@ -1,44 +1,43 @@
 import React, {Component} from 'react';
 import {
-  Container,
-  Content,
-  Text,
-  Header,
-  Icon,
-  View,
-  Left,
-  Button,
-  Body,
-  Title,
-  Right,
-  ActionSheet,
-  Form,
-  Item,
-  Label,
-  Input,
-  Spinner,
-  Card
+  Container, Content, Text, Header, Icon, View, Left, Button, Body,
+  Title, Right, ActionSheet, Form, Item, Label, Input, Spinner, Card
 } from 'native-base';
-import { Alert, Keyboard, DatePickerAndroid } from 'react-native';
-import {incomeRequest, getRequestCategory, getIncome} from '../actions';
+import { Alert, Keyboard, DatePickerAndroid, TouchableWithoutFeedback, Modal } from 'react-native';
+import { incomeRequest, getRequestCategory, getIncome } from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
+
+function sortByCategory(a, b) {
+  if (a.category.toLowerCase() < b.category.toLowerCase()) {
+    return -1;
+  }
+  if (a.category.toLowerCase() > b.category.toLowerCase()) {
+    return 1;
+  }
+  return 0;
+}
 
 class FormIncome extends Component {
   constructor(props) {
     super(props);
     this.state = {
       amount: '',
-      category: '',
+      category: 'Personal Income',
+      categoryColor: 'grey',
+      categoryIcon: 'account',
       description: '',
       dateText: '',
       date: '',
       loading: false,
+      modalVisible: false,
     }
   }
   static navigationOptions = {
     header: null
   }
+
   _sendData(){
 
     Alert.alert(
@@ -60,23 +59,32 @@ class FormIncome extends Component {
       ]
     )
   }
+
   _onChangeInputAmount(event){
     this.setState({amount: event.nativeEvent.text})
   }
+
   _onChangeInputCategory(event){
     this.setState({category: event.nativeEvent.text})
   }
+
   _onChangeInputDescription(event){
     this.setState({description: event.nativeEvent.text})
   }
+
+  componentWillMount() {
+
+  }
+
   componentDidMount(){
+    this.props.getRequestCategory()
     if (this.props.postIncome !== null) {
       this.setState({
         loading: false
       });
     }
-    this.props.getRequestCategory()
   }
+
   showDatePicker(stateKey, options) {
     const showPicker = async (stateKey, options) => {
       try {
@@ -96,19 +104,37 @@ class FormIncome extends Component {
     };
     showPicker(stateKey, options)
   }
+
+  renderBadge(category) {
+    const badge = {
+      width: 34,
+      height: 34,
+      backgroundColor: 'grey',
+      borderRadius: 17,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+    return (
+      <View style={{padding: 5}}>
+        <View style={{...badge, backgroundColor: category.color}}>
+          <IconCustom name={category.icon} size={20} color={'#fff'} />
+        </View>
+      </View>
+    )
+  }
+
   render(){
     const {categories} = this.props.postCategory
     let cat = []
     if (categories !== undefined) {
       categories.map((category) => {
-        cat.push(category.category)
+        cat.push(category)
       })
     }
+    // alert(JSON.stringify(this.props.categories))
     const {categoryMedia} = styles
     const { goBack } = this.props.navigation;
-    const BUTTONS = cat;
-    const DESTRUCTIVE_INDEX = 3;
-    const CANCEL_INDEX = 2;
+
     return (
       <Container style={{backgroundColor: '#fff'}}>
           <Header style={{backgroundColor: "#2196F3"}}>
@@ -129,47 +155,25 @@ class FormIncome extends Component {
           </Header>
           <Content style={{display: 'flex'}} padder>
             <Form onSubmit={()=>this.handleSubmit()}>
+
                 <Item>
-                  <Icon name="logo-usd" style={{color: "#2196F3"}}/>
+                  <View style={{width: 30}}>
+                    <IconCustom name="currency-usd" size={22} style={{color:"#2196F3"}} />
+                  </View>
                   <Input
                     ref="amount"
                     name="amount"
-                    placeholder="amount"
+                    placeholder="Amount"
                     keyboardType="numeric"
+                    value={this.state.amount}
                     onChange={(event) => { this._onChangeInputAmount(event) }}
                   />
                 </Item>
+
                 <Item>
-                  <Icon name="md-create" style={{color: "#2196F3"}}/>
-                  <Input
-                    ref="description"
-                    name="description"
-                    placeholder="description"
-                    onChange={(event) => { this._onChangeInputDescription(event) }}
-                  />
-                </Item>
-                <Item style={{marginTop: 10}}>
-                  <Icon name="md-copy" style={{color: "#2196F3"}} onPress={()=> ActionSheet.show(
-                    {
-                      options: BUTTONS,
-                      cancelButtonIndex: CANCEL_INDEX,
-                      destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                      title: 'Category'
-                    },
-                    (buttonIndex) => {
-                      this.setState({ category: BUTTONS[buttonIndex] });
-                    }
-                  )}/>
-                  <Input
-                    placeholder='category'
-                    value={this.state.category}
-                    onChange={(event) => { this._onChangeInputCategory(event) }}
-                    ref="category"
-                    name="category"
-                  />
-                </Item>
-                <Item>
-                  <Icon name='calendar' style={{color: "#2196F3"}} />
+                  <View style={{width: 30}}>
+                    <IconCustom name="calendar" size={22} style={{color:"#2196F3"}} />
+                  </View>
                   <Input
                     value={this.state.dateText}
                     onFocus={() => {
@@ -181,8 +185,141 @@ class FormIncome extends Component {
                     placeholder="Date"/>
                 </Item>
 
+                <Item>
+                  <View style={{width: 30}}>
+                    <IconCustom name="border-color" size={22} style={{color:"#2196F3"}} />
+                  </View>
+                  <Input
+                    ref="description"
+                    name="description"
+                    placeholder="Description"
+                    value={this.state.description}
+                    onChange={(event) => { this._onChangeInputDescription(event) }}
+                  />
+                </Item>
+
+                <View
+                  style={{
+                    paddingLeft: 0,
+                  }}>
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      this.setState({modalVisible: true})
+
+                    }}
+                    >
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <View style={categoryMedia}>
+                        {this.renderBadge({
+                          icon: this.state.categoryIcon,
+                          color: this.state.categoryColor})
+                        }
+                        <View style={{paddingLeft: 5, justifyContent: 'center'}}>
+                          <Text
+                            style={{
+                              fontSize: 17,
+                              color: '#333'}}
+                            >
+                            {this.state.category}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={{
+                          justifyContent: 'center',
+                          marginRight: 10,
+                          marginTop: 4,
+                        }}
+                        >
+                        <IconCustom
+                          name='chevron-down'
+                          size={20}
+                          style={{
+                            color:"#2196F3"
+                          }}
+                          />
+                    </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
+
+                <Modal
+                  animationType={'fade'}
+                  transparent={true}
+                  visible={this.state.modalVisible}
+                  onRequestClose={() => this.setState({modalVisible: false})}
+                  >
+
+                  <TouchableWithoutFeedback
+                    onPress={() => this.setState({modalVisible: false})}
+                    >
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        height: '100%'
+                      }}
+                      onPress={() => this.setState({modalVisible: false})}>
+
+                      <View
+                        style={{
+                          width: '85%',
+                          backgroundColor: 'white',
+                          borderRadius: 2,
+                          elevation: 10,
+                          display: 'flex',
+                          paddingRight: 5,
+                          paddingBottom: 5,
+                      }}>
+
+                      {this.props.categories === undefined ? (<Text></Text>) :
+                        this.props.categories.map((category, index) => {
+                          return (
+                            <TouchableWithoutFeedback
+                              key={index}
+                              onPress={() => {
+                                this.setState({
+                                  modalVisible: false,
+                                  category: category.category,
+                                  categoryIcon: category.icon,
+                                  categoryColor: category.color,
+                                })
+                              }}>
+                              <View style={{
+                                  flexDirection: 'row',
+                                  margin: 0,
+                                  marginBottom: 0,
+                                  paddingTop: 5,
+                                  paddingLeft: 2,
+                              }}>
+                                {this.renderBadge({
+                                  icon: category.icon,
+                                  color: category.color,
+                                })}
+                                <View style={{paddingLeft: 5, justifyContent: 'center'}}>
+                                  <Text>{category.category}</Text>
+                                </View>
+                              </View>
+                            </TouchableWithoutFeedback>
+                          )
+                        })
+                      }
+
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+
+                </Modal>
+
+
               <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
-                { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
+                { (this.state.loading) ? (<Spinner color='#FFF' />) : (
+                  <Text style={{fontSize: 17}}> Save </Text>
+                )}
               </Button>
             </Form>
           </Content>
@@ -190,14 +327,15 @@ class FormIncome extends Component {
     )
   }
 }
+
 const styles = {
   categoryMedia: {
     flex: 1,
     flexDirection: 'row',
-    margin: 10,
+    margin: 0,
     marginBottom: 0,
-    padding: 5,
-    backgroundColor: '#ccc'
+    paddingTop: 5,
+    paddingLeft: 2,
   }
 }
 
@@ -205,14 +343,15 @@ const mapsDispatchToProps = dispatch => {
   return {
     incomeRequest       : data => dispatch(incomeRequest(data)),
     getRequestCategory  : () => dispatch(getRequestCategory()),
-    getIncome  : () => dispatch(getIncome())
+    getIncome  : () => dispatch(getIncome()),
   }
 }
 
 const mapsStateToProps = state => {
   return {
     postIncome: state,
-    postCategory: state.category
+    postCategory: state.category,
+    categories: state.category.categories,
   }
 }
 

@@ -91,7 +91,7 @@ class MainScreen extends Component {
   }
 
   componentDidMount(){
-    this.props.getIncomeRequestById({id: "59158e804412792833f91138"});
+    this.props.getIncomeRequestById({id: "59169da29a208a785ad2e99c"});
     this.props.getDreamRequest();
     this.props.getExpenseRequestById();
     AsyncStorage.getItem(USER_PROFILES).then((value) => {
@@ -285,6 +285,9 @@ class MainScreen extends Component {
                 </Right>
               </CardItem>
              </Card>
+
+            <View style={{height: 100}}>
+            </View>
           </Content>
           <Fab
             active={this.state.active}
