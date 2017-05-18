@@ -195,18 +195,18 @@ class FormStruk extends Component {
       this.props.navigation.navigate('MainScreen')
     }
 
-    if (this.props.expense.errorMessage) {
-      this.props.resetErrorMessage(),
-      Alert.alert(
-        'Error',
-        this.props.expense.errorMessage,
-        [
-          {text: 'OK', onPress: () => {
-            this.setState({loading: false, isButtonDisabled: false})
-          }},
-        ]
-      )
-    }
+    // if (this.props.expense.errorMessage) {
+    //   this.props.resetErrorMessage(),
+    //   Alert.alert(
+    //     'Error',
+    //     this.props.expense.errorMessage,
+    //     [
+    //       {text: 'OK', onPress: () => {
+    //         this.setState({loading: false, isButtonDisabled: false})
+    //       }},
+    //     ]
+    //   )
+    // }
 
     if (this.props.camera.getItems.length) {
       let items = this.props.camera.getItems.slice()
@@ -639,8 +639,8 @@ class FormStruk extends Component {
                 </Modal>
 
                 <Button
-                  style={{marginTop: 30, marginBottom: 30}}
-                  full success
+                  style={{marginTop: 30, marginBottom: 30, backgroundColor: "#2196F3"}}
+                  full
                   disabled={this.state.isButtonDisabled}
                   onPress={() => this._sendData()}
                   >

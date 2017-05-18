@@ -258,7 +258,16 @@ class MainScreen extends Component {
                   )}
                 </CardItem>
               </Card>
-          ) : <View><Text>No Dreams Available</Text></View>}
+          ) :(<View style={{
+                margin: 10,
+                alignItems: 'center'
+                }}
+                >
+                  <Text style={{color: '#aaa'}}>
+                    No Dreams Available
+                  </Text>
+
+              </View>)}
 
             <Card>
               <CardItem header>
