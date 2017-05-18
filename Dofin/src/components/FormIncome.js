@@ -19,8 +19,8 @@ import {
   Spinner,
   Card
 } from 'native-base';
-
-import {incomeRequest, getRequestCategory} from '../actions';
+import { Alert, Keyboard, DatePickerAndroid } from 'react-native';
+import {incomeRequest, getRequestCategory, getIncome} from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
@@ -31,6 +31,8 @@ class FormIncome extends Component {
       amount: '',
       category: '',
       description: '',
+      dateText: '',
+      date: '',
       loading: false,
     }
   }
@@ -46,15 +48,14 @@ class FormIncome extends Component {
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed!')},
         {text: 'OK', onPress: () => {
           const { amount, category, description } = this.state
-          if (amount || category || description) {
-            return alert('All field is required')
-          }else {
             this.setState({
               loading: !this.state.visible
             });
-            this.props.navigation.navigate("MainScreen")
+
             this.props.incomeRequest(this.state)
-          }
+            this.props.navigation.navigate("MainScreen")
+            this.props.getIncome(this.state)
+
         }},
       ]
     )
@@ -75,6 +76,25 @@ class FormIncome extends Component {
       });
     }
     this.props.getRequestCategory()
+  }
+  showDatePicker(stateKey, options) {
+    const showPicker = async (stateKey, options) => {
+      try {
+        var newState = {};
+        const {action, year, month, day} = await DatePickerAndroid.open(options);
+        if (action === DatePickerAndroid.dismissedAction) {
+          newState[stateKey + 'Text'] = 'dismissed';
+        } else {
+          var date = new Date(year, month, day);
+          newState['dateText'] = `${day}/${month+1}/${year}`
+          newState['date'] = date;
+        }
+        this.setState(newState);
+      } catch ({code, message}) {
+        console.warn(`Error in example '${stateKey}': `, message);
+      }
+    };
+    showPicker(stateKey, options)
   }
   render(){
     const {categories} = this.props.postCategory
@@ -107,11 +127,10 @@ class FormIncome extends Component {
               </Button>
             </Right>
           </Header>
-          <Content style={{display: 'flex'}}>
+          <Content style={{display: 'flex'}} padder>
             <Form onSubmit={()=>this.handleSubmit()}>
-              <Card>
                 <Item>
-                  <Icon name="logo-usd"/>
+                  <Icon name="logo-usd" style={{color: "#2196F3"}}/>
                   <Input
                     ref="amount"
                     name="amount"
@@ -121,7 +140,7 @@ class FormIncome extends Component {
                   />
                 </Item>
                 <Item>
-                  <Icon name="md-create"/>
+                  <Icon name="md-create" style={{color: "#2196F3"}}/>
                   <Input
                     ref="description"
                     name="description"
@@ -130,7 +149,7 @@ class FormIncome extends Component {
                   />
                 </Item>
                 <Item style={{marginTop: 10}}>
-                  <Icon name="md-copy" onPress={()=> ActionSheet.show(
+                  <Icon name="md-copy" style={{color: "#2196F3"}} onPress={()=> ActionSheet.show(
                     {
                       options: BUTTONS,
                       cancelButtonIndex: CANCEL_INDEX,
@@ -149,9 +168,20 @@ class FormIncome extends Component {
                     name="category"
                   />
                 </Item>
-              </Card>
+                <Item>
+                  <Icon name='calendar' style={{color: "#2196F3"}} />
+                  <Input
+                    value={this.state.dateText}
+                    onFocus={() => {
+                      Keyboard.dismiss()
+                      this.showDatePicker('simple',
+                        {date: new Date()}
+                      )}
+                    }
+                    placeholder="Date"/>
+                </Item>
 
-              <Button type="submit" block style={{marginTop: 40}} onPress={() => { this._sendData() }}>
+              <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
                 { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
               </Button>
             </Form>
@@ -174,7 +204,8 @@ const styles = {
 const mapsDispatchToProps = dispatch => {
   return {
     incomeRequest       : data => dispatch(incomeRequest(data)),
-    getRequestCategory  : () => dispatch(getRequestCategory())
+    getRequestCategory  : () => dispatch(getRequestCategory()),
+    getIncome  : () => dispatch(getIncome())
   }
 }
 

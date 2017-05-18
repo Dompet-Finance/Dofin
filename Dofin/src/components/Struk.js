@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 
 import FadeInView from './FadeInView'
 
-import { expenseRequest, placesRequest } from '../actions';
+import { expenseRequest, placesRequest, getRequestCategory } from '../actions';
 import {
   resetErrorMessage, resetSuccessMessage
 } from '../actions/expenseAction';
@@ -50,11 +50,7 @@ class FormStruk extends Component {
       modalVisible: false,
       loading: false,
       isButtonDisabled: false,
-      categories: [
-        {category: 'Album', icon: 'album', color: 'red'},
-        {category: 'Car', icon: 'car', color: 'green'},
-        {category: 'Cat', icon: 'cat', color: 'orange'},
-      ],
+      categories: [],
       initialPosition: 'unknown',
       lastPosition: 'unknown',
     }
@@ -80,6 +76,7 @@ class FormStruk extends Component {
        this.setState({lastPosition});
        this.props.placesRequest(JSON.parse(this.state.lastPosition))
      });
+     this.props.getRequestCategory()
   }
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
@@ -154,7 +151,6 @@ class FormStruk extends Component {
   setIndex(index) {
     this.setState({ index })
   }
-
   componentDidUpdate() {
     // success
     if (this.props.expense.successMessage) {
@@ -181,6 +177,7 @@ class FormStruk extends Component {
           }},
         ]
       )
+      this.props.navigation.navigate('MainScreen')
     }
 
     if (this.props.expense.errorMessage) {
@@ -412,17 +409,6 @@ class FormStruk extends Component {
 
   render(){
     const { goBack } = this.props.navigation
-    const BUTTONS = [
-      'Food and Drink',
-      'Travel',
-      'Entertainment',
-      'Transportation',
-      'Healthcare',
-      'Clothing',
-      'Rent',
-      'Education',
-      'Cancel'
-    ];
     const { width } = Dimensions.get('window')
     // console.log(this.props.camera);
     const { categoryMedia } = styles
@@ -433,6 +419,14 @@ class FormStruk extends Component {
         placesData.push(place.placeName);
       })
     }
+    const {categories} = this.props.postCategory
+    let cat = []
+    if (categories !== undefined) {
+      categories.map((category) => {
+        cat.push({category: category.category, icon: category.icon, color: category.color})
+      })
+    }
+    console.log(cat);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     const dataSource = ds.cloneWithRows(placesData)
     return (
@@ -520,6 +514,7 @@ class FormStruk extends Component {
                   <ListView
                     horizontal={true}
                     dataSource = {dataSource}
+                    style={{marginTop: 10}}
                     renderRow = {(data, i) =>
                       <TouchableOpacity onPress={() => this.setState({location: data})}>
                         <Badge style={styles.location} >
@@ -599,7 +594,7 @@ class FormStruk extends Component {
                           paddingBottom: 5,
                       }}>
 
-                        {this.state.categories.map((category, index) => (
+                        {cat.map((category, index) => (
                           <TouchableWithoutFeedback
                             key={index}
                             onPress={() => {
@@ -695,7 +690,8 @@ const mapDispatchToProps = dispatch => {
     resetErrorMessage: () => dispatch(resetErrorMessage()),
     resetSuccessMessage: () => dispatch(resetSuccessMessage()),
     resetItems: () => dispatch(resetItems()),
-    placesRequest: position => dispatch(placesRequest(position))
+    placesRequest: position => dispatch(placesRequest(position)),
+    getRequestCategory  : () => dispatch(getRequestCategory())
   }
 }
 
@@ -703,7 +699,8 @@ const mapStateToProps = state => {
   return {
     camera: state.camera,
     expense: state.expense,
-    places: state.places
+    places: state.places,
+    postCategory: state.category
   }
 }
 

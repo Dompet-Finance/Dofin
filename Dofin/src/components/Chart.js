@@ -130,7 +130,6 @@ class DetailCharts extends Component {
                    sliceColor={sliceColor}
                  />
               </CardItem>
-              {(series.length === 1) ? (<Text>{series}</Text>) : (<Text></Text>)}
              </Card>
 
           </Content>

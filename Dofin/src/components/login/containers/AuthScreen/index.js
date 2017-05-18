@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { KeyboardAvoidingView, LayoutAnimation, Platform, UIManager, AsyncStorage, StatusBar } from 'react-native'
+import { KeyboardAvoidingView, LayoutAnimation, Platform, UIManager, AsyncStorage, StatusBar,Text } from 'react-native'
 import { Image, View } from 'react-native-animatable'
 
 import imgLogo from '../../images/wallet.png'
@@ -68,6 +68,7 @@ export default class AuthScreen extends Component {
           style={styles.logoImg}
           source={imgLogo}
         />
+        <Text style={styles.title}>Dofin</Text>
         {(!visibleForm && !isLoggedIn) && (
           <Opening
             onCreateAccountPress={() => this._setVisibleForm('SIGNUP')}
@@ -122,5 +123,12 @@ const styles = {
   },
   bottom: {
     backgroundColor: '#1976D2'
+  },
+  title: {
+    alignSelf: 'center',
+    fontSize: 38,
+    color: '#1976D2',
+    fontWeight: 'bold',
+    fontFamily: 'Roboto'
   }
 }
