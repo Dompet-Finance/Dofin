@@ -60,7 +60,8 @@ class EditCategory extends Component {
           self.setState({
             loading: !this.state.visible
           });
-          self.props.navigation.navigate("DetailCategory", {data: self.props.navigation.state.params.data})
+          // self.props.navigation.navigate("DetailCategory", {data: self.props.navigation.state.params.data})
+          self.props.navigation.goBack()
           self.props.updateRequestCategory(this.state)
         }},
       ]

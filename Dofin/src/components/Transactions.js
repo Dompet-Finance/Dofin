@@ -9,7 +9,7 @@ import {
 import {
   joinByCategory, joinDetail
 } from '../actions/transactionAction'
-import {getRequestCategory} from '../actions';
+import {getRequestCategory, getExpenseRequestById} from '../actions';
 import {
   Button, Container, Content, Header, View,
   Left, Right, Body, Title, Text, Footer, FooterTab,
@@ -93,6 +93,7 @@ class Transactions extends React.Component {
       id: '59169da29a208a785ad2e99c'
     })
     this.props.getRequestCategory()
+    this.props.getExpenseRequestById();
   }
 
   componentDidMount() {
@@ -582,6 +583,7 @@ const mapDispatchToProps = dispatch => ({
   deleteExpenseById: data => dispatch(deleteExpenseById(data)),
   deleteIncomeById: data => dispatch(deleteIncomeById(data)),
   getRequestCategory: () => dispatch(getRequestCategory()),
+  getExpenseRequestById: () => dispatch(getExpenseRequestById()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transactions)

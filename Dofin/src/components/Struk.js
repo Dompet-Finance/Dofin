@@ -31,6 +31,16 @@ const ASPECT_RATIO = width / height
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
+function sortByCategory(a, b) {
+  if (a.category.toLowerCase() < b.category.toLowerCase()) {
+    return -1;
+  }
+  if (a.category.toLowerCase() > b.category.toLowerCase()) {
+    return 1;
+  }
+  return 0;
+}
+
 class FormStruk extends Component {
   constructor(props){
     super(props)
@@ -367,7 +377,7 @@ class FormStruk extends Component {
             onPress={() => {
               let amount = this.state.items.reduce((total, unit) => total + (unit.price === '' ? 0: +unit.price), 0).toString()
               this.setState({amount})
-              alert(JSON.stringify(this.props.categories))
+
             }}
             >
               <Icon name="calculator" style={{color:"#fff"}} />
@@ -599,7 +609,7 @@ class FormStruk extends Component {
                               </View>
                             </View>
                           </TouchableWithoutFeedback>
-                        ) : this.props.categories.map((category, index) => (
+                        ) : this.props.categories.sort(sortByCategory).map((category, index) => (
                           <TouchableWithoutFeedback
                             key={index}
                             onPress={() => {
