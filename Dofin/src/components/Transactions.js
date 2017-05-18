@@ -135,7 +135,7 @@ class Transactions extends React.Component {
     const index = categories.findIndex(
       val => val.category === category)
     const categorySet = index === -1 ?
-      {color: 'grey', icon: 'dots-horizontal'} : categories[index]
+      {color: 'grey', icon: 'account'} : categories[index]
     return (
       <View style={{padding: 5}}>
         <View style={{...badge, backgroundColor: categorySet.color}}>

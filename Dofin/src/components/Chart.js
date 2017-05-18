@@ -107,19 +107,31 @@ class DetailCharts extends Component {
                   </Button>
               </Right>
           </Header>
-          <Content>
-            <Card>
+          <Content style={{padding: 5}}>
+            <Card style={{margin: 5}}>
             <CardItem header>
-              <Text style={{fontSize: 20, fontWeight: '400', fontFamily: "Roboto"}}>Expenses chart</Text>
+              <Text style={{fontSize: 20, fontWeight: '400', fontFamily: "Roboto"}}>Expense chart</Text>
               <Right>
                  <Text>All Category</Text>
               </Right>
             </CardItem>
             {(color !== undefined) ? (color.map((dataColor, index) => {
               return (
-                <View key={dataColor.color}>
-                 <Icon name="ios-cog-outline" style={{color: dataColor.color, fontSize:9}}/>
-                 <Text>{dataColor.category.toLowerCase()}: {Math.ceil(series[index] / totalExpenses * 100)} %</Text>
+                <View key={dataColor.color}
+                  style={{
+                    margin: 2,
+                    flexDirection: 'row',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                <Icon name="ios-cog-outline"
+                 style={{
+                   color: dataColor.color,
+                   fontSize: 15,
+                   margin: 10,
+                 }}/>
+                <Text>{dataColor.category.toLowerCase()}: {Math.ceil(series[index] / totalExpenses * 100)} %</Text>
                 </View>
               )
             })) : <Text>No data</Text>}

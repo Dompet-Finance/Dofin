@@ -4,7 +4,7 @@ import {
   Title, Right, ActionSheet, Form, Item, Label, Input, Spinner, Card
 } from 'native-base';
 import { Alert, Keyboard, DatePickerAndroid, TouchableWithoutFeedback, Modal } from 'react-native';
-import { incomeRequest, getRequestCategory, getIncome } from '../actions';
+import { incomeRequest, getRequestCategory, getIncome, getIncomeRequestById } from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -54,7 +54,7 @@ class FormIncome extends Component {
             this.props.incomeRequest(this.state)
             this.props.navigation.navigate("MainScreen")
             this.props.getIncome(this.state)
-
+            this.props.getIncomeRequestById({id: "59169da29a208a785ad2e99c"});
         }},
       ]
     )
@@ -344,6 +344,7 @@ const mapsDispatchToProps = dispatch => {
     incomeRequest       : data => dispatch(incomeRequest(data)),
     getRequestCategory  : () => dispatch(getRequestCategory()),
     getIncome  : () => dispatch(getIncome()),
+    getIncomeRequestById                : (data) => dispatch(getIncomeRequestById(data)),
   }
 }
 
