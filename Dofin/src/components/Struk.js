@@ -145,7 +145,7 @@ class FormStruk extends Component {
       description : this.state.description,
       items       : this.state.items,
       category    : this.state.category,
-      date        : new Date(),
+      date        : this.state.date,
       location    : this.state.location,
     })
   }
@@ -435,7 +435,7 @@ class FormStruk extends Component {
         placesData.push(place.placeName);
       })
     }
-    const {categories} = this.props.postCategory
+    const {categories} = this.props
     let cat = []
     if (categories !== undefined) {
       categories.map((category) => {

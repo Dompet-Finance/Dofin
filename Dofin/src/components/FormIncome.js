@@ -23,6 +23,7 @@ import { Alert, Keyboard, DatePickerAndroid } from 'react-native';
 import {incomeRequest, getRequestCategory, getIncome} from '../actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import IconCustom from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class FormIncome extends Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class FormIncome extends Component {
       dateText: '',
       date: '',
       loading: false,
+      modalVisible: false,
     }
   }
   static navigationOptions = {
@@ -129,25 +131,49 @@ class FormIncome extends Component {
           </Header>
           <Content style={{display: 'flex'}} padder>
             <Form onSubmit={()=>this.handleSubmit()}>
+
                 <Item>
-                  <Icon name="logo-usd" style={{color: "#2196F3"}}/>
+                  <View style={{width: 30}}>
+                    <IconCustom name="currency-usd" size={22} style={{color:"#2196F3"}} />
+                  </View>
                   <Input
                     ref="amount"
                     name="amount"
-                    placeholder="amount"
+                    placeholder="Amount"
                     keyboardType="numeric"
+                    value={this.state.amount}
                     onChange={(event) => { this._onChangeInputAmount(event) }}
                   />
                 </Item>
+
                 <Item>
-                  <Icon name="md-create" style={{color: "#2196F3"}}/>
+                  <View style={{width: 30}}>
+                    <IconCustom name="calendar" size={22} style={{color:"#2196F3"}} />
+                  </View>
+                  <Input
+                    value={this.state.dateText}
+                    onFocus={() => {
+                      Keyboard.dismiss()
+                      this.showDatePicker('simple',
+                        {date: new Date()}
+                      )}
+                    }
+                    placeholder="Date"/>
+                </Item>
+
+                <Item>
+                  <View style={{width: 30}}>
+                    <IconCustom name="border-color" size={22} style={{color:"#2196F3"}} />
+                  </View>
                   <Input
                     ref="description"
                     name="description"
-                    placeholder="description"
+                    placeholder="Description"
+                    value={this.state.description}
                     onChange={(event) => { this._onChangeInputDescription(event) }}
                   />
                 </Item>
+
                 <Item style={{marginTop: 10}}>
                   <Icon name="md-copy" style={{color: "#2196F3"}} onPress={()=> ActionSheet.show(
                     {
@@ -168,21 +194,11 @@ class FormIncome extends Component {
                     name="category"
                   />
                 </Item>
-                <Item>
-                  <Icon name='calendar' style={{color: "#2196F3"}} />
-                  <Input
-                    value={this.state.dateText}
-                    onFocus={() => {
-                      Keyboard.dismiss()
-                      this.showDatePicker('simple',
-                        {date: new Date()}
-                      )}
-                    }
-                    placeholder="Date"/>
-                </Item>
 
               <Button type="submit" block style={{marginTop: 40, backgroundColor: "#2196F3"}} onPress={() => { this._sendData() }}>
-                { (this.state.loading) ? (<Spinner color='#FFF' />) : (<Text> Save </Text>)}
+                { (this.state.loading) ? (<Spinner color='#FFF' />) : (
+                  <Text style={{fontSize: 17}}> Save </Text>
+                )}
               </Button>
             </Form>
           </Content>

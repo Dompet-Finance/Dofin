@@ -156,7 +156,7 @@ class Transactions extends React.Component {
     const categories = index === -1 ? [] : transactions[index].categories
 
     const recent = this.props.incomeExpensesDetail
-
+    // alert(JSON.stringify(this.props.incomeExpensesDetail))
     if (this.state.child === 1)
       return categories.sort(compare).map((category, index) => (
         <Card style={{justifyContent: 'space-between', flexDirection: 'row'}}>
@@ -201,7 +201,7 @@ class Transactions extends React.Component {
             <View style={{justifyContent: 'flex-start', marginRight: 5}}>
               <TouchableWithoutFeedback
                 onPress={() => {
-                  alert()
+                  // alert()
                 }}
                 >
                   <View
